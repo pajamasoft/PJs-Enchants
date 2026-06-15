@@ -4,7 +4,7 @@ Enchantment Guide
 
 # List of Enchantments
 [Antidote]
-[Antigravity]
+[Antigravity (Melee)]
 [Artful]
 [Blaze]
 [Cluster]
@@ -70,3 +70,43 @@ Enchantment Guide
 [Waverider]
 [Wilting]
 [Wings]
+
+## Armor
+
+### All Armor
+#### Magnetic
+#### Molten
+#### Plague
+#### Toxic
+
+### Helmet
+#### Constitution 
+#### Ender Eyes
+#### Psychic
+#### Nighteye
+
+### Chestplate
+#### Antidote <a id="antidote-armor"></a>.
+#### Discharge 
+#### Hive
+#### Infested
+#### Rage
+#### Spikes
+#### Sponge
+#### Unstable 
+#### Wings
+
+### Leggings
+#### Adrenaline
+#### Leaping
+#### Repulsion
+#### Sealegs
+#### Stealth
+
+### Boots
+#### Anti-Gravity
+#### Dash
+#### Escape
+#### Glide
+#### Grounded
+#### Waverider
