@@ -2,74 +2,47 @@
 Enchantment Guide
 ## General Information
 
-# List of Enchantments
-[Antidote]
-[Antigravity (Melee)]
-[Artful]
-[Blaze]
-[Cluster]
-[Constitution]
-[Darkness]
-[Dash]
-[Draconic]
-[Drag]
-[Defuse]
-[Devour]
-[Discharge]
-[Dizzy]
-[Endereyes]
-[Escape]
-[Forging]
-[Fracture]
-[Freezing]
-[Frostbite]
-[Glide]
-[Grappling]
-[Gravity]
-[Grounded]
-[Hallucination]
-[Healing]
-[Hellish]
-[Hive]
-[Homing]
-[Hurdle]
-[Infested]
-[Leaping]
-[Leeching]
-[Lift]
-[Lightspeed]
-[Lunar]
-[Magnetic]
-[Molten]
-[Nighteye]
-[Nightrider]
-[Nitro]
-[Phantom]
-[Plague]
-[Protection]
-[Psychic]
-[Pulverizing]
-[Rage]
-[Repulsion]
-[Ricochet]
-[Rush]
-[Sealegs]
-[Skulls]
-[Solar]
-[Spikes]
-[Sponge]
-[Stealth]
-[Talent]
-[Thrust]
-[Thunder]
-[Toxic]
-[Trample]
-[Unholy]
-[Unstable]
-[Venom]
-[Waverider]
-[Wilting]
-[Wings]
+## Weapons
+
+### Melee (Swords, Axes, Spears)
+
+#### Antigravity
+#### Artful
+#### Blaze
+#### Darkness
+#### Defuse
+#### Devour
+#### Dizzy
+#### Fracture
+#### Frostbite
+#### Gravity
+#### Hallucination
+#### Leeching
+#### Phantom
+#### Skulls
+#### Talent
+#### Thunder
+#### Unholy
+#### Venom
+#### Wilting
+
+### Bows
+#### Antigravity
+#### Freezing
+#### Grappling
+#### Gravity
+#### Healing
+#### Homing
+#### Lightspeed
+#### Nitro
+#### Ricochet
+#### Venom
+
+## Tools
+
+### Primary Tools (Pickaxe, Axe, Hoe, Shovel)
+
+### Pickaxe / Axe
 
 ## Armor
 
@@ -110,3 +83,23 @@ Enchantment Guide
 #### Glide
 #### Grounded
 #### Waverider
+
+### Horse Armor
+#### Hellish
+#### Hurdle
+#### Nightrider
+#### Protection
+#### Rush
+#### Trample
+#### Waverider
+
+### Wolf Armor
+#### Bolt
+#### Fangs
+#### Fling
+#### Glide
+#### Hellhound
+#### Mending
+#### Molten
+#### Snatch
+#### Toxic
