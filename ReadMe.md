@@ -4,7 +4,7 @@ Enchantment Guide
 
 ## Weapons
 
-### Melee (Swords, Axes, Spears)
+### Melee <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/b4d831e4-72ae-4908-a939-83fb2b331c5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6d0a5d68-9686-4ec4-81e6-64e7bc2aec5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/2f683d65-6c27-433a-ae2b-5ad6e1146fc9" />
 
 #### Antigravity
 #### Artful
@@ -26,7 +26,8 @@ Enchantment Guide
 #### Venom
 #### Wilting
 
-### Bows
+### Bows <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/f814634d-f95f-469b-9ba8-ae01dc79e9cf" />
+
 #### Antigravity
 #### Freezing
 #### Grappling
@@ -38,9 +39,9 @@ Enchantment Guide
 #### Ricochet
 #### Venom
 
-## Tools
+## ⚒️ Tools
 
-### Primary Tools (Pickaxe, Axe, Hoe, Shovel)
+### ⛏️ Primary Tools (Pickaxe, Axe, Hoe, Shovel)
 
 ### Pickaxe / Axe
 
