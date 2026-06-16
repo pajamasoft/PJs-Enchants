@@ -87,39 +87,54 @@ Enchantment Guide
 | Wings | 1 | |
 
 ### Leggings
-#### Adrenaline
-#### Leaping
-#### Repulsion
-#### Sealegs
-#### Stealth
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Adrenaline | 1 | |
+| Leaping | 3 | |
+| Repulsion | 3 | |
+| Sealegs | 1 | |
+| Stealth | 3 | |
 
 ### Boots
-#### Anti-Gravity
-#### Dash
-#### Escape
-#### Glide
-#### Grounded
-#### Waverider
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Antigravity | 3 | |
+| Dash | 2 | |
+| Escape | 1 | |
+| Glide | 1 | |
+| Grounded | 1 | |
+| Waverider | 2 | |
 
 ### Horse Armor
-#### Hellish
-#### Hurdle
-#### Nightrider
-#### Protection
-#### Rush
-#### Trample
-#### Waverider
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Hellish | 1 | |
+| Hurdle | 3 | |
+| Nightrider | 1 | |
+| Protection | 4 | |
+| Rush | 3 | |
+| Trample | 1 | |
+| Waverider | 2 | |
 
 ### Wolf Armor
-#### Bolt
-#### Fangs
-#### Fling
-#### Glide
-#### Hellhound
-#### Mending
-#### Molten
-#### Snatch
-#### Toxic
+| Bolt | 4 | |
+| Fangs | 3 | |
+| Fling | 1 | |
+| Glide | 1 | |
+| Hellhound | 1 | |
+| Mending | 1 | |
+| Molten | 3 | |
+| Toxic | 1 | |
+| Werewolf | 3 | |
+
+### Elytra
+| Dracpnic | 1 | |
+| Drag | 1 | |
+| Lift | 2 | |
+| Lunar | 1 | |
+| Solar | 1 | |
+| Thrust | 1 | |
+
 
 ## Enchantment Cross-Compatibility Charts
 ### Melee Enchants
@@ -161,7 +176,7 @@ Enchantment Guide
 | Frost Walker | | | ❌ |
 
 ## Enchantment Cross-Mechanics
-Many of PJ's Enchantments interact with each other:
+Some of PJ's Enchantments interact with each other:
 * Defuse hits will never trigger Unstable
 * Antigravity cannot lift those with Grounded
 
