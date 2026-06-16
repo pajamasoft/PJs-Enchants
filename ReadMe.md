@@ -4,28 +4,28 @@ Enchantment Guide
 
 ## Weapons
 
-### Melee <img width="25" src="https://github.com/user-attachments/assets/b4d831e4-72ae-4908-a939-83fb2b331c5a" /> <img width="25" src="https://github.com/user-attachments/assets/6d0a5d68-9686-4ec4-81e6-64e7bc2aec5a" /> <img width="25" src="https://github.com/user-attachments/assets/2f683d65-6c27-433a-ae2b-5ad6e1146fc9" />
+### Melee
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
-| Antigravity | 3 |  | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
-| Artful | 1 |  | Permanent Haste II while held | |
-| Blaze | 3 |  | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
-| Darkness | 4 |  | Chance to blind target | 20% chance for Blindness I for (2 + level) seconds |
-| Defuse | 1 |  | Prevents creepers from exploding | |
-| Devour | 4 | | Regain hunger by attacking | Feeds player by (1.2 * damage dealt) |
-| Dizzy | 3 | | Chance to randomize target's orientation | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
-| Fracture | 4 | | Chance to deal additional damage to armor durability | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
-| Frostbite | 5 | | Chance to freeze the target | 20% chance to apply Freezing for (2 + 2 * level) seconds |
-| Gravity | 3 | | Chance to send the target into the ground | (15 + 5 * level)% chance to activate. Swinging your sword will also pull nearby enemies in closer. |
-| Hallucination | 3 | | Chance to nauseate target | 20% chance for Nausea I for (2 + level) seconds |
-| Leeching | 5 | | Chance to drain target's health | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
-| Phantom | 1 | | Increases damage when invisible | 25% damage boost when invisible |
-| Skulls | 2 | | Right-clicking launches a wither skull | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
-| Talent | 5 | | Increases XP drops from mobs | +(level) experience orbs |
-| Thunder | 4 | | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
-| Unholy | 1 | | | |
-| Venom | 5 | | | |
-| Wilting | 3 | | | |
+| Antigravity | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
+| Artful | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Permanent Haste II while held | |
+| Blaze | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
+| Darkness | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to blind target | 20% chance for Blindness I for (2 + level) seconds |
+| Defuse | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Prevents creepers from exploding | |
+| Devour | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Regain hunger by attacking | Feeds player by (1.2 * damage dealt) |
+| Dizzy | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
+| Fracture | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to deal additional damage to armor durability | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
+| Frostbite | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to freeze the target | 20% chance to apply Freezing for (2 + 2 * level) seconds |
+| Gravity | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to send the target into the ground | (15 + 5 * level)% chance to activate. Swinging your sword will also pull nearby enemies in closer. |
+| Hallucination | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to nauseate target | 20% chance for Nausea I for (2 + level) seconds |
+| Leeching | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
+| Phantom | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases damage when invisible | 25% damage boost when invisible |
+| Skulls | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
+| Talent | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases XP drops from mobs | +(level) experience orbs |
+| Thunder | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
+| Unholy | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
+| Venom | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
+| Wilting | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
 
 ### Bows <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/f814634d-f95f-469b-9ba8-ae01dc79e9cf" />
 | Enchantment | Max Level | Description |
