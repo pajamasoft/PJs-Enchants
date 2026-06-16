@@ -5,7 +5,7 @@ Enchantment Guide
 ## Weapons
 
 ### Melee <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/b4d831e4-72ae-4908-a939-83fb2b331c5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6d0a5d68-9686-4ec4-81e6-64e7bc2aec5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/2f683d65-6c27-433a-ae2b-5ad6e1146fc9" />
-| Enchantment | Max Level | Brief Description | Calculations |
+| Enchantment | Max Level | Description | Calculations |
 | --- | --- | --- | --- |
 | Antigravity | 3 | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
 | Artful | 1 | Permanent Haste II while held | |
