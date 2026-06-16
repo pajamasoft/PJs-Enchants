@@ -11,18 +11,18 @@ Enchantment Guide
 | Artful | 1 | Permanent Haste II while held | |
 | Blaze | 3 | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
 | Darkness | 4 | Chance to blind target | 20% chance for Blindness I for (2 + level) seconds |
-| Defuse | 1 | | |
-| Devour | 4 | | |
-| Dizzy | 3 | | |
-| Fracture | 4 | | |
-| Frostbite | 5 | | |
-| Gravity | 3 | | |
-| Hallucination | 3 | | |
-| Leeching | 5 | | |
-| Phantom | 1 | | |
-| Skulls | 2 | | |
-| Talent | 5 | | |
-| Thunder | 4 | | |
+| Defuse | 1 | Prevents creepers from exploding | |
+| Devour | 4 | Regain hunger by attacking | Feeds player by (1.2 * damage dealt) |
+| Dizzy | 3 | Chance to randomize target's orientation | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
+| Fracture | 4 | Chance to deal additional damage to armor durability | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
+| Frostbite | 5 | Chance to freeze the target | 20% chance to apply Freezing for (2 + 2 * level) seconds |
+| Gravity | 3 | Chance to send the target into the ground | (15 + 5 * level)% chance to activate. Swinging your sword will also pull nearby enemies in closer. |
+| Hallucination | 3 | Chance to nauseate target | 20% chance for Nausea I for (2 + level) seconds |
+| Leeching | 5 | Chance to drain target's health | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
+| Phantom | 1 | Increases damage when invisible | 25% damage boost when invisible |
+| Skulls | 2 | Right-clicking launches a wither skull | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
+| Talent | 5 | Increases XP drops from mobs | +(level) experience orbs |
+| Thunder | 4 | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
 | Unholy | 1 | | |
 | Venom | 5 | | |
 | Wilting | 3 | | |
