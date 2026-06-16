@@ -5,70 +5,86 @@ Enchantment Guide
 ## Weapons
 
 ### Melee <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/b4d831e4-72ae-4908-a939-83fb2b331c5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6d0a5d68-9686-4ec4-81e6-64e7bc2aec5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/2f683d65-6c27-433a-ae2b-5ad6e1146fc9" />
-
-#### Antigravity
-#### Artful
-#### Blaze
-#### Darkness
-#### Defuse
-#### Devour
-#### Dizzy
-#### Fracture
-#### Frostbite
-#### Gravity
-#### Hallucination
-#### Leeching
-#### Phantom
-#### Skulls
-#### Talent
-#### Thunder
-#### Unholy
-#### Venom
-#### Wilting
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Antigravity | 3 | |
+| Artful | 1 | |
+| Blaze | 3 | |
+| Darkness | 4 | |
+| Defuse | 1 | |
+| Devour | 4 | |
+| Dizzy | 3 | |
+| Fracture | 4 | |
+| Frostbite | 5 | |
+| Gravity | 3 | |
+| Hallucination | 3 | |
+| Leeching | 5 | |
+| Phantom | 1 | |
+| Skulls | 2 | |
+| Talent | 5 | |
+| Thunder | 4 | |
+| Unholy | 1 | |
+| Venom | 5 | |
+| Wilting | 3 | |
 
 ### Bows <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/f814634d-f95f-469b-9ba8-ae01dc79e9cf" />
-
-#### Antigravity
-#### Freezing
-#### Grappling
-#### Gravity
-#### Healing
-#### Homing
-#### Lightspeed
-#### Nitro
-#### Ricochet
-#### Venom
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Antigravity | 3 | |
+| Freezing | 3 | |
+| Grappling | 1 | |
+| Gravity | 3 | |
+| Healing | 1 | |
+| Homing | 1 | |
+| Lightspeed | 1 | |
+| Nitro | 5 | |
+| Ricochet | 3 | |
+| Venom | 5 | |
 
 ## ⚒️ Tools
 
 ### ⛏️ Primary Tools (Pickaxe, Axe, Hoe, Shovel)
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Forging | 1 | |
+| Pulverizing | 1 | |
 
 ### Pickaxe / Axe
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Cluster | 3 | |
+| Talent | 5 | |
 
 ## Armor
 
 ### All Armor
-#### Magnetic
-#### Molten
-#### Plague
-#### Toxic
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Magnetic | 1 | |
+| Molten | 3 | |
+| Plague | 5 | |
+| Toxic | 1 | |
 
 ### Helmet
-#### Constitution 
-#### Ender Eyes
-#### Psychic
-#### Nighteye
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Constitution | 5 | |
+| Endereyes | 1 | |
+| Nighteye | 1 | |
+| Psychic | 3 | |
 
 ### Chestplate
-#### Antidote <a id="antidote-armor"></a>.
-#### Discharge 
-#### Hive
-#### Infested
-#### Rage
-#### Spikes
-#### Sponge
-#### Unstable 
-#### Wings
+| Enchantment | Max Level | Description |
+| --- | --- | --- |
+| Antidote | 4 | |
+| Discharge | 3 | |
+| Hive | 3 | |
+| Infested | 3 | |
+| Rage | 5 | |
+| Spikes | 1 | |
+| Sponge | 1 | |
+| Unstable | 5 | |
+| Wings | 1 | |
 
 ### Leggings
 #### Adrenaline
@@ -143,6 +159,47 @@ Enchantment Guide
 | Toxic | ❌ | | | |
 | Magnetic | | ❌ | | |
 | Frost Walker | | | ❌ |
+
+## Enchantment Cross-Mechanics
+Many of PJ's Enchantments interact with each other:
+* Unstable
+
+## Forging Block Conversions
+Below are all of the blocks whose drops are impacted by the Forging enchant, depending on the tool used.
+*Works with Fortune
+### Pickaxe
+| Original | Forged |
+| --- | --- |
+| Cobblestone | Stone |
+| Stone | Smooth Stone |
+| Sandstone | Smooth Sandstone |
+| Basalt | Smooth Basalt |
+| Copper Ore | Copper Ingot* |
+| Raw Copper Block | Copper Block |
+| Iron Ore | Iron Ingot* |
+| Raw Iron Block | Iron Block |
+| Gold Ore | Gold Ingot* |
+| Raw Gold Block | Gold Block |
+| Nether Gold Ore | Gold Ingot |
+| Netherrack | Nether Brick* |
+| Cracked Stone Bricks | Stone Bricks |
+| Ancient Debris | Netherite Scrap* |
+| Wet Sponge | Sponge |
+### Axe
+| Original | Forged |
+| --- | --- |
+| All Logs | Charcoal* |
+### Shovel
+| Original | Forged |
+| --- | --- |
+| Sand | Glass |
+| Clay | Terracotta |
+| Dirt | Coarse Dirt |
+### Hoe
+| Original | Forged |
+| --- | --- |
+| Hay Block | Bread* |
+| Potatoes | Baked Potatoes* |
 
 ## Plugin Compatibility
 PJ's Enchants works with all of my other plugins.
