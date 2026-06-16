@@ -162,10 +162,12 @@ Enchantment Guide
 
 ## Enchantment Cross-Mechanics
 Many of PJ's Enchantments interact with each other:
-* Unstable
+* Defuse hits will never trigger Unstable
+* Antigravity cannot lift those with Grounded
 
 ## Forging Block Conversions
 Below are all of the blocks whose drops are impacted by the Forging enchant, depending on the tool used.
+
 *Works with Fortune
 ### Pickaxe
 | Original | Forged |
