@@ -11,7 +11,7 @@ Enchantment Guide
 | Antidote | 4 | ![](icons/chestplate.png) | | |
 | Antigravity | 3 | ![](icons/boots.png)![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
 | Artful | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Permanent Haste II while held | |
-| Blaze | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
+| Blaze | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
 | Bolt | 4 | ![](icons/wolf.png) | | |
 | Cluster | 3 | ![](icons/pickaxe.png)![](icons/axe.png) | | |
 | Constitution | 5 | ![](icons/helmet.png) | | |
