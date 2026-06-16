@@ -103,3 +103,49 @@ Enchantment Guide
 #### Molten
 #### Snatch
 #### Toxic
+
+## Enchantment Cross-Compatibility Charts
+### Melee Enchants
+| | Antigravity | Frostbite | Leeching | Wilting |
+| --- | --- | --- | --- | --- |
+| Gravity | ❌ | | | |
+| Venom | | | ❌ | ❌ |
+| Fire Aspect | | ❌ | | |
+| Blaze | | ❌ | | |
+### Bow Enchants
+| | Antigravity | Freezing | Healing | Ricochet | Infinity | Gravity | Grappling |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Gravity | ❌ | | ❌ | | | | |
+| Grappling | ❌ | | ❌ | ❌ | ❌ | ❌ | - |
+| Healing | ❌ | ❌ | - | | ❌ | ❌ | - |
+| Homing | | | | ❌ | ❌ | | ❌ |
+| Lightspeed | | | | | | | ❌ |
+| Nitro | | | ❌ | | ❌ | | |
+| Venom | | | ❌ | | | | |
+| Flame | | ❌ | ❌ | | | | |
+### Tools
+| | Pulverizing | Forging |
+| --- | --- | --- |
+| Fortune | ❌ | |
+| Silk Touch | ❌ | ❌ |
+| Cluster | ❌ | ❌ |
+| Talent | ❌ | |
+| Forging | ❌ | - |
+### Elytra
+| | Solar | Lunar |
+| --- | --- | --- |
+| Lunar | ❌ | - |
+| Solar | - | ❌  |
+### Armor
+| | Plague | Stealth | Waverider |
+| --- | --- | --- | --- |
+| Toxic | ❌ | | | |
+| Magnetic | | ❌ | | |
+| Frost Walker | | | ❌ |
+
+## Plugin Compatibility
+PJ's Enchants works with all of my other plugins.
+
+### PJ's Mechanics
+* Right-clicking on fully-grown potato crops will automatically harvest baked potatoes.
+* When Darkness activates on a mob, they will be unable to see you.
