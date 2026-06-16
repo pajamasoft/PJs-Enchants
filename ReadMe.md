@@ -5,27 +5,27 @@ Enchantment Guide
 ## Weapons
 
 ### Melee <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/b4d831e4-72ae-4908-a939-83fb2b331c5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/6d0a5d68-9686-4ec4-81e6-64e7bc2aec5a" /> <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/2f683d65-6c27-433a-ae2b-5ad6e1146fc9" />
-| Enchantment | Max Level | Description |
-| --- | --- | --- |
-| Antigravity | 3 | |
-| Artful | 1 | |
-| Blaze | 3 | |
-| Darkness | 4 | |
-| Defuse | 1 | |
-| Devour | 4 | |
-| Dizzy | 3 | |
-| Fracture | 4 | |
-| Frostbite | 5 | |
-| Gravity | 3 | |
-| Hallucination | 3 | |
-| Leeching | 5 | |
-| Phantom | 1 | |
-| Skulls | 2 | |
-| Talent | 5 | |
-| Thunder | 4 | |
-| Unholy | 1 | |
-| Venom | 5 | |
-| Wilting | 3 | |
+| Enchantment | Max Level | Brief Description | Calculations |
+| --- | --- | --- | --- |
+| Antigravity | 3 | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
+| Artful | 1 | Permanent Haste II while held | |
+| Blaze | 3 | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
+| Darkness | 4 | Chance to blind target | 20% chance for Blindness I for (2 + level) seconds |
+| Defuse | 1 | | |
+| Devour | 4 | | |
+| Dizzy | 3 | | |
+| Fracture | 4 | | |
+| Frostbite | 5 | | |
+| Gravity | 3 | | |
+| Hallucination | 3 | | |
+| Leeching | 5 | | |
+| Phantom | 1 | | |
+| Skulls | 2 | | |
+| Talent | 5 | | |
+| Thunder | 4 | | |
+| Unholy | 1 | | |
+| Venom | 5 | | |
+| Wilting | 3 | | |
 
 ### Bows <img width="25" height="25" alt="image" src="https://github.com/user-attachments/assets/f814634d-f95f-469b-9ba8-ae01dc79e9cf" />
 | Enchantment | Max Level | Description |
