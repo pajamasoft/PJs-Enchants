@@ -32,7 +32,7 @@ Enchantment Guide
 | Freezing | 3 | ![](icons/bow.png) | | |
 | Frostbite | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to freeze the target | 20% chance to apply Freezing for (2 + 2 * level) seconds |
 | Glide | 1 | ![](icons/wolf.png)![](icons/boots.png) | | |
-| Grappling | 1 | ![](icons/bow.png) | | |
+| $\color{orange}{\text{Grappling}}$ | 1 | ![](icons/bow.png) | | |
 | Gravity | 3 | ![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to send the target into the ground | (15 + 5 * level)% chance to activate. Swinging your sword will also pull nearby enemies in closer. |
 | Grounded | 1 | ![](icons/boots.png) | | |
 | Hallucination | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to nauseate target | 20% chance for Nausea I for (2 + level) seconds |
