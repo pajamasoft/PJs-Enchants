@@ -1,7 +1,9 @@
 # PJ's Enchants
 Enchantment Guide
+
 ## Enchantment Tiers
 All custom enchantments are assigned a tier 1-3. This impacts the enchantment's rarity, with Tier 3 being the most rare. 
+
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
@@ -84,6 +86,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ff9600}{\text{Wings}}$ | 1 | ![](icons/chestplate.png) | | |
 
 ## Enchantment Cross-Compatibility Charts
+
 ### Melee Enchants
 | | Antigravity | Frostbite | Leeching | Wilting |
 | --- | --- | --- | --- | --- |
@@ -91,6 +94,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Venom | | | ❌ | ❌ |
 | Fire Aspect | | ❌ | | |
 | Blaze | | ❌ | | |
+
 ### Bow Enchants
 | | Antigravity | Freezing | Healing | Ricochet | Infinity | Gravity | Grappling |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -102,6 +106,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Nitro | | | ❌ | | ❌ | | |
 | Venom | | | ❌ | | | | |
 | Flame | | ❌ | ❌ | | | | |
+
 ### Tools
 | | Pulverizing | Forging |
 | --- | --- | --- |
@@ -110,11 +115,13 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Cluster | ❌ | ❌ |
 | Talent | ❌ | |
 | Forging | ❌ | - |
+
 ### Elytra
 | | Solar | Lunar |
 | --- | --- | --- |
 | Lunar | ❌ | - |
 | Solar | - | ❌  |
+
 ### Armor
 | | Plague | Stealth | Waverider |
 | --- | --- | --- | --- |
@@ -122,12 +129,10 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Magnetic | | ❌ | | |
 | Frost Walker | | | ❌ |
 
-
 ## Enchantment Cross-Mechanics
 Some of PJ's Enchantments interact with each other:
 * Defuse hits will never trigger Unstable
 * Antigravity cannot lift those with Grounded
-
 
 ## Forging Block Conversions
 Below are all of the blocks whose drops are impacted by the Forging enchant, depending on the tool used.
