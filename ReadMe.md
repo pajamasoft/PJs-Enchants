@@ -9,7 +9,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | --- | --- | --- | --- | --- |
 | $\color{#77ff77}{\text{Adrenaline}}$ | 1 | ![](icons/leggings.png) | Gain a speed boost when health is low. | Gain +1 stage of increased Speed effect for (4 + level) seconds when your health drops below 5HP. |
 | $\color{#77ff77}{\text{Antidote}}$ | 4 | ![](icons/chestplate.png) | | |
-| $\color{#ffff77}{\text{Antigravity}}$ | 3 | ![](icons/boots.png)![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | (Melee) Chance to give target levitation. (Bow) Arrows are not affected by gravity. (Boots) Double-jump to gain temporary levitation. | (Melee) 20% chance for Levitation I for (2 + level) seconds. (Boots) Double-jumping triggers Levitation (3 * level) for 2 seconds. Sneaking will cancel levitation from any source while boots are on. |
+| $\color{#ffff77}{\text{Antigravity}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png)![](icons/boots.png) | (Melee) Chance to give target levitation. (Bow) Arrows are not affected by gravity. (Boots) Double-jump to gain temporary levitation. | (Melee) 20% chance for Levitation I for (2 + level) seconds. (Boots) Double-jumping triggers Levitation (3 * level) for 2 seconds. Sneaking will cancel levitation from any source while boots are on. |
 | $\color{#ffff77}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Permanent Haste II while held. | |
 | $\color{#ffaa55}{\text{Blaze}}$ | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball. | Cooldown of (5 - level) seconds. |
 | $\color{#ffff77}{\text{Bolt}}$ | 4 | ![](icons/wolf.png) | | |
