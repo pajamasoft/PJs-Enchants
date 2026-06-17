@@ -122,10 +122,12 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Magnetic | | ❌ | | |
 | Frost Walker | | | ❌ |
 
+
 ## Enchantment Cross-Mechanics
 Some of PJ's Enchantments interact with each other:
 * Defuse hits will never trigger Unstable
 * Antigravity cannot lift those with Grounded
+
 
 ## Forging Block Conversions
 Below are all of the blocks whose drops are impacted by the Forging enchant, depending on the tool used.
