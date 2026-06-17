@@ -5,14 +5,14 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
-| $\color{#00ff00}{\text{Adrenaline}}$ | 1 | ![](icons/leggings.png) | | |
+| $\color{#00ff00}{\text{Adrenaline}}$ | 1 | ![](icons/leggings.png) | Gain a speed boost when health is low | Gain +1 stage of increased Speed effect for (4 + level) seconds when your health drops below 5HP |
 | $\color{#00ff00}{\text{Antidote}}$ | 4 | ![](icons/chestplate.png) | | |
 | $\color{#ffff00}{\text{Antigravity}}$ | 3 | ![](icons/boots.png)![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
 | $\color{#ffff00}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Permanent Haste II while held | |
 | $\color{#ff9600}{\text{Blaze}}$ | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
 | $\color{#ffff00}{\text{Bolt}}$ | 4 | ![](icons/wolf.png) | | |
 | $\color{#ff9600}{\text{Breeze}}$ | 3 | ![](icons/sword.png) | | |
-| $\color{#ffff00}{\text{Cluster}}$ | 3 | ![](icons/pickaxe.png)![](icons/axe.png) | | |
+| $\color{#ffff00}{\text{Cluster}}$ | 3 | ![](icons/pickaxe.png)![](icons/axe.png) | Instantly breaks clusters of blocks | Breaks clusters of certain blocks depending on tool type in groups of up to (6 + level) |
 | $\color{#00ff00}{\text{Constitution}}$ | 5 | ![](icons/helmet.png) | | |
 | $\color{#00ff00}{\text{Darkness}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to blind target | 20% chance for Blindness I for (2 + level) seconds |
 | $\color{#00ff00}{\text{Dash}}$ | 2 | ![](icons/boots.png) | | |
@@ -26,7 +26,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff00}{\text{Escape}}$ | 1 | ![](icons/boots.png) | | |
 | $\color{#00ff00}{\text{Fangs}}$ | 3 | ![](icons/wolf.png) | | |
 | $\color{#ffff00}{\text{Fling}}$ | 1 | ![](icons/wolf.png) | | |
-| $\color{#ff9600}{\text{Forging}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | | |
+| $\color{#ff9600}{\text{Forging}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Automatically smelts block drops |  |
 | $\color{#00ff00}{\text{Fracture}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to deal additional damage to armor durability | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
 | $\color{#00ff00}{\text{Freezing}}$ | 3 | ![](icons/bow.png) | | |
 | $\color{#00ff00}{\text{Frostbite}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to freeze the target | 20% chance to apply Freezing for (2 + 2 * level) seconds |
@@ -165,9 +165,20 @@ Below are all of the blocks whose drops are impacted by the Forging enchant, dep
 | Hay Block | Bread* |
 | Potatoes | Baked Potatoes* |
 
+## Tool-Specific Blocks
+Certain enchants only work on specific groups of blocks depending on tool type. These groups are referred to in the enchantments descriptions as "pickaxe blocks" or "axe blocks", etc.
+| Pickaxe Blocks |
+| --- |
+| All ores |
+
+| Axe Blocks |
+| --- |
+| All Logs |
+| Melons |
+| Pumpkins |
+
 ## Plugin Compatibility
 PJ's Enchants works with all of my other plugins.
-
 ### PJ's Mechanics
 * Right-clicking on fully-grown potato crops will automatically harvest baked potatoes.
 * When Darkness activates on a mob, they will be unable to see you.
