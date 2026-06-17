@@ -11,8 +11,9 @@ Enchantment Guide
 | Antidote | 4 | ![](icons/chestplate.png) | | |
 | Antigravity | 3 | ![](icons/boots.png)![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to give target levitation | 20% chance for Levitation I for (2 + level) seconds|
 | Artful | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Permanent Haste II while held | |
-| Blaze | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
+| $\color{orange}{\text{Blaze}}$ | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball | Cooldown of (5 - level) seconds |
 | Bolt | 4 | ![](icons/wolf.png) | | |
+| Breeze | 3 | ![](icons/sword.png) | | |
 | Cluster | 3 | ![](icons/pickaxe.png)![](icons/axe.png) | | |
 | Constitution | 5 | ![](icons/helmet.png) | | |
 | Darkness | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to blind target | 20% chance for Blindness I for (2 + level) seconds |
@@ -21,33 +22,33 @@ Enchantment Guide
 | Devour | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Regain hunger by attacking | Feeds player by (1.2 * damage dealt) |
 | Discharge | 3 | ![](icons/chestplate.png) | | |
 | Dizzy | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
-| Draconic | 1 | ![](icons/elytra.png) | | |
+| $\color{orange}{\text{Draconic}}$ | 1 | ![](icons/elytra.png) | | |
 | Drag | 1 | ![](icons/elytra.png) | | |
 | Endereyes | 1 | ![](icons/helmet.png) | | |
 | Escape | 1 | ![](icons/boots.png) | | |
 | Fangs | 3 | ![](icons/wolf.png) | | |
 | Fling | 1 | ![](icons/wolf.png) | | |
-| Forging | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | | |
+| $\color{orange}{\text{Forging}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | | |
 | Fracture | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to deal additional damage to armor durability | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
 | Freezing | 3 | ![](icons/bow.png) | | |
 | Frostbite | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to freeze the target | 20% chance to apply Freezing for (2 + 2 * level) seconds |
-| Glide | 1 | ![](icons/wolf.png)![](icons/boots.png) | | |
+| $\color{orange}{\text{Glide}}$ | 1 | ![](icons/wolf.png)![](icons/boots.png) | | |
 | $\color{orange}{\text{Grappling}}$ | 1 | ![](icons/bow.png) | | |
-| Gravity | 3 | ![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to send the target into the ground | (15 + 5 * level)% chance to activate. Swinging your sword will also pull nearby enemies in closer. |
+| $\color{orange}{\text{Gravity}}$ | 3 | ![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to send the target into the ground | (15 + 5 * level)% chance to activate. Swinging your sword will also pull nearby enemies in closer. |
 | Grounded | 1 | ![](icons/boots.png) | | |
 | Hallucination | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to nauseate target | 20% chance for Nausea I for (2 + level) seconds |
 | Healing | 1 | ![](icons/bow.png) | | |
 | Hellhound | 1 | ![](icons/wolf.png) | | |
 | Hellish | 1 | ![](icons/horse.png) | | |
 | Hive | 3 | ![](icons/chestplate.png) | | |
-| Homing | 1 | ![](icons/bow.png) | | |
+| $\color{orange}{\text{Homing}}$ | 1 | ![](icons/bow.png) | | |
 | Hurdle | 3 | ![](icons/horse.png) | | |
 | Infested | 3 | ![](icons/chestplate.png) | | |
 | Leaping | 3 | ![](icons/leggings.png) | | |
 | Leeching | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
 | Lift | 2 | ![](icons/elytra.png) | | |
-| Lightspeed | 1 | ![](icons/bow.png) | | |
-| Lunar | 1 | ![](icons/elytra.png) | | |
+| $\color{orange}{\text{Lightspeed}}$ | 1 | ![](icons/bow.png) | | |
+| $\color{orange}{\text{Lunar}}$ | 1 | ![](icons/elytra.png) | | |
 | Magnetic | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | | |
 | Mending | 1 | ![](icons/wolf.png) | | |
 | Molten | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | | |
@@ -57,31 +58,31 @@ Enchantment Guide
 | Phantom | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases damage when invisible | 25% damage boost when invisible |
 | Plague | 5 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | | |
 | Protection | 4 | ![](icons/horse.png) | | |
-| Psychic | 3 | ![](icons/helmet.png) | | |
+| $\color{orange}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | | |
 | Pulverizing | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | | |
 | Rage | 5 | ![](icons/chestplate.png) | | |
 | Repulsion | 3 | ![](icons/leggings.png) | | |
-| Ricochet | 3 | ![](icons/bow.png) | | |
+| $\color{orange}{\text{Ricochet}}$ | 3 | ![](icons/bow.png) | | |
 | Rush | 3 | ![](icons/horse.png) | | |
 | Sealegs | 1 | ![](icons/leggings.png) | | |
-| Skulls | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
+| $\color{orange}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
 | Snatch | 1 | ![](icons/wolf.png) | | |
-| Solar | 1 | ![](icons/elytra.png) | | |
+| $\color{orange}{\text{Solar}}$ | 1 | ![](icons/elytra.png) | | |
 | Spikes | 1 | ![](icons/chestplate.png) | | |
 | Sponge | 1 | ![](icons/chestplate.png) | | |
 | Stealth | 3 | ![](icons/leggings.png) | | |
 | Talent | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases XP drops | +(level) experience orbs |
 | Thrust | 1 | ![](icons/elytra.png) | | |
-| Thunder | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
+| $\color{orange}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
 | Toxic | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | | |
 | Trample | 1 | ![](icons/horse.png) | | |
-| Unholy | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
+| $\color{orange}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
 | Unstable | 5 | ![](icons/chestplate.png) | | |
 | Venom | 5 | ![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
-| Waverider | 2 | ![](icons/horse.png)![](icons/boots.png) | | |
+| $\color{orange}{\text{Waverider}}$ | 2 | ![](icons/horse.png)![](icons/boots.png) | | |
 | Werewolf | 3 | ![](icons/wolf.png) | | |
-| Wilting | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
-| Wings | 1 | ![](icons/chestplate.png) | | |
+| $\color{orange}{\text{Wilting}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
+| $\color{orange}{\text{Wings}}$ | 1 | ![](icons/chestplate.png) | | |
 
 ## Enchantment Cross-Compatibility Charts
 ### Melee Enchants
