@@ -3,6 +3,9 @@ Enchantment Guide
 
 ## Enchantment Tiers
 All custom enchantments are assigned a tier 1-3. This impacts the enchantment's rarity, with Tier 3 being the most rare. 
+$\color{#77ff77}{\text{Tier I}}$
+$\color{#ffff77}{\text{Tier II}}$
+$\color{#ffaa55}{\text{Tier III}}$
 
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
