@@ -34,7 +34,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Frostbite}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to freeze the target. | 20% chance to apply Freezing for (2 + 2 * level) seconds. |
 | $\color{#ffaa55}{\text{Glide}}$ | 1 | ![](icons/boots.png)![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Grappling}}$ | 1 | ![](icons/bow.png) | Grapples you towards arrow or pulls hit enemies towards you. | You must be in the air while the arrow hits a block to activate. Max range is 30 blocks. |
-| $\color{#ffaa55}{\text{Gravity}}$ | 3 | ![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to send the target into the ground. | (15 + 5 * level)% chance to activate. (Sword) Swinging your sword will also pull nearby enemies in closer. (Bow) Arrow will draw in nearby mobs. |
+| $\color{#ffaa55}{\text{Gravity}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | Chance to send the target into the ground. | (15 + 5 * level)% chance to activate. (Melee) Swinging your weapon will also pull nearby enemies in closer. (Bow) Arrow will draw in nearby mobs. |
 | $\color{#77ff77}{\text{Grounded}}$ | 1 | ![](icons/boots.png) | | |
 | $\color{#77ff77}{\text{Hallucination}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to nauseate target. | 20% chance for Nausea I for (2 + level) seconds. |
 | $\color{#ffff77}{\text{Healing}}$ | 1 | ![](icons/bow.png) | Heals hit target instead of damaging. | Healing amount increases with Power enchantment by (2 + Power level)HP and removes all negative effects. |
