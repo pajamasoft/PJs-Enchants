@@ -71,7 +71,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![](icons/chestplate.png) | | |
 | $\color{#ffff77}{\text{Sponge}}$ | 1 | ![](icons/chestplate.png) | | |
 | $\color{#ffff77}{\text{Stealth}}$ | 3 | ![](icons/leggings.png) | | |
-| $\color{#77ff77}{\text{Talent}}$ | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
+| $\color{#77ff77}{\text{Talent}}$ | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/spear.png) | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png) | | |
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | | |
