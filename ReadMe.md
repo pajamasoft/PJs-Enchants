@@ -78,7 +78,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Trample}}$ | 1 | ![](icons/horse.png) | | |
 | $\color{#ffaa55}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
 | $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | | |
-| $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/bow.png)![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
+| $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | | |
 | $\color{#ffaa55}{\text{Waverider}}$ | 2 | ![](icons/horse.png)![](icons/boots.png) | | |
 | $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Wilting}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
