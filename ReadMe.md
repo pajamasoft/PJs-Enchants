@@ -68,7 +68,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#80e1ff}{\text{Protection}}$ | 4 | ![](icons/horse.png) | | |
 | $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | Chance to automatically face your attacker when hit. | (5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Pulverizing}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Permanent Haste V when held, but blocks broken will yield no drops. | |
-| $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | | |
+| $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | Gain extra strength when low on health. | Gain Strength II for (4 + level) seconds when health falls below 5HP. |
 | $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![](icons/leggings.png) | | |
 | $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![](icons/bow.png) | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![](icons/horse.png) | | |
@@ -76,8 +76,8 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
 | $\color{#77ff77}{\text{Snatch}}$ | 1 | ![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Solar}}$ | 1 | ![](icons/elytra.png) | | |
-| $\color{#ffff77}{\text{Spikes}}$ | 1 | ![](icons/chestplate.png) | | |
-| $\color{#ffff77}{\text{Sponge}}$ | 1 | ![](icons/chestplate.png) | | |
+| $\color{#ffff77}{\text{Spikes}}$ | 1 | ![](icons/chestplate.png) | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
+| $\color{#ffff77}{\text{Sponge}}$ | 1 | ![](icons/chestplate.png) | Gain Resistance I when in water. | |
 | $\color{#ffff77}{\text{Stealth}}$ | 3 | ![](icons/leggings.png) | | |
 | $\color{#77ff77}{\text{Talent}}$ | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/spear.png) | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png) | | |
@@ -85,12 +85,12 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
 | $\color{#ffff77}{\text{Trample}}$ | 1 | ![](icons/horse.png) | | |
 | $\color{#ffaa55}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
-| $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | | |
+| $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | Chance to set off an explosion when hit, damaging nearby enemies. | (2 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
 | $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | Chance to poison the target. | 30% chance to give Poison 2 for (2 + level) seconds. |
 | $\color{#ffaa55}{\text{Waverider}}$ | 2 | ![](icons/horse.png)![](icons/boots.png) | | |
 | $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Wilting}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
-| $\color{#ffaa55}{\text{Wings}}$ | 1 | ![](icons/chestplate.png) | | |
+| $\color{#ffaa55}{\text{Wings}}$ | 1 | ![](icons/chestplate.png) | Double-jumping temporarily replaces your chestplate with an Elytra. |  |
 
 ## Enchantment Cross-Compatibility Charts
 
@@ -136,10 +136,21 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Magnetic | | ❌ | | |
 | Frost Walker | | | ❌ |
 
-## Enchantment Cross-Mechanics
+## Enchantment Cross-Mechanics and Recommended Combinations
 Some of PJ's Enchantments interact with each other:
-* Defuse hits will never trigger Unstable
-* Antigravity cannot lift those with Grounded
+* Defuse hits will never trigger Unstable.
+* Antigravity cannot lift those with Grounded.
+* A chestplate with Wings and other Elytra enchantments will automatically apply those enchantments to your temporary Elytra when in flight.
+* Discharge on your chestplate and Grounded on your boots will deal great defensive damage and give you a speed boost at the same time.
+* Stealth on your leggings and a sword with Phantom will inflict massive damage.
+* Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
+
+## PET SAFE!
+All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
+* Ricochet will not bounce to friendlies
+* Homing will not lock on to friendlies
+* Spikes will not prick friendlies
+* Trample will not hurt friendlies
 
 ## Other Features
 * Enchantments that poison undead enemies will give them the wither effect instead as to not heal them.
