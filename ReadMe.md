@@ -10,6 +10,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Tier III}}$ |
 | $\color{#80e1ff}{\text{Vanilla}}$ |
 
+*The Armor Score of an enchant is the sum of that enchant's level across the whole suit of armor.
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
@@ -55,20 +56,20 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Leeching}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health. | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![](icons/elytra.png) | | |
 | $\color{#ffaa55}{\text{Lunar}}$ | 1 | ![](icons/elytra.png) | | |
-| $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | | |
+| $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron tools. |
 | $\color{#80e1ff}{\text{Mending}}$ | 1 | ![](icons/wolf.png) | | |
-| $\color{#77ff77}{\text{Molten}}$ | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | | |
+| $\color{#77ff77}{\text{Molten}}$ | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. |
 | $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![](icons/helmet.png) | | |
 | $\color{#ffff77}{\text{Nightrider}}$ | 1 | ![](icons/horse.png) | | |
-| $\color{#ffff77}{\text{Nitro}}$ | 5 | ![](icons/bow.png) | | |
+| $\color{#ffff77}{\text{Nitro}}$ | 5 | ![](icons/bow.png) | Arrows explode shortly after impact. | Arrows will explode (5 - level) seconds after impact. |
 | $\color{#ffff77}{\text{Phantom}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases damage when invisible. | 25% damage boost when invisible. |
-| $\color{#77ff77}{\text{Plague}}$ | 5 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | | |
+| $\color{#77ff77}{\text{Plague}}$ | 5 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Chance to summon a poison cloud when hit. | Radius is 5 blocks. (2.5*armor score)% chance to activate. Inflicts Poison I for 5 seconds. |
 | $\color{#80e1ff}{\text{Protection}}$ | 4 | ![](icons/horse.png) | | |
 | $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | | |
 | $\color{#ffff77}{\text{Pulverizing}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Permanent Haste V when held, but blocks broken will yield no drops. | |
 | $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | | |
 | $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![](icons/leggings.png) | | |
-| $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![](icons/bow.png) | | |
+| $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![](icons/bow.png) | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![](icons/horse.png) | | |
 | $\color{#77ff77}{\text{Sealegs}}$ | 1 | ![](icons/leggings.png) | | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
@@ -84,7 +85,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Trample}}$ | 1 | ![](icons/horse.png) | | |
 | $\color{#ffaa55}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
 | $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | | |
-| $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | | |
+| $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | Chance to poison the target. | 30% chance to give Poison 2 for (2 + level) seconds. |
 | $\color{#ffaa55}{\text{Waverider}}$ | 2 | ![](icons/horse.png)![](icons/boots.png) | | |
 | $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Wilting}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
