@@ -25,15 +25,15 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Cluster}}$ | 3 | ![](icons/pickaxe.png)![](icons/axe.png) | Instantly breaks clusters of blocks. | Breaks clusters of certain blocks depending on tool type in groups of up to (6 + level). |
 | $\color{#77ff77}{\text{Constitution}}$ | 5 | ![](icons/helmet.png) | Gain resistance when low on health. | Gain Resistance II for (3 + level) seconds when health falls below 7HP. |
 | $\color{#77ff77}{\text{Darkness}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to blind target. | 20% chance for Blindness I for (2 + level) seconds. |
-| $\color{#77ff77}{\text{Dash}}$ | 2 | ![](icons/boots.png) | | |
+| $\color{#77ff77}{\text{Dash}}$ | 2 | ![](icons/boots.png) | Gain permanent Speed effect when worn. | Speed level matches the enchantment's level. |
 | $\color{#ffff77}{\text{Defuse}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Prevents creepers from exploding. | |
 | $\color{#77ff77}{\text{Devour}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Regain hunger by attacking. | Feeds player by (1.2 * damage dealt). |
 | $\color{#ffff77}{\text{Discharge}}$ | 3 | ![](icons/chestplate.png) | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. |
 | $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
-| $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![](icons/elytra.png) | | |
-| $\color{#ffff77}{\text{Drag}}$ | 1 | ![](icons/elytra.png) | | |
+| $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | | |
+| $\color{#ffff77}{\text{Drag}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | | |
 | $\color{#ffff77}{\text{Endereyes}}$ | 1 | ![](icons/helmet.png) | Makes the wearer unable to aggravate Endermen. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
-| $\color{#ffff77}{\text{Escape}}$ | 1 | ![](icons/boots.png) | | |
+| $\color{#ffff77}{\text{Escape}}$ | 1 | ![](icons/boots.png) | Teleport to a safe location if it while sneaking with low health. | Triggers when sneaking below 10HP. Teleported to a random safe location within 10 blocks. |
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![](icons/wolf.png) | | |
 | $\color{#ffff77}{\text{Fling}}$ | 1 | ![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Forging}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Automatically smelts block drops. |  |
@@ -53,10 +53,10 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Hurdle}}$ | 3 | ![](icons/horse.png) | | |
 | $\color{#ffff77}{\text{Infested}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a silverfish when hit that will target your attacker. | (5 + 5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Joust}}$ | 1 | ![](icons/horse.png) | | |
-| $\color{#77ff77}{\text{Leaping}}$ | 3 | ![](icons/leggings.png) | | |
+| $\color{#77ff77}{\text{Leaping}}$ | 3 | ![](icons/leggings.png) | Gain permanent Jump Boost. | Jump Boost level matches the enchantment's level. |
 | $\color{#ffff77}{\text{Leeching}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health. | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
-| $\color{#ffff77}{\text{Lift}}$ | 2 | ![](icons/elytra.png) | | |
-| $\color{#ffaa55}{\text{Lunar}}$ | 1 | ![](icons/elytra.png) | | |
+| $\color{#ffff77}{\text{Lift}}$ | 2 | ![](icons/elytra.png)![](icons/chestplate.png) | | |
+| $\color{#ffaa55}{\text{Lunar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | | |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron tools. |
 | $\color{#80e1ff}{\text{Mending}}$ | 1 | ![](icons/wolf.png) | | |
 | $\color{#77ff77}{\text{Molten}}$ | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. |
@@ -69,18 +69,18 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | Chance to automatically face your attacker when hit. | (5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Pulverizing}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Permanent Haste V when held, but blocks broken will yield no drops. | |
 | $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | Gain extra strength when low on health. | Gain Strength II for (4 + level) seconds when health falls below 5HP. |
-| $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![](icons/leggings.png) | | |
+| $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![](icons/leggings.png) | Chance to launch back attackers when hit. | 33% chance to activate. Repulsion force increases with level. |
 | $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![](icons/bow.png) | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![](icons/horse.png) | | |
-| $\color{#77ff77}{\text{Sealegs}}$ | 1 | ![](icons/leggings.png) | | |
+| $\color{#77ff77}{\text{Sealegs}}$ | 1 | ![](icons/leggings.png) | Gain permanent Dolphin's Grace when in water. | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
 | $\color{#77ff77}{\text{Snatch}}$ | 1 | ![](icons/wolf.png) | | |
-| $\color{#ffaa55}{\text{Solar}}$ | 1 | ![](icons/elytra.png) | | |
+| $\color{#ffaa55}{\text{Solar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | | |
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![](icons/chestplate.png) | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
 | $\color{#ffff77}{\text{Sponge}}$ | 1 | ![](icons/chestplate.png) | Gain Resistance I when in water. | |
-| $\color{#ffff77}{\text{Stealth}}$ | 3 | ![](icons/leggings.png) | | |
+| $\color{#ffff77}{\text{Stealth}}$ | 3 | ![](icons/leggings.png) | Gain invisibility while sneaking. | 5s cooldown between toggles. Different effects depending on level. Level 2: Temporarily removes your armor as well while giving you Resistance II while invisible. Level 3: Upgrades to Resistance III with the addition of Speed III. |
 | $\color{#77ff77}{\text{Talent}}$ | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/spear.png) | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
-| $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png) | | |
+| $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | | |
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
 | $\color{#ffff77}{\text{Trample}}$ | 1 | ![](icons/horse.png) | | |
