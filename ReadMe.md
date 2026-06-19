@@ -74,7 +74,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![](icons/horse.png) | Increases the horse's speed. | Increases base speed attribute by (level / 10) |
 | $\color{#77ff77}{\text{Sealegs}}$ | 1 | ![](icons/leggings.png) | Gain permanent Dolphin's Grace when in water. | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
-| $\color{#77ff77}{\text{Snatch}}$ | 1 | ![](icons/wolf.png) | | |
+| $\color{#77ff77}{\text{Snatch}}$ | 1 | ![](icons/wolf.png) | The wolf will disarm opponents on contact. | |
 | $\color{#ffaa55}{\text{Solar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost during the day. | |
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![](icons/chestplate.png) | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
 | $\color{#ffff77}{\text{Sponge}}$ | 1 | ![](icons/chestplate.png) | Gain Resistance I when in water. | |
