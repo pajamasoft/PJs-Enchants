@@ -10,28 +10,29 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Tier III}}$ |
 | $\color{#80e1ff}{\text{Vanilla}}$ |
 
+
 *The Armor Score of an enchant is the sum of that enchant's level across the whole suit of armor.
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
-| $\color{#77ff77}{\text{Adrenaline}}$ | 1 | ![](icons/leggings.png) | Gain a speed boost when health is low. | Gain +1 stage of increased Speed effect for (4 + level) seconds when your health drops below 5HP. |
-| $\color{#77ff77}{\text{Antidote}}$ | 4 | ![](icons/chestplate.png) | | |
+| $\color{#77ff77}{\text{Adrenaline}}$ | 1 | ![](icons/leggings.png) | Gain a speed boost when low on health. | Gain +1 stage of increased Speed effect for (4 + level) seconds when health falls below 5HP. |
+| $\color{#77ff77}{\text{Antidote}}$ | 4 | ![](icons/chestplate.png) | Chance to negate infliction of Poison or Wither. | |
 | $\color{#ffff77}{\text{Antigravity}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png)![](icons/boots.png) | (Melee) Chance to give target levitation. (Bow) Arrows are not affected by gravity. (Boots) Double-jump to gain temporary levitation. | (Melee) 20% chance for Levitation I for (2 + level) seconds. (Boots) Double-jumping triggers Levitation (3 * level) for 2 seconds. Sneaking will cancel levitation from any source while boots are on. |
-| $\color{#ffff77}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Permanent Haste II while held. | |
+| $\color{#ffff77}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Gain permanent Haste II while held. | |
 | $\color{#ffaa55}{\text{Blaze}}$ | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball. | Cooldown of (5 - level) seconds. |
 | $\color{#ffff77}{\text{Bolt}}$ | 4 | ![](icons/wolf.png) | | |
 | $\color{#ffaa55}{\text{Breeze}}$ | 3 | ![](icons/sword.png) | | |
 | $\color{#ffff77}{\text{Cluster}}$ | 3 | ![](icons/pickaxe.png)![](icons/axe.png) | Instantly breaks clusters of blocks. | Breaks clusters of certain blocks depending on tool type in groups of up to (6 + level). |
-| $\color{#77ff77}{\text{Constitution}}$ | 5 | ![](icons/helmet.png) | | |
+| $\color{#77ff77}{\text{Constitution}}$ | 5 | ![](icons/helmet.png) | Gain resistance when low on health. | Gain Resistance II for (3 + level) seconds when health falls below 7HP. |
 | $\color{#77ff77}{\text{Darkness}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to blind target. | 20% chance for Blindness I for (2 + level) seconds. |
 | $\color{#77ff77}{\text{Dash}}$ | 2 | ![](icons/boots.png) | | |
 | $\color{#ffff77}{\text{Defuse}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Prevents creepers from exploding. | |
 | $\color{#77ff77}{\text{Devour}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Regain hunger by attacking. | Feeds player by (1.2 * damage dealt). |
-| $\color{#ffff77}{\text{Discharge}}$ | 3 | ![](icons/chestplate.png) | | |
+| $\color{#ffff77}{\text{Discharge}}$ | 3 | ![](icons/chestplate.png) | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. |
 | $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
 | $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![](icons/elytra.png) | | |
 | $\color{#ffff77}{\text{Drag}}$ | 1 | ![](icons/elytra.png) | | |
-| $\color{#ffff77}{\text{Endereyes}}$ | 1 | ![](icons/helmet.png) | | |
+| $\color{#ffff77}{\text{Endereyes}}$ | 1 | ![](icons/helmet.png) | Makes the wearer unable to aggravate Endermen. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
 | $\color{#ffff77}{\text{Escape}}$ | 1 | ![](icons/boots.png) | | |
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![](icons/wolf.png) | | |
 | $\color{#ffff77}{\text{Fling}}$ | 1 | ![](icons/wolf.png) | | |
@@ -47,10 +48,10 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Healing}}$ | 1 | ![](icons/bow.png) | Heals hit target instead of damaging. | Healing amount increases with Power enchantment by (2 + Power level)HP and removes all negative effects. |
 | $\color{#ffff77}{\text{Hellhound}}$ | 1 | ![](icons/wolf.png) | | |
 | $\color{#ffff77}{\text{Hellish}}$ | 1 | ![](icons/horse.png) | | |
-| $\color{#ffff77}{\text{Hive}}$ | 3 | ![](icons/chestplate.png) | | |
+| $\color{#ffff77}{\text{Hive}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a bee when hit that will target your attacker. | (3 * level)% chance to activate. |
 | $\color{#ffaa55}{\text{Homing}}$ | 1 | ![](icons/bow.png) | Arrow will arc towards the nearest enemy. | Arrows will not arc towards friendly mobs. |
 | $\color{#77ff77}{\text{Hurdle}}$ | 3 | ![](icons/horse.png) | | |
-| $\color{#ffff77}{\text{Infested}}$ | 3 | ![](icons/chestplate.png) | | |
+| $\color{#ffff77}{\text{Infested}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a silverfish when hit that will target your attacker. | (5 + 5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Joust}}$ | 1 | ![](icons/horse.png) | | |
 | $\color{#77ff77}{\text{Leaping}}$ | 3 | ![](icons/leggings.png) | | |
 | $\color{#ffff77}{\text{Leeching}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health. | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
@@ -59,13 +60,13 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron tools. |
 | $\color{#80e1ff}{\text{Mending}}$ | 1 | ![](icons/wolf.png) | | |
 | $\color{#77ff77}{\text{Molten}}$ | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. |
-| $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![](icons/helmet.png) | | |
+| $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![](icons/helmet.png) | Gain permanent night vision while worn. | |
 | $\color{#ffff77}{\text{Nightrider}}$ | 1 | ![](icons/horse.png) | | |
 | $\color{#ffff77}{\text{Nitro}}$ | 5 | ![](icons/bow.png) | Arrows explode shortly after impact. | Arrows will explode (5 - level) seconds after impact. |
 | $\color{#ffff77}{\text{Phantom}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases damage when invisible. | 25% damage boost when invisible. |
 | $\color{#77ff77}{\text{Plague}}$ | 5 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Chance to summon a poison cloud when hit. | Radius is 5 blocks. (2.5*armor score)% chance to activate. Inflicts Poison I for 5 seconds. |
 | $\color{#80e1ff}{\text{Protection}}$ | 4 | ![](icons/horse.png) | | |
-| $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | | |
+| $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | Chance to automatically face your attacker when hit. | (5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Pulverizing}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Permanent Haste V when held, but blocks broken will yield no drops. | |
 | $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | | |
 | $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![](icons/leggings.png) | | |
@@ -81,7 +82,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Talent}}$ | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/spear.png) | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png) | | |
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
-| $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | | |
+| $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
 | $\color{#ffff77}{\text{Trample}}$ | 1 | ![](icons/horse.png) | | |
 | $\color{#ffaa55}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | | |
 | $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | | |
@@ -139,6 +140,9 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 Some of PJ's Enchantments interact with each other:
 * Defuse hits will never trigger Unstable
 * Antigravity cannot lift those with Grounded
+
+## Other Features
+* Enchantments that poison undead enemies will give them the wither effect instead as to not heal them.
 
 ## Forging Block Conversions
 Below are all of the blocks whose drops are impacted by the Forging enchant, depending on the tool used.
