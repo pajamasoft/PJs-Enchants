@@ -65,7 +65,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Nitro}}$ | 5 | ![](icons/bow.png) | Arrows explode shortly after impact. | Arrows will explode (5 - level) seconds after impact. |
 | $\color{#ffff77}{\text{Phantom}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Increases damage when invisible. | 25% damage boost when invisible. |
 | $\color{#77ff77}{\text{Plague}}$ | 5 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Chance to summon a poison cloud when hit. | Radius is 5 blocks. (2.5*armor score)% chance to activate. Inflicts Poison I for 5 seconds. |
-| $\color{#80e1ff}{\text{Protection}}$ | 4 | ![](icons/horse.png) | Increases the horse's maximum health. | Increases max health attribute by (6 * level)HP. |
+| $\color{#80e1ff}{\text{Protection}}$ | 4 | ![](icons/horse.png) | Gives the horse permanent Resistance while worn. | Horse gains Resistance (level). |
 | $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![](icons/helmet.png) | Chance to automatically face your attacker when hit. | (5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Pulverizing}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Permanent Haste V when held, but blocks broken will yield no drops. | |
 | $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | Gain extra strength when low on health. | Gain Strength II for (4 + level) seconds when health falls below 5HP. |
