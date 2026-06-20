@@ -15,7 +15,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
-| $\color{#77ff77}{\text{Adrenaline}}$ | 1 | ![](icons/leggings.png) | Gain a speed boost when low on health. | Gain +1 stage of increased Speed effect for (4 + level) seconds when health falls below 5HP. |
+| $\color{#77ff77}{\text{Adrenaline}}$ | 3 | ![](icons/leggings.png) | Gain a speed boost when low on health. | Gain +1 stage of increased Speed effect for (4 + level) seconds when health falls below 5HP. |
 | $\color{#77ff77}{\text{Antidote}}$ | 4 | ![](icons/chestplate.png) | Chance to negate infliction of Poison or Wither. | |
 | $\color{#ffff77}{\text{Antigravity}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png)![](icons/boots.png) | (Melee) Chance to give target levitation. (Bow) Arrows are not affected by gravity. (Boots) Double-jump to gain temporary levitation. | (Melee) 20% chance for Levitation I for (2 + level) seconds. (Boots) Double-jumping triggers Levitation (3 * level) for 2 seconds. Sneaking will cancel levitation from any source while boots are on. |
 | $\color{#ffff77}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Gain permanent Haste II while held. | |
