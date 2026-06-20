@@ -71,7 +71,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Rage}}$ | 5 | ![](icons/chestplate.png) | Gain extra strength when low on health. | Gain Strength II for (4 + level) seconds when health falls below 5HP. |
 | $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![](icons/leggings.png) | Chance to launch back attackers when hit. | 33% chance to activate. Repulsion force increases with level. |
 | $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![](icons/bow.png) | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
-| $\color{#ffff77}{\text{Rush}}$ | 3 | ![](icons/horse.png) | Increases the horse's speed. | Increases base speed attribute by (level / 10) |
+| $\color{#ffff77}{\text{Rush}}$ | 3 | ![](icons/horse.png) | Gives the horse permanent Speed while worn. | Horse gains Speed (level). |
 | $\color{#77ff77}{\text{Sealegs}}$ | 1 | ![](icons/leggings.png) | Gain permanent Dolphin's Grace when in water. | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
 | $\color{#77ff77}{\text{Snatch}}$ | 1 | ![](icons/wolf.png) | The wolf will disarm opponents on contact. | |
