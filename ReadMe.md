@@ -80,7 +80,6 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Fireworks will give you a greater boost when gliding. | |
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
-| $\color{#ffff77}{\text{Trample}}$ | 1 | ![](icons/horse.png) | Run over enemies to deal damage. | Horse must have a velocity greater than 2 blocks/second. |
 | $\color{#ffaa55}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to turn slain enemies into an ally ghost. | 25% chance to activate. |
 | $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | Chance to set off an explosion when hit, damaging nearby enemies. | (2 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
 | $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | Chance to poison the target. | (Sword) 20% chance to give Poison 2 for (2 + level) seconds. (Bow) 30% chance to give Poison 2 for (2 + level) seconds. |
@@ -133,6 +132,14 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Magnetic | | ❌ | | |
 | Frost Walker | | | ❌ |
 
+## Vanilla Enchantments With Wider Applications
+The following vanilla enchantments can now be applied to new items:
+| Enchantment | Item Type | Description | 
+| --- | --- | --- |
+| Mending | ![](icons/wolf.png) | Will slowly repair wolf armor over time. |
+| Protection | ![](icons/horse.png) | Reduces all damage taken by (100 / (level + 1))%. |
+
+
 ## Enchantment Cross-Mechanics and Recommended Combinations
 Some of PJ's Enchantments interact with each other:
 * Defuse hits will never trigger Unstable.
@@ -142,12 +149,11 @@ Some of PJ's Enchantments interact with each other:
 * Stealth on your leggings and a sword with Phantom will inflict massive damage.
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
 
-## PET SAFE!
+## Pet Safety
 All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
 * Ricochet will not bounce to friendlies
 * Homing will not lock on to friendlies
 * Spikes will not prick friendlies
-* Trample will not hurt friendlies
 
 ## Other Features
 * Enchantments that poison undead enemies will give them the wither effect instead as to not heal them.
