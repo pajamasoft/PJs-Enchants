@@ -8,7 +8,6 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Tier I}}$ |
 | $\color{#ffff77}{\text{Tier II}}$ |
 | $\color{#ffaa55}{\text{Tier III}}$ |
-| $\color{#80e1ff}{\text{Vanilla}}$ |
 
 
 *The Armor Score of an enchant is the sum of that enchant's level across the whole suit of armor.
@@ -58,7 +57,6 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![](icons/elytra.png)![](icons/chestplate.png) | Double-jumping from the ground will launch you upwards before flight. | Upwards velocity is (1.2 * level) blocks/second. |
 | $\color{#ffaa55}{\text{Lunar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron tools. |
-| $\color{#80e1ff}{\text{Mending}}$ | 1 | ![](icons/wolf.png) | Repairs wolf armor over time automatically. | |
 | $\color{#77ff77}{\text{Molten}}$ | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. |
 | $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![](icons/helmet.png) | Gain permanent night vision while worn. |  |
 | $\color{#ffff77}{\text{Nightrider}}$ | 1 | ![](icons/horse.png) | Rider will gain permanent night vision and increased melee damage at night. | Increases damage by 1.25x. |
