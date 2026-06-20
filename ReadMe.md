@@ -46,8 +46,8 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Grounded}}$ | 1 | ![](icons/boots.png) | Receive less knockback and negate damage from lightning, turning it into a speed boost. | Provides immunity to Antigravity. Sneak in water to descend rapidly. |
 | $\color{#77ff77}{\text{Hallucination}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to nauseate target. | 20% chance for Nausea I for (2 + level) seconds. |
 | $\color{#ffff77}{\text{Healing}}$ | 1 | ![](icons/bow.png) | Heals hit target instead of damaging. | Healing amount increases with Power enchantment by (2 + Power level)HP and removes all negative effects. |
-| $\color{#ffff77}{\text{Hellhound}}$ | 1 | ![](icons/wolf.png) | Gives wolf permanent Fire Resistance. | |
-| $\color{#ffff77}{\text{Hellish}}$ | 1 | ![](icons/horse.png) | Gives horse permanent Fire Resistance. | |
+| $\color{#ffff77}{\text{Hellhound}}$ | 1 | ![](icons/wolf.png) | Makes wolf immune to fire damage. | |
+| $\color{#ffff77}{\text{Hellish}}$ | 1 | ![](icons/horse.png) | Makes horse immune to fire damage. | |
 | $\color{#ffff77}{\text{Hive}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a bee when hit that will target your attacker. | (3 * level)% chance to activate. |
 | $\color{#ffaa55}{\text{Homing}}$ | 1 | ![](icons/bow.png) | Arrow will arc towards the nearest enemy. | Arrows will not arc towards friendly mobs. |
 | $\color{#77ff77}{\text{Hurdle}}$ | 3 | ![](icons/horse.png) | Increases horse's jump strength. | Increases base jump strength attribute by (level / 4). |
