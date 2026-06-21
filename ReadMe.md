@@ -42,7 +42,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Glide}}$ | 1 | ![](icons/boots.png)![](icons/wolf.png) | Gain permanent Slow Falling while worn. | |
 | $\color{#ffaa55}{\text{Grappling}}$ | 1 | ![](icons/bow.png) | Grapples you towards arrow or pulls hit enemies towards you. | You must be in the air while the arrow hits a block to activate. Max range is 30 blocks. |
 | $\color{#ffaa55}{\text{Gravity}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | Chance to send the target into the ground. | (15 + 5 * level)% chance to activate. (Melee) Swinging your weapon will also pull nearby enemies in closer. (Bow) Arrow will draw in nearby mobs. |
-| $\color{#77ff77}{\text{Grounded}}$ | 1 | ![](icons/boots.png) | Receive less knockback and negate damage from lightning, turning it into a speed boost. | Provides immunity to Antigravity. Sneak in water to descend rapidly. |
+| $\color{#ffaa55}{\text{Grounded}}$ | 1 | ![](icons/boots.png) | Receive less knockback and negate damage from lightning, turning it into a speed boost. | Provides immunity to Antigravity. Sneak in water to descend rapidly. |
 | $\color{#77ff77}{\text{Hallucination}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to nauseate target. | 20% chance for Nausea I for (2 + level) seconds. |
 | $\color{#ffff77}{\text{Healing}}$ | 1 | ![](icons/bow.png) | Heals hit target instead of damaging. | Healing amount increases with Power enchantment by (2 + Power level)HP and removes all negative effects. |
 | $\color{#ffff77}{\text{Hellhound}}$ | 1 | ![](icons/wolf.png) | Makes wolf immune to fire damage. | |
@@ -55,7 +55,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Leaping}}$ | 3 | ![](icons/leggings.png) | Gain permanent Jump Boost. | Jump Boost level matches the enchantment's level. |
 | $\color{#ffff77}{\text{Leeching}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health. | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![](icons/elytra.png)![](icons/chestplate.png) | Double-jumping from the ground will launch you upwards before flight. | Upwards velocity is (1.2 * level) blocks/second. |
-| $\color{#ffaa55}{\text{Lunar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
+| $\color{#ffff77}{\text{Lunar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron tools. |
 | $\color{#77ff77}{\text{Molten}}$ | 3 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. |
 | $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![](icons/helmet.png) | Gain permanent night vision while worn. |  |
@@ -72,7 +72,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Sealegs}}$ | 1 | ![](icons/leggings.png) | Gain permanent Dolphin's Grace when in water. | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![](icons/sword.png) | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
 | $\color{#77ff77}{\text{Snatch}}$ | 1 | ![](icons/wolf.png) | The wolf will disarm opponents on contact. | Monsters will drop their weapons on contact. On player opponents, there is a 15% chance that the item in their main hand will switch places in their inventory. |
-| $\color{#ffaa55}{\text{Solar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost during the day. | |
+| $\color{#ffff77}{\text{Solar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost during the day. | |
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![](icons/chestplate.png) | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
 | $\color{#ffff77}{\text{Sponge}}$ | 1 | ![](icons/chestplate.png) | Gain Resistance I when in water. | |
 | $\color{#ffff77}{\text{Stealth}}$ | 3 | ![](icons/leggings.png) | Gain invisibility while sneaking. | 5s cooldown between toggles. Different effects depending on level. Level 2: Temporarily removes your armor as well while giving you Resistance II while invisible. Level 3: Upgrades to Resistance III with the addition of Speed III. |
