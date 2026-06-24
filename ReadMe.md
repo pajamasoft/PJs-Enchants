@@ -146,7 +146,7 @@ Some of PJ's Enchantments interact with each other:
 * Antigravity cannot lift those with Grounded.
 * A chestplate with Wings and other Elytra enchantments will automatically apply those enchantments to your temporary Elytra when in flight.
 * Discharge on your chestplate and Grounded on your boots will deal great defensive damage and give you a speed boost at the same time.
-* Stealth on your leggings and a sword with Phantom will inflict massive damage.
+* Stealth on your leggings will activate the effects of Phantom on your sword.
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
 
 ## Pet Safety
