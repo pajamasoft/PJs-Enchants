@@ -36,7 +36,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![](icons/wolf.png) | Increases wolf attack damage. | Damage is an additional (2HP * level). |
 | $\color{#ffff77}{\text{Fling}}$ | 1 | ![](icons/wolf.png) | Chance for wolf to toss enemy into the air. | 30% chance to activate. |
 | $\color{#ffaa55}{\text{Forging}}$ | 1 | ![](icons/pickaxe.png)![](icons/axe.png)![](icons/shovel.png)![](icons/hoe.png) | Automatically smelts block drops. |  |
-| $\color{#77ff77}{\text{Fracture}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to deal additional damage to armor durability. | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
+| $\color{#77ff77}{\text{Fracture}}$ | 4 | ![](icons/axe.png) | Chance to deal additional damage to armor durability. | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
 | $\color{#77ff77}{\text{Freezing}}$ | 3 | ![](icons/bow.png) | Freezes the target. | Gives target freezing status for (2 + level) seconds. |
 | $\color{#77ff77}{\text{Frostbite}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to freeze the target. | 20% chance to apply Freezing for (2 + 2 * level) seconds. |
 | $\color{#ffaa55}{\text{Glide}}$ | 1 | ![](icons/boots.png)![](icons/wolf.png) | Gain permanent Slow Falling while worn. | |
