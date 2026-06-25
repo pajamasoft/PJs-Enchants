@@ -25,7 +25,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Constitution}}$ | 5 | ![](icons/helmet.png) | Gain resistance when low on health. | Gain Resistance II for (3 + level) seconds when health falls below 7HP. |
 | $\color{#77ff77}{\text{Darkness}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to blind target. | 20% chance for Blindness I for (2 + level) seconds. |
 | $\color{#ffff77}{\text{Dash}}$ | 2 | ![](icons/boots.png) | Gain permanent Speed effect while worn. | Speed level matches the enchantment's level. |
-| $\color{#ffff77}{\text{Defuse}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Prevents creepers from exploding. | |
+| $\color{#ffff77}{\text{Defuse}}$ | 1 | ![](icons/sword.png)![](icons/spear.png) | Prevents creepers from exploding. | |
 | $\color{#77ff77}{\text{Devour}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Regain hunger by attacking. | Feeds player by (1.2 * damage dealt). |
 | $\color{#ffff77}{\text{Discharge}}$ | 3 | ![](icons/chestplate.png) | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. |
 | $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
