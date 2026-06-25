@@ -53,7 +53,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Infested}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a silverfish when hit that will target your attacker. | (5 + 5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Joust}}$ | 1 | ![](icons/horse.png) | Rider will deal additional melee damage and knock other riders off their horse. | Increases damage by 1.25x. |
 | $\color{#77ff77}{\text{Leaping}}$ | 3 | ![](icons/leggings.png) | Gain permanent Jump Boost. | Jump Boost level matches the enchantment's level. |
-| $\color{#ffff77}{\text{Leeching}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to drain target's health. | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
+| $\color{#ffff77}{\text{Leeching}}$ | 5 | ![](icons/sword.png)![](icons/spear.png) | Chance to drain target's health. | 20% chance to activate. Heal for (20 + 10 * level)% of the damage dealt. |
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![](icons/elytra.png)![](icons/chestplate.png) | Double-jumping from the ground will launch you upwards before flight. | Upwards velocity is (1.2 * level) blocks/second. |
 | $\color{#ffff77}{\text{Lunar}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png) | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron tools. |
