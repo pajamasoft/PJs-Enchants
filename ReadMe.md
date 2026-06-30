@@ -84,7 +84,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | Chance to set off an explosion when hit, damaging nearby enemies. | (3 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
 | $\color{#77ff77}{\text{Venom}}$ | 5 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png) | Chance to poison the target. | (Sword) 20% chance to give Poison 2 for (2 + level) seconds. (Bow) 30% chance to give Poison 2 for (2 + level) seconds. |
 | $\color{#ffaa55}{\text{Waverider}}$ | 2 | ![](icons/horse.png)![](icons/boots.png) | Gain the ability to run on water. | Speed increases with level. |
-| $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![](icons/wolf.png) | Increases the wolf's strength and size at night when aggravated. | Wolf gains Resistance II, Strength II at level 3 or else Strength I, and Speed that matches the level. |
+| $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![](icons/wolf.png) | Increases the wolf's strength and size at night when aggravated. | Wolf gains (Level < 3: Strength I, Level 3: Strength II and Speed that matches the level. |
 | $\color{#ffaa55}{\text{Wilting}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to give target Wither effect. | 15% chance to give Wither II for (2 + level) seconds. |
 | $\color{#ffaa55}{\text{Wings}}$ | 1 | ![](icons/chestplate.png) | Double-jumping temporarily replaces your chestplate with an Elytra. | |
 
