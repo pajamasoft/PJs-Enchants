@@ -27,7 +27,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Dash}}$ | 2 | ![](icons/boots.png) | Gain permanent Speed effect while worn. | Speed level matches the enchantment's level. |
 | $\color{#ffff77}{\text{Defuse}}$ | 1 | ![](icons/sword.png)![](icons/spear.png) | Prevents creepers from exploding. | |
 | $\color{#77ff77}{\text{Devour}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Regain hunger by attacking. | Feeds player by (1.2 * damage dealt). |
-| $\color{#ffff77}{\text{Discharge}}$ | 3 | ![](icons/chestplate.png) | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. |
+| $\color{#ffff77}{\text{Discharge}}$ | 3 | ![](icons/chestplate.png) | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. Deals 10 raw damage to all nearby enemies. |
 | $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
 | $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Arrows fired while gliding will turn into dragon fireballs. | Requires fire charges as ammunition. Costs 3 fire charges per shot. |
 | $\color{#ffff77}{\text{Drag}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Eliminates fall damage while gliding. | |
@@ -78,7 +78,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Stealth}}$ | 3 | ![](icons/leggings.png) | Gain invisibility while sneaking. | 5s cooldown between toggles. Different effects depending on level. Level 2: Temporarily removes your armor as well while giving you Resistance II while invisible. Level 3: Upgrades to Resistance III with the addition of Speed III. |
 | $\color{#77ff77}{\text{Talent}}$ | 5 |  ![](icons/pickaxe.png)![](icons/axe.png)![](icons/sword.png)![](icons/spear.png) | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Fireworks will give you a greater boost when gliding. | |
-| $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate |
+| $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to strike target with lightning | (5 + 5 * level)% chance to activate. Deals 10 raw damage. |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![](icons/helmet.png)![](icons/chestplate.png)![](icons/leggings.png)![](icons/boots.png)![](icons/wolf.png) | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
 | $\color{#ffff77}{\text{Unholy}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to turn slain enemies into an ally ghost. | 25% chance to activate. Only works on armorable monsters. Maximum of 8 ghosts at once. Ghosts last 4 minutes before ascending. |
 | $\color{#77ff77}{\text{Unstable}}$ | 5 | ![](icons/chestplate.png) | Chance to set off an explosion when hit, damaging nearby enemies. | (3 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
