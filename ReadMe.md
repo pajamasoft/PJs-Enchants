@@ -227,8 +227,8 @@ PJ's Enchants works with all of my other plugins.
 ### Ricochet
 ![Ricochet](images/ricochet-test.gif)
 ##
-### Homing
-![Homing](images/homing-test.gif)
+### Homing & Antigravity
+![Homing](images/homing-antigravity-test.gif)
 ##
 ### Forging
 ![Forging](images/forging-test.gif)
@@ -238,4 +238,9 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Wings
 ![Wings](images/wings-test.gif)
-
+##
+### Glide
+![Glide](images/glide-test.gif)
+##
+### Wings, Glide, & Antigravity
+![Wings, Glide, Antigravity](images/wings-glide-antigrav-test.gif)
