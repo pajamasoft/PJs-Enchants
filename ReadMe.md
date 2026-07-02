@@ -216,3 +216,6 @@ PJ's Enchants works with all of my other plugins.
 ### PJ's Mechanics
 * Right-clicking on fully-grown potato crops will automatically harvest baked potatoes.
 * When Darkness activates on a mob, they will be unable to see you.
+
+## Showcase
+![Demo GIF](images/defuse-test.gif)
