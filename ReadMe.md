@@ -236,11 +236,11 @@ PJ's Enchants works with all of my other plugins.
 ### Waverider
 ![Waverider](images/waverider-test.gif)
 ##
-### Wings
-![Wings](images/wings-test.gif)
-##
 ### Glide
 ![Glide](images/glide-test.gif)
 ##
-### Wings, Glide, & Antigravity
+### Wings, Solar
+![Wings](images/wings-test.gif)
+##
+### Wings, Solar, Glide, Antigravity
 ![Wings, Glide, Antigravity](images/wings-glide-antigrav-test.gif)
