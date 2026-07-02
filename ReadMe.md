@@ -218,10 +218,17 @@ PJ's Enchants works with all of my other plugins.
 * When Darkness activates on a mob, they will be unable to see you.
 
 ## Showcase
+### Anvil Compatibility
 ![Anvil](images/anvil-test.gif)
+### Defuse
 ![Defuse](images/defuse-test.gif)
+### Ricochet
 ![Ricochet](images/ricochet-test.gif)
+### Homing
 ![Homing](images/homing-test.gif)
+### Forging
 ![Forging](images/forging-test.gif)
+### Waverider
 ![Waverider](images/waverider-test.gif)
+### Wings
 ![Wings](images/wings-test.gif)
