@@ -227,7 +227,7 @@ PJ's Enchants works with all of my other plugins.
 ### Ricochet
 ![Ricochet](images/ricochet-test.gif)
 ##
-### Homing & Antigravity
+### Homing, Antigravity
 ![Homing](images/homing-antigravity-test.gif)
 ##
 ### Forging
