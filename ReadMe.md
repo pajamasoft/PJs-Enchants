@@ -198,6 +198,7 @@ Below are all of the blocks whose drops are impacted by the Forging enchant, dep
 | --- | --- |
 | Hay Block | Bread* |
 | Potatoes | Baked Potatoes* |
+| Wheat | Bread |
 
 ## Tool-Specific Blocks
 Certain enchants only work on specific groups of blocks depending on tool type. These groups are referred to in the enchantments descriptions as "pickaxe blocks" or "axe blocks", etc.
