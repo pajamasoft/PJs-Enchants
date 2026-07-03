@@ -31,7 +31,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
 | $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Arrows fired while gliding will turn into dragon fireballs. | Requires fire charges as ammunition. Costs 3 fire charges per shot. |
 | $\color{#ffff77}{\text{Drag}}$ | 1 | ![](icons/elytra.png)![](icons/chestplate.png) | Eliminates fall damage while gliding. | |
-| $\color{#ffaa55}{\text{Endereyes}}$ | 1 | ![](icons/helmet.png) | Makes the wearer unable to aggravate Endermen. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
+| $\color{#ffaa55}{\text{Endereyes}}$ | 1 | ![](icons/helmet.png) | Allows the wearer to look Endermen in the eyes. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
 | $\color{#ffff77}{\text{Escape}}$ | 1 | ![](icons/boots.png) | Teleport to a safe location if it while sneaking with low health. | Triggers when sneaking below 10HP. Teleported to a random safe location within 10 blocks. |
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![](icons/wolf.png) | Increases wolf attack damage. | Damage is an additional (2HP * level). |
 | $\color{#ffff77}{\text{Fling}}$ | 1 | ![](icons/wolf.png) | Chance for wolf to toss enemy into the air. | 30% chance to activate. |
