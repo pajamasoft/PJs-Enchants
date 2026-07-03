@@ -190,8 +190,7 @@ Below are all of the blocks whose drops are impacted by the Forging enchant, dep
 | Original | Forged |
 | --- | --- |
 | Sand | Glass |
-| Clay | Terracotta |
-| Dirt | Coarse Dirt |
+| Clay | Bricks |
 
 ### Hoe
 | Original | Forged |
