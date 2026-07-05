@@ -224,14 +224,26 @@ PJ's Enchants works with all of my other plugins.
 ### Defuse
 ![Defuse](images/defuse-test.gif)
 ##
+### Stealth
+![Stealth](images/stealth-test.gif)
+##
 ### Ricochet
 ![Ricochet](images/ricochet-test.gif)
+##
+### Grappling
+![Grappling](images/grappling-test.gif)
 ##
 ### Homing, Antigravity
 ![Homing](images/homing-antigravity-test.gif)
 ##
 ### Forging
 ![Forging](images/forging-test.gif)
+##
+### Cluster
+![Cluster](images/cluster-test.gif)
+##
+### Unstable
+![Unstable](images/unstable-test.gif)
 ##
 ### Waverider
 ![Waverider](images/waverider-test.gif)
@@ -244,3 +256,9 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Wings, Solar, Glide, Antigravity
 ![Wings, Glide, Antigravity](images/wings-glide-antigrav-test.gif)
+##
+### Hive
+![hive](images/hive-test.gif)
+##
+### Werewolf
+![Werewolf](images/werewolf-test.gif)
