@@ -260,7 +260,7 @@ PJ's Enchants works with all of my other plugins.
 ### Spikes
 ![Spikes](images/spikes-test.gif)
 ##
-### Stealth
+### Stealth, Phantom
 ![Stealth](images/stealth-test.gif)
 ##
 ### Unstable
