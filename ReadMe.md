@@ -1,4 +1,4 @@
-# PJ's Enchants
+![](images/title.png)
 Enchantment Guide
 
 ## Enchantment Tiers
