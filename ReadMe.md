@@ -245,6 +245,18 @@ PJ's Enchants works with all of my other plugins.
 ### Unstable
 ![Unstable](images/unstable-test.gif)
 ##
+### Plague
+![Plague](images/plague-test.gif)
+##
+### Hive
+![Hive](images/hive-test.gif)
+##
+### Spikes
+![Spikes](images/spikes-test.gif)
+##
+### Endereyes
+![Endereyes](images/endereyes-test.gif)
+##
 ### Waverider
 ![Waverider](images/waverider-test.gif)
 ##
@@ -256,9 +268,6 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Wings, Solar, Glide, Antigravity
 ![Wings, Glide, Antigravity](images/wings-glide-antigrav-test.gif)
-##
-### Hive
-![hive](images/hive-test.gif)
 ##
 ### Werewolf
 ![Werewolf](images/werewolf-test.gif)
