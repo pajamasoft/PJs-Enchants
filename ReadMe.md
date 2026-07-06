@@ -221,6 +221,9 @@ PJ's Enchants works with all of my other plugins.
 ### Anvil Compatibility
 ![Anvil](images/anvil-test.gif)
 ##
+### Breeze
+![Breeze](images/breeze-test.gif)
+##
 ### Cluster
 ![Cluster](images/cluster-test.gif)
 ##
@@ -247,6 +250,9 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Plague
 ![Plague](images/plague-test.gif)
+##
+### Psychic
+![Psychic](images/psychic-test.gif)
 ##
 ### Ricochet
 ![Ricochet](images/ricochet-test.gif)
