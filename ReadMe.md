@@ -221,53 +221,53 @@ PJ's Enchants works with all of my other plugins.
 ### Anvil Compatibility
 ![Anvil](images/anvil-test.gif)
 ##
-### Defuse
-![Defuse](images/defuse-test.gif)
-##
-### Stealth
-![Stealth](images/stealth-test.gif)
-##
-### Ricochet
-![Ricochet](images/ricochet-test.gif)
-##
-### Grappling
-![Grappling](images/grappling-test.gif)
-##
-### Homing, Antigravity
-![Homing](images/homing-antigravity-test.gif)
-##
-### Forging
-![Forging](images/forging-test.gif)
-##
 ### Cluster
 ![Cluster](images/cluster-test.gif)
 ##
-### Unstable
-![Unstable](images/unstable-test.gif)
-##
-### Plague
-![Plague](images/plague-test.gif)
-##
-### Hive
-![Hive](images/hive-test.gif)
-##
-### Spikes
-![Spikes](images/spikes-test.gif)
+### Defuse
+![Defuse](images/defuse-test.gif)
 ##
 ### Endereyes
 ![Endereyes](images/endereyes-test.gif)
 ##
-### Waverider
-![Waverider](images/waverider-test.gif)
+### Forging
+![Forging](images/forging-test.gif)
 ##
 ### Glide
 ![Glide](images/glide-test.gif)
+##
+### Grappling
+![Grappling](images/grappling-test.gif)
+##
+### Hive
+![Hive](images/hive-test.gif)
+##
+### Homing, Antigravity
+![Homing](images/homing-antigravity-test.gif)
+##
+### Plague
+![Plague](images/plague-test.gif)
+##
+### Ricochet
+![Ricochet](images/ricochet-test.gif)
+##
+### Spikes
+![Spikes](images/spikes-test.gif)
+##
+### Stealth
+![Stealth](images/stealth-test.gif)
+##
+### Unstable
+![Unstable](images/unstable-test.gif)
+##
+### Waverider
+![Waverider](images/waverider-test.gif)
+##
+### Werewolf
+![Werewolf](images/werewolf-test.gif)
 ##
 ### Wings, Solar
 ![Wings](images/wings-test.gif)
 ##
 ### Wings, Solar, Glide, Antigravity
 ![Wings, Glide, Antigravity](images/wings-glide-antigrav-test.gif)
-##
-### Werewolf
-![Werewolf](images/werewolf-test.gif)
