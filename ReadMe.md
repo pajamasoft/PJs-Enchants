@@ -1,4 +1,4 @@
-![](images/title.png)
+![](images/title-small.png)
 Enchantment Guide
 
 ## Enchantment Tiers
