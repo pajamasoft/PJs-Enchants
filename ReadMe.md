@@ -211,6 +211,12 @@ Certain enchants only work on specific groups of blocks depending on tool type. 
 | Melons |
 | Pumpkins |
 
+## Commands
+| Command | Description |
+| --- | --- |
+| /pje enchant {enchantment} {level} | Enchantt the held item |
+| /pje remove {enchantment} | Removes specified enchant from held item |
+
 ## Plugin Compatibility
 PJ's Enchants works with all of my other plugins.
 ### PJ's Mechanics
