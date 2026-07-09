@@ -17,7 +17,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Adrenaline}}$ | 3 | ![](icons/leggings.png) | Gain a speed boost when low on health. | Gain Speed 2 effect for (4 + level) seconds when health falls below 5HP. Is additive to any Speed effect already active. |
 | $\color{#77ff77}{\text{Antidote}}$ | 4 | ![](icons/chestplate.png) | Chance to negate infliction of Poison or Wither. | (30 + 10 * level)% chance upon receiving Poison/Wither to negate it. |
 | $\color{#ffff77}{\text{Antigravity}}$ | 3 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png)![](icons/bow.png)![](icons/boots.png) | (Melee) Chance to give target levitation. (Bow) Arrows are not affected by gravity. (Boots) Double-jump to gain temporary levitation. | (Melee) 20% chance for Levitation I for (2 + level) seconds. (Boots) Double-jumping triggers Levitation (3 * level) for 2 seconds. Sneaking will cancel levitation from any source while boots are on. |
-| $\color{#ffff77}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Gain permanent Haste II while held. | |
+| $\color{#ffff77}{\text{Artful}}$ | 1 | ![](icons/sword.png)![](icons/axe.png)![](icons/spear.png) | Gain permanent Haste II while held. | Also reduces the cooldown of enchantments like Blaze, Breeze, and Skulls. |
 | $\color{#ffaa55}{\text{Blaze}}$ | 3 | ![](icons/sword.png)![](icons/axe.png) | Swinging launches a small fireball. | Cooldown of (5 - level) seconds. |
 | $\color{#ffff77}{\text{Bolt}}$ | 4 | ![](icons/wolf.png) | Increases wolf speed. | Speed level matches the enchantment's level. |
 | $\color{#ffaa55}{\text{Breeze}}$ | 3 | ![](icons/sword.png) | Swinging launches a breeze ball. | Cooldown of (5 - level) seconds. |
