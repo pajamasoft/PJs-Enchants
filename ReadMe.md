@@ -147,6 +147,7 @@ Some of PJ's Enchantments interact with each other:
 * Discharge on your chestplate and Grounded on your boots will deal great defensive damage and give you a speed boost at the same time.
 * Stealth on your leggings will activate the effects of Phantom on your sword.
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
+* Artful combined with Blaze, Breeze, or Skulls reduces their cooldown by 25%.
 
 ## Pet Safety
 All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
