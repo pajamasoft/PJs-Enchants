@@ -49,7 +49,6 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Hellish}}$ | 1 | ![](icons/horse.png) | Makes horse immune to fire damage. | |
 | $\color{#ffff77}{\text{Hive}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a bee when hit that will target your attacker. | (3 * level)% chance to activate. |
 | $\color{#ffaa55}{\text{Homing}}$ | 1 | ![](icons/bow.png) | Arrow will arc towards the nearest enemy. | Arrows will not arc towards friendly mobs. |
-| $\color{#77ff77}{\text{Hurdle}}$ | 3 | ![](icons/horse.png) | Increases horse's jump strength. | Increases base jump strength attribute by (level / 4). |
 | $\color{#ffff77}{\text{Infested}}$ | 3 | ![](icons/chestplate.png) | Chance to summon a silverfish when hit that will target your attacker. | (5 + 5 * level)% chance to activate. |
 | $\color{#ffff77}{\text{Joust}}$ | 1 | ![](icons/horse.png) | Rider will deal additional melee damage and knock other riders off their horse. | Increases damage by 1.25x. |
 | $\color{#77ff77}{\text{Leaping}}$ | 3 | ![](icons/leggings.png) | Gain permanent Jump Boost. | Jump Boost level matches the enchantment's level. |
