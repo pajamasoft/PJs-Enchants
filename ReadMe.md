@@ -240,61 +240,61 @@ PJ's Enchants works with all of my other plugins.
 
 ## Showcase
 ### Anvil Compatibility
-![Anvil](images/anvil-test.gif)
+![Anvil](https://github.com/pajamasoft/pjs-media/blob/main/images/anvil-test.gif)
 ##
 ### Breeze
-![Breeze](images/breeze-test.gif)
+![Breeze](https://github.com/pajamasoft/pjs-media/blob/main/images/breeze-test.gif)
 ##
 ### Cluster
-![Cluster](images/cluster-test.gif)
+![Cluster](https://github.com/pajamasoft/pjs-media/blob/main/images/cluster-test.gif)
 ##
 ### Defuse
-![Defuse](images/defuse-test.gif)
+![Defuse](https://github.com/pajamasoft/pjs-media/blob/main/images/defuse-test.gif)
 ##
 ### Endereyes
-![Endereyes](images/endereyes-test.gif)
+![Endereyes](https://github.com/pajamasoft/pjs-media/blob/main/images/endereyes-test.gif)
 ##
 ### Forging
-![Forging](images/forging-test.gif)
+![Forging](https://github.com/pajamasoft/pjs-media/blob/main/images/forging-test.gif)
 ##
 ### Glide
-![Glide](images/glide-test.gif)
+![Glide](https://github.com/pajamasoft/pjs-media/blob/main/images/glide-test.gif)
 ##
 ### Grappling
-![Grappling](images/grappling-test.gif)
+![Grappling](https://github.com/pajamasoft/pjs-media/blob/main/images/grappling-test.gif)
 ##
 ### Hive
-![Hive](images/hive-test.gif)
+![Hive](https://github.com/pajamasoft/pjs-media/blob/main/images/hive-test.gif)
 ##
 ### Homing, Antigravity
-![Homing](images/homing-antigravity-test.gif)
+![Homing](https://github.com/pajamasoft/pjs-media/blob/main/images/homing-antigravity-test.gif)
 ##
 ### Plague
-![Plague](images/plague-test.gif)
+![Plague](https://github.com/pajamasoft/pjs-media/blob/main/images/plague-test.gif)
 ##
 ### Psychic
-![Psychic](images/psychic-test.gif)
+![Psychic](https://github.com/pajamasoft/pjs-media/blob/main/images/psychic-test.gif)
 ##
 ### Ricochet
-![Ricochet](images/ricochet-test.gif)
+![Ricochet](https://github.com/pajamasoft/pjs-media/blob/main/images/ricochet-test.gif)
 ##
 ### Spikes
-![Spikes](images/spikes-test.gif)
+![Spikes](https://github.com/pajamasoft/pjs-media/blob/main/images/spikes-test.gif)
 ##
 ### Stealth, Phantom
-![Stealth](images/stealth-test.gif)
+![Stealth](https://github.com/pajamasoft/pjs-media/blob/main/images/stealth-test.gif)
 ##
 ### Unstable
-![Unstable](images/unstable-test.gif)
+![Unstable](https://github.com/pajamasoft/pjs-media/blob/main/images/unstable-test.gif)
 ##
 ### Waverider
-![Waverider](images/waverider-test.gif)
+![Waverider](https://github.com/pajamasoft/pjs-media/blob/main/images/waverider-test.gif)
 ##
 ### Werewolf
-![Werewolf](images/werewolf-test.gif)
+![Werewolf](https://github.com/pajamasoft/pjs-media/blob/main/images/werewolf-test.gif)
 ##
 ### Wings, Solar
-![Wings](images/wings-test.gif)
+![Wings](https://github.com/pajamasoft/pjs-media/blob/main/images/wings-test.gif)
 ##
 ### Wings, Solar, Glide, Antigravity
-![Wings, Glide, Antigravity](images/wings-glide-antigrav-test.gif)
+![Wings, Glide, Antigravity](https://github.com/pajamasoft/pjs-media/blob/main/images/wings-glide-antigrav-test.gif)
