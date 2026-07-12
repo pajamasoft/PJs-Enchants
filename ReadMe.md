@@ -1,4 +1,19 @@
-![](images/title-small.png)
+[helmet]: https://github.com/pajamasoft/pjs-media/blob/main/icons/helmet.png?raw=true
+[chestplate]: https://github.com/pajamasoft/pjs-media/blob/main/icons/chestplate.png?raw=true
+[leggings]: https://github.com/pajamasoft/pjs-media/blob/main/icons/leggings.png?raw=true
+[boots]: https://github.com/pajamasoft/pjs-media/blob/main/icons/boots.png?raw=true
+[sword]: https://github.com/pajamasoft/pjs-media/blob/main/icons/sword.png?raw=true
+[spear]: https://github.com/pajamasoft/pjs-media/blob/main/icons/spear.png?raw=true
+[axe]: https://github.com/pajamasoft/pjs-media/blob/main/icons/axe.png?raw=true
+[pickaxe]: https://github.com/pajamasoft/pjs-media/blob/main/icons/pickaxe.png?raw=true
+[shovel]: https://github.com/pajamasoft/pjs-media/blob/main/icons/shovel.png?raw=true
+[hoe]: https://github.com/pajamasoft/pjs-media/blob/main/icons/hoe.png?raw=true
+[bow]: https://github.com/pajamasoft/pjs-media/blob/main/icons/bow.png?raw=true
+[horse]: https://github.com/pajamasoft/pjs-media/blob/main/icons/horse.png?raw=true
+[wolf]: https://github.com/pajamasoft/pjs-media/blob/main/icons/wolf.png?raw=true
+[elytra]: https://github.com/pajamasoft/pjs-media/blob/main/icons/elytra.png?raw=true
+
+![](https://github.com/pajamasoft/pjs-media/blob/main/images/title-small.png?raw=true)
 Enchantment Guide
 
 ## Enchantment Tiers
