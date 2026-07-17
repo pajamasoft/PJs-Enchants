@@ -51,6 +51,7 @@ public class listener implements Listener {
     HashMap<UUID, Long> rage = new HashMap<>();
     HashMap<UUID, Long> skulls = new HashMap<>();
     HashMap<UUID, Boolean> spikes = new HashMap<>();
+    HashMap<UUID, Long> needles = new HashMap<>();
     HashMap<UUID, Boolean> grounded = new HashMap<>();
     HashMap<UUID, Long> blaze = new HashMap<>();
     HashMap<UUID, Long> grav = new HashMap<>();
@@ -329,16 +330,22 @@ public class listener implements Listener {
                 if(ent instanceof Item || ent instanceof IronGolem || ent instanceof Minecart){
                     magnetic.add(ent);
                 }
-                if(ent instanceof Arrow){
+                if(ent instanceof Arrow arrow){
                     Vector dist = p.getLocation().subtract(ent.getLocation()).toVector();
-                    Arrow arrow = (Arrow)ent;
                     arrow.teleport(arrow.getLocation().add(dist.normalize()));
                     arrow.setVelocity(dist);
                 }
-                if(ent instanceof Player){
-                    Player p2 = (Player) ent;
+                if(ent instanceof Player p2){
                     ItemStack[] armor = p2.getInventory().getArmorContents();
                     boolean hasiron = false;
+
+                    // Ripping arrows out of opponents
+                    int arrows = p2.getArrowsInBody();
+                    needles.remove(p2.getUniqueId());
+                    p2.setArrowsInBody(0);
+                    p2.getWorld().playSound(p2.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
+                    p2.damage(arrows*0.5,p);
+                    p.getInventory().addItem(new ItemStack(Material.ARROW,arrows));
 
                     for(ItemStack iron:p2.getInventory())
                         if(iron != null)
@@ -355,8 +362,7 @@ public class listener implements Listener {
                     if(hasiron)
                         magnetic.add(p2);
                 }
-                if(ent instanceof Monster){
-                    Monster mon = (Monster) ent;
+                if(ent instanceof Monster mon){
                     ItemStack[] armor = Objects.requireNonNull(mon.getEquipment()).getArmorContents();
                     boolean hasiron = false;
                     for(ItemStack i:armor)
@@ -1533,8 +1539,16 @@ public class listener implements Listener {
         if(pje.nightrider.contains(p)&& pje.isNight(p.getWorld()))
             e.setDamage(e.getDamage() * 1.25);
 
+        if(needles.containsKey(id)){
+            if(System.currentTimeMillis() - needles.get(id) >= 30000){
+                needles.remove(id);
+            }
+            else {
+                e.setDamage(e.getDamage() * (1 - (p.getArrowsInBody() > 30.0 ? 30.0 : p.getArrowsInBody()) / 60.0));
+            }
+        }
+
         if(getHorse(p)!=null){ // both are on horses
-            Horse h = getHorse(p);
             e.setDamage(e.getDamage() * 1.25); // Deal more damage regardless if on horseback
             if(getHorse(ent)!=null) {
                 if (getHorseArmor(p) != null) {
@@ -1694,8 +1708,7 @@ public class listener implements Listener {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                             List<Entity> near = ent.getNearbyEntities(10, 10, 10);
                             for (Entity a : near) {
-                                if (a instanceof Player) {
-                                    Player b = (Player) a;
+                                if (a instanceof Player b) {
                                     if (!b.equals(p))
                                         if (b.getInventory().getBoots() != null) {
                                             b.getWorld().strikeLightningEffect(b.getLocation());
@@ -1761,12 +1774,21 @@ public class listener implements Listener {
             }
         }
 
+        if(pje.hasEnchantment(weapon,Enchant.NEEDLES)){
+            if(e.getEntity() instanceof Player p2){
+                if(!spikes.containsKey(p2.getUniqueId())){
+                    needles.put(p2.getUniqueId(),System.currentTimeMillis());
+                    p2.setArrowsInBody(p2.getArrowsInBody() + 1);
+                    p2.getWorld().playSound(p2.getLocation(),Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH,0.6F,1);
+                }
+            }
+        }
+
         if(pje.hasEnchantment(weapon,Enchant.FRACTURE)){
             int level = pje.getEnchantLevel(weapon,Enchant.FRACTURE);
 
             if(pje.percentChance(33)){
-                if(ent instanceof Player){
-                    Player p2 = (Player)ent;
+                if(ent instanceof Player p2){
                     ItemStack[] armor = p.getInventory().getArmorContents();
                     for(int i=0;i<armor.length;i++)
                         if(armor[i].hasItemMeta()){
@@ -2223,6 +2245,7 @@ public class listener implements Listener {
                 if(pje.percentChance(5)&&!spikes.containsKey(id)){
                     p.setArrowsInBody(300);
                     spikes.put(id,true);
+                    needles.remove(id);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                         p.setArrowsInBody(0);
