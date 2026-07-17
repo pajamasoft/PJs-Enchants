@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class commands implements CommandExecutor {
     PJEnchants pjEnchants;
@@ -107,15 +108,15 @@ public class commands implements CommandExecutor {
 //                item.setItemMeta(meta);
 //            }
 
-//            if(args[0].equalsIgnoreCase("getsharedenchants")){
-//                try{
-//                    p.sendMessage("Shared enchants: "+ pjEnchants.getSharedEnchants(List.of(ItemType.valueOf(args[1].toUpperCase()),ItemType.valueOf(args[2].toUpperCase()))));
-//                }
-//                catch(Exception ex){
-//                    p.sendMessage("Incorrect usage.");
-//                    ex.printStackTrace();
-//                }
-//            }
+            if(args[0].equalsIgnoreCase("getsharedenchants")){
+                try{
+                    p.sendMessage("Shared enchants: "+ Enchant.getSharedEnchants(Set.of(ItemType.valueOf(args[1].toUpperCase()),ItemType.valueOf(args[2].toUpperCase()))));
+                }
+                catch(Exception ex){
+                    p.sendMessage("Incorrect usage.");
+                    ex.printStackTrace();
+                }
+            }
 
         }catch(Exception e){
             if(e instanceof IndexOutOfBoundsException)
