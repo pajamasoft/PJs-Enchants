@@ -162,10 +162,20 @@ public class listener implements Listener {
         UUID id = p.getUniqueId();
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
 
-            if(doublejump.containsKey(id))
-                if(!doublejump.get(id))
-                    if(!p.getLocation().subtract(0,0.2,0). getBlock().getType().isSolid())
+            if(doublejump.containsKey(id)) {
+                if (!doublejump.get(id)) {
+                    if (!p.getLocation().subtract(0, 0.2, 0).getBlock().getType().isSolid()) {
                         p.setAllowFlight(false);
+                    }
+                }
+            }
+
+
+            if(!pje.isAllowedToFly(p)){
+                e.setCancelled(true);
+                p.setAllowFlight(false);
+                return;
+            }
 
             if (p.getInventory().getBoots() != null) {
                 if (pje.hasEnchantment(p.getInventory().getBoots(), Enchant.ANTIGRAVITY) && doublejump.get(p.getUniqueId())) {
@@ -341,11 +351,13 @@ public class listener implements Listener {
 
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
-                    needles.remove(p2.getUniqueId());
-                    p2.setArrowsInBody(0);
-                    p2.getWorld().playSound(p2.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
-                    p2.damage(arrows*0.5,p);
-                    p.getInventory().addItem(new ItemStack(Material.ARROW,arrows));
+                    if(arrows > 0) {
+                        needles.remove(p2.getUniqueId());
+                        p2.setArrowsInBody(0);
+                        p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 1, 1);
+                        p2.damage(arrows * 0.5, p);
+                        p.getInventory().addItem(new ItemStack(Material.ARROW, arrows));
+                    }
 
                     for(ItemStack iron:p2.getInventory())
                         if(iron != null)
@@ -376,18 +388,20 @@ public class listener implements Listener {
                         magnetic.add(mon);
                 }
             }
-            p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
+            for(Entity ent:magnetic){
+                if(ent instanceof Item) {
+                    if (ent.getLocation().distance(p.getLocation()) <= 2) {
+                        p.getInventory().addItem(((Item) ent).getItemStack());
+                        ent.remove();
+                    }
+                }
+            }
             new BukkitRunnable(){
                 public void run(){
-                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
+                    if(!magnetic.isEmpty())
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
                     for(Entity ent:magnetic){
                         ent.setVelocity(p.getLocation().subtract(ent.getLocation()).toVector().normalize());
-                        if(ent instanceof Item) {
-                            if (ent.getLocation().distance(p.getLocation()) <= 2) {
-                                p.getInventory().addItem(((Item) ent).getItemStack());
-                                ent.remove();
-                            }
-                        }
                     }
                     if(!pje.magnet.containsKey(id))
                         cancel();
@@ -547,7 +561,8 @@ public class listener implements Listener {
     @EventHandler
     public void onJump(PlayerJumpEvent e){
         Player p = e.getPlayer();
-        p.setAllowFlight(true);
+        if(pje.isAllowedToFly(p))
+            p.setAllowFlight(true);
         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.getGameMode().equals(GameMode.SURVIVAL))
             Bukkit.getScheduler().scheduleSyncDelayedTask(pje, ()->{
                 p.setAllowFlight(false);
@@ -1131,6 +1146,7 @@ public class listener implements Listener {
         }
         else if(pje.isChestplate(item)){
             custom_enchants = new ArrayList<>(List.copyOf(pje.chestplate_enchants));
+            custom_enchants.removeIf(en->en.isTypeCompatible(ItemType.ELYTRA));
         }
         else if(pje.isLeggings(item)){
             custom_enchants = new ArrayList<>(List.copyOf(pje.leggings_enchants));
@@ -1147,17 +1163,18 @@ public class listener implements Listener {
         else if(pje.isAxe(item)) {
             custom_enchants = new ArrayList<>(List.copyOf(pje.axe_enchants));
         }
-        else if(pje.isElytra(item)){
-            custom_enchants = new ArrayList<>(List.copyOf(pje.elytra_enchants));
-        }
         else if(pje.isHoe(item)){
             custom_enchants = new ArrayList<>(List.copyOf(pje.hoe_enchants));
         }
         else if(pje.isSpear(item))
             custom_enchants = new ArrayList<>(List.copyOf(pje.spear_enchants));
 
+        int max_enchants = (int)((double)custom_enchants.size() / 3.0);
+        max_enchants = Math.min(max_enchants, 3);
+        max_enchants = Math.max(max_enchants, 1);
+
         addEnchants:
-        for(int i=0;i<level;i++){ // Enchants with numce random enchantments assuming meets all criteria
+        for(int i=0;i<max_enchants;i++){ // Enchants with numce random enchantments assuming meets all criteria
             if(custom_enchants.isEmpty())
                 break;
             random_index = (int)(Math.random()*custom_enchants.size()); // chooses a random index from all possible custom enchants

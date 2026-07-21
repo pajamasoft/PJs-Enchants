@@ -268,6 +268,16 @@ public final class PJEnchants extends JavaPlugin {
         return time<23000&&time>13000;
     }
 
+    public boolean isAllowedToFly(Player p){
+        if(hasEnchantment(p.getEquipment().getChestplate(),Enchant.WINGS))
+            return true;
+        if(hasEnchantment(p.getEquipment().getBoots(),Enchant.ANTIGRAVITY))
+            return true;
+        if(p.getEquipment().getChestplate().getType() == Material.ELYTRA)
+            return true;
+        return false;
+    }
+
     public String getTierColor(Enchant enchant){
         int tier = enchant.getTier();
         if(tier == 4)
