@@ -1244,6 +1244,12 @@ public class listener implements Listener {
             cost = ogcost;
         if(e.getView().getRenameText().length()>0)
             cost++;
+
+        if(result.getItemMeta() instanceof Repairable rep){
+            rep.setRepairCost(cost);
+            result.setItemMeta(rep);
+        }
+
         e.getView().setRepairCost(cost);
         e.setResult(result);
     }
@@ -1598,7 +1604,7 @@ public class listener implements Listener {
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,10000,0,false,false));
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING,10000,0,false,false));
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,10000,0,false,false));
-                    mon.setHealth(mon.getHealth()+12 > 20 ? 20 : mon.getHealth()+12);
+                    mon.setHealth(Math.min(mon.getAttribute(Attribute.MAX_HEALTH).getValue(),12));
                     mon.setSilent(true);
                     mon.getEquipment().setHelmet(new ItemStack(Material.SKELETON_SKULL,1));
                     //mon.setTarget(null);
@@ -1788,16 +1794,6 @@ public class listener implements Listener {
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH,1,1);
                 for (int i = 0; i < 8; i++)
                     p.getWorld().spawnParticle(Particle.SPORE_BLOSSOM_AIR, p.getEyeLocation().add(p.getLocation().getDirection().multiply((double) i / 5)), 3, 0, 0, 0);
-            }
-        }
-
-        if(pje.hasEnchantment(weapon,Enchant.NEEDLES)){
-            if(e.getEntity() instanceof Player p2){
-                if(!spikes.containsKey(p2.getUniqueId())){
-                    needles.put(p2.getUniqueId(),System.currentTimeMillis());
-                    p2.setArrowsInBody(p2.getArrowsInBody() + 1);
-                    p2.getWorld().playSound(p2.getLocation(),Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH,0.6F,1);
-                }
             }
         }
 
@@ -2301,6 +2297,8 @@ public class listener implements Listener {
                                     }
                             }
                             ent.damage(dmg,p);
+                            if(dmg > 0)
+                                ent.getWorld().strikeLightning(ent.getLocation());
                         }
                     }
                 }

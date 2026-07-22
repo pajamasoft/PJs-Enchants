@@ -55,7 +55,6 @@ public enum Enchant {
     LUNAR(1,2,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE)),
     MAGNETIC(1,1,Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS)),
     MOLTEN(3,1,Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR)),
-    NEEDLES(2,3,ItemType.SPEAR),
     NIGHTEYE(1,2,ItemType.HELMET),
     NIGHTRIDER(1,2,ItemType.HORSE_ARMOR),
     NITRO(5,2,ItemType.BOW),
