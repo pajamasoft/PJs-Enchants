@@ -173,7 +173,7 @@ public enum Enchant {
     }
 
     public boolean isTypeCompatible(ItemStack i){
-        if(i.getType() == Material.BOOK)
+        if(i.getType() == Material.BOOK || i.getType() == Material.ENCHANTED_BOOK)
             return true;
         for(ItemType type : types){
             if(type.isOfType(i))

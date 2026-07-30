@@ -1,5 +1,6 @@
 package net.pajamasoft.pjenchants;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -324,6 +325,26 @@ public final class PJEnchants extends JavaPlugin {
             }
         }
         return enchants;
+    }
+
+    public void removeCustomEnchantments(ItemStack item){
+        if(item == null)
+            return;
+        if(!item.hasItemMeta())
+            return;
+        ItemMeta meta = item.getItemMeta();
+        if(meta.hasLore()){
+            meta.getLore().removeIf(l->!isEnchantmentLine(l));
+        }
+    }
+
+    public boolean isEnchantmentLine(String line){
+        try{
+            Enchant.valueOf(line.substring(2,line.indexOf(' ')).toUpperCase());
+            return true;
+        }catch(Exception ex){
+            return false;
+        }
     }
 
     public int getEnchantLevel(ItemStack i, Enchant enchant, boolean debug){
