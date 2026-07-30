@@ -173,13 +173,27 @@ public enum Enchant {
     }
 
     public boolean isTypeCompatible(ItemStack i){
-        if(i.getType() == Material.BOOK)
+        if(i.getType() == Material.BOOK || i.getType() == Material.ENCHANTED_BOOK)
             return true;
         for(ItemType type : types){
             if(type.isOfType(i))
                 return true;
         };
         return false;
+    }
+
+    public static List<Enchant> getSharedEnchants(Set<ItemType> types){
+        List<Enchant> list = new ArrayList<>();
+        outer:
+        for(Enchant e : values()){
+            for(ItemType type : types){
+                if(!e.isTypeCompatible(type)) {
+                    continue outer;
+                }
+            }
+            list.add(e);
+        }
+        return list;
     }
 
     public boolean isTypeCompatible(ItemType type){

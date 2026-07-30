@@ -51,6 +51,7 @@ public class listener implements Listener {
     HashMap<UUID, Long> rage = new HashMap<>();
     HashMap<UUID, Long> skulls = new HashMap<>();
     HashMap<UUID, Boolean> spikes = new HashMap<>();
+    HashMap<UUID, Long> needles = new HashMap<>();
     HashMap<UUID, Boolean> grounded = new HashMap<>();
     HashMap<UUID, Long> blaze = new HashMap<>();
     HashMap<UUID, Long> grav = new HashMap<>();
@@ -161,10 +162,20 @@ public class listener implements Listener {
         UUID id = p.getUniqueId();
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
 
-            if(doublejump.containsKey(id))
-                if(!doublejump.get(id))
-                    if(!p.getLocation().subtract(0,0.2,0). getBlock().getType().isSolid())
+            if(doublejump.containsKey(id)) {
+                if (!doublejump.get(id)) {
+                    if (!p.getLocation().subtract(0, 0.2, 0).getBlock().getType().isSolid()) {
                         p.setAllowFlight(false);
+                    }
+                }
+            }
+
+
+            if(!pje.isAllowedToFly(p)){
+                e.setCancelled(true);
+                p.setAllowFlight(false);
+                return;
+            }
 
             if (p.getInventory().getBoots() != null) {
                 if (pje.hasEnchantment(p.getInventory().getBoots(), Enchant.ANTIGRAVITY) && doublejump.get(p.getUniqueId())) {
@@ -227,7 +238,6 @@ public class listener implements Listener {
 
             if(pje.hasEnchantment(boots,Enchant.GROUNDED)){
                 if(p.isInWater()) {
-                    //p.sendMessage("Sinking");
                     new BukkitRunnable(){
                         public void run(){
                             if(p.isSneaking())
@@ -329,16 +339,24 @@ public class listener implements Listener {
                 if(ent instanceof Item || ent instanceof IronGolem || ent instanceof Minecart){
                     magnetic.add(ent);
                 }
-                if(ent instanceof Arrow){
+                if(ent instanceof Arrow arrow){
                     Vector dist = p.getLocation().subtract(ent.getLocation()).toVector();
-                    Arrow arrow = (Arrow)ent;
                     arrow.teleport(arrow.getLocation().add(dist.normalize()));
                     arrow.setVelocity(dist);
                 }
-                if(ent instanceof Player){
-                    Player p2 = (Player) ent;
+                if(ent instanceof Player p2){
                     ItemStack[] armor = p2.getInventory().getArmorContents();
                     boolean hasiron = false;
+
+                    // Ripping arrows out of opponents
+                    int arrows = p2.getArrowsInBody();
+                    if(arrows > 0) {
+                        needles.remove(p2.getUniqueId());
+                        p2.setArrowsInBody(0);
+                        p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 1, 1);
+                        p2.damage(arrows * 0.5, p);
+                        p.getInventory().addItem(new ItemStack(Material.ARROW, arrows));
+                    }
 
                     for(ItemStack iron:p2.getInventory())
                         if(iron != null)
@@ -346,8 +364,9 @@ public class listener implements Listener {
                                 hasiron = true;
 
                     for(ItemStack i:armor)
-                        if(i.getType().toString().toUpperCase().contains("IRON"))
-                            hasiron = true;
+                        if(!i.isEmpty())
+                            if(i.getType().toString().toUpperCase().contains("IRON"))
+                                hasiron = true;
 
                     if(pje.hasEnchantment(p2.getEquipment().getBoots(),Enchant.GROUNDED))
                         hasiron = false;
@@ -355,13 +374,13 @@ public class listener implements Listener {
                     if(hasiron)
                         magnetic.add(p2);
                 }
-                if(ent instanceof Monster){
-                    Monster mon = (Monster) ent;
+                if(ent instanceof Monster mon){
                     ItemStack[] armor = Objects.requireNonNull(mon.getEquipment()).getArmorContents();
                     boolean hasiron = false;
                     for(ItemStack i:armor)
-                        if(i.getType().toString().toUpperCase().contains("IRON"))
-                            hasiron = true;
+                        if(!i.isEmpty())
+                            if(i.getType().toString().toUpperCase().contains("IRON"))
+                                hasiron = true;
                     if(mon.getEquipment().getItemInMainHand().getType().toString().contains("IRON"))
                         hasiron = true;
                     if(mon.getEquipment().getItemInOffHand().getType().toString().contains("IRON"))
@@ -370,18 +389,20 @@ public class listener implements Listener {
                         magnetic.add(mon);
                 }
             }
-            p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
+            for(Entity ent:magnetic){
+                if(ent instanceof Item) {
+                    if (ent.getLocation().distance(p.getLocation()) <= 2 && p.getInventory().firstEmpty() > -1) {
+                        p.getInventory().addItem(((Item) ent).getItemStack());
+                        ent.remove();
+                    }
+                }
+            }
             new BukkitRunnable(){
                 public void run(){
-                    p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
+                    if(!magnetic.isEmpty())
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
                     for(Entity ent:magnetic){
                         ent.setVelocity(p.getLocation().subtract(ent.getLocation()).toVector().normalize());
-                        if(ent instanceof Item) {
-                            if (ent.getLocation().distance(p.getLocation()) <= 2) {
-                                p.getInventory().addItem(((Item) ent).getItemStack());
-                                ent.remove();
-                            }
-                        }
                     }
                     if(!pje.magnet.containsKey(id))
                         cancel();
@@ -541,7 +562,8 @@ public class listener implements Listener {
     @EventHandler
     public void onJump(PlayerJumpEvent e){
         Player p = e.getPlayer();
-        p.setAllowFlight(true);
+        if(pje.isAllowedToFly(p))
+            p.setAllowFlight(true);
         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.getGameMode().equals(GameMode.SURVIVAL))
             Bukkit.getScheduler().scheduleSyncDelayedTask(pje, ()->{
                 p.setAllowFlight(false);
@@ -1080,23 +1102,6 @@ public class listener implements Listener {
         }
         if(inv.getSecondary()==null)
             return;
-//        if(item.getType().equals(Material.ELYTRA)||pje.isHorseArmor(item)||item.getType().equals(Material.WOLF_ARMOR)){
-//            Enchantment enc = Enchantment.UNBREAKING;
-//    //            if(sp.isHorseArmor(item))
-//    //                enc = Enchantment.PROTECTION_ENVIRONMENTAL;
-//            int amount = inv.getSecondary().getAmount();
-//            int level = 2*pje.getNearbyShelves(b);
-//            if(level>30)
-//                level = 30;
-//            p.sendMessage("Level: "+level+", amount: "+amount);
-//            if(amount>0)
-//                e.getOffers()[0] = new EnchantmentOffer(enc,1,level/3);
-//            if(amount>1)
-//                e.getOffers()[1] = new EnchantmentOffer(enc,2,2*(level/3));
-//            if(amount>2)
-//                e.getOffers()[2] = new EnchantmentOffer(enc,3,level);
-//        }
-
     }
 
     @EventHandler
@@ -1125,6 +1130,7 @@ public class listener implements Listener {
         }
         else if(pje.isChestplate(item)){
             custom_enchants = new ArrayList<>(List.copyOf(pje.chestplate_enchants));
+            custom_enchants.removeIf(en->en.isTypeCompatible(ItemType.ELYTRA));
         }
         else if(pje.isLeggings(item)){
             custom_enchants = new ArrayList<>(List.copyOf(pje.leggings_enchants));
@@ -1141,17 +1147,19 @@ public class listener implements Listener {
         else if(pje.isAxe(item)) {
             custom_enchants = new ArrayList<>(List.copyOf(pje.axe_enchants));
         }
-        else if(pje.isElytra(item)){
-            custom_enchants = new ArrayList<>(List.copyOf(pje.elytra_enchants));
-        }
         else if(pje.isHoe(item)){
             custom_enchants = new ArrayList<>(List.copyOf(pje.hoe_enchants));
         }
         else if(pje.isSpear(item))
             custom_enchants = new ArrayList<>(List.copyOf(pje.spear_enchants));
 
+        int max_enchants = (int)((double)custom_enchants.size() / 3.0);
+        max_enchants = Math.min(max_enchants, 3);
+        max_enchants = Math.max(max_enchants, 1);
+        max_enchants = Math.min(max_enchants,level);
+
         addEnchants:
-        for(int i=0;i<level;i++){ // Enchants with numce random enchantments assuming meets all criteria
+        for(int i=0;i<max_enchants;i++){ // Enchants with numce random enchantments assuming meets all criteria
             if(custom_enchants.isEmpty())
                 break;
             random_index = (int)(Math.random()*custom_enchants.size()); // chooses a random index from all possible custom enchants
@@ -1159,9 +1167,11 @@ public class listener implements Listener {
             int tier = enchant.getTier();
             int chanceToAdd = switch (tier) {
                 case 2 -> 50;
-                case 3 -> 20;
+                case 3 -> 10;
                 default -> 80;
             };
+            if(tier == 3 && e.getExpLevelCost() < 30)
+                chanceToAdd = 0;
 
             // Choose level # custom enchants from all possible enchants. Depending on the tier of the random enchant, determine the odds of it actually being applied.
             if(pje.percentChance(100-chanceToAdd))
@@ -1188,8 +1198,26 @@ public class listener implements Listener {
         ItemStack i2 = e.getView().getItem(1);
         ItemStack i1 = e.getView().getItem(0);
 
-        if(i1 == null || i2 == null || e.getResult() == null)
+        if(i1 == null || i2 == null)
             return;
+
+        List<Pair<Enchant, Integer>> bookCEs = new ArrayList<>();
+        if(i2.getType() == Material.ENCHANTED_BOOK){
+            if(e.getResult() == null && pje.hasCustomEnchants(i2)){
+                if(i1.getType() != Material.ENCHANTED_BOOK)
+                    e.setResult(i1.clone());
+                for(Enchant en:pje.getCustomEnchants(i2)){
+                    if(pje.isTypeCompatible(i1,en)){
+                        bookCEs.add(Pair.of(en,pje.getEnchantLevel(i2,en)));
+                    }
+                }
+            }
+        }
+
+        if(e.getResult() == null)
+            return;
+
+        ItemStack result = i1.clone();
 
         Map<Enchantment, Integer> final_enchants = new HashMap<>();
 
@@ -1197,17 +1225,19 @@ public class listener implements Listener {
             if (e.getResult().getItemMeta().hasEnchants()){
                 final_enchants = e.getResult().getItemMeta().getEnchants();
             }
+            else if(e.getResult().getItemMeta() instanceof EnchantmentStorageMeta emeta){
+                if(emeta.hasStoredEnchants())
+                    final_enchants = emeta.getStoredEnchants();
+            }
         }
+
+        if(!pje.hasCustomEnchants(i1) && !pje.hasCustomEnchants(i2))
+            return;
 
         int ogcost = e.getView().getRepairCost();
 
-        List<Enchant> cenchants1 = pje.getCustomEnchants(i1);
         List<Enchant> cenchants2 = pje.getCustomEnchants(i2);
-        ItemStack result = i1.clone();
 
-//        for (Enchant en : cenchants1) {
-//            pje.enchant(result, en, pje.getEnchantLevel(i1, en));
-//        }
         for (Enchant en : cenchants2) {
             pje.enchant(result, en, pje.getEnchantLevel(i2, en));
         }
@@ -1221,8 +1251,35 @@ public class listener implements Listener {
             cost = ogcost;
         if(e.getView().getRenameText().length()>0)
             cost++;
+
+        if(result.getItemMeta() instanceof Repairable rep){
+            rep.setRepairCost(cost);
+            result.setItemMeta(rep);
+        }
+
+        if(e.getResult().isEmpty()){
+            for(Pair<Enchant, Integer> en:bookCEs){
+                pje.enchant(result,en.first(),en.second());
+            }
+        }
+
         e.getView().setRepairCost(cost);
-        e.setResult(result);
+        if(pje.hasCustomEnchants(result) || !result.getEnchantments().isEmpty())
+            e.setResult(result);
+        else e.setResult(null);
+    }
+
+    @EventHandler
+    public void onGrind(PrepareGrindstoneEvent e){
+        if(e.getInventory().getUpperItem() == null)
+            return;
+
+        ItemStack input = e.getInventory().getUpperItem().clone();
+        if(pje.hasCustomEnchants(input)){
+            input.removeEnchantments();
+            pje.removeCustomEnchantments(input);
+            e.setResult(input);
+        }
     }
 
     @EventHandler
@@ -1533,8 +1590,16 @@ public class listener implements Listener {
         if(pje.nightrider.contains(p)&& pje.isNight(p.getWorld()))
             e.setDamage(e.getDamage() * 1.25);
 
+        if(needles.containsKey(id)){
+            if(System.currentTimeMillis() - needles.get(id) >= 30000){
+                needles.remove(id);
+            }
+            else {
+                e.setDamage(e.getDamage() * (1 - (p.getArrowsInBody() > 30.0 ? 30.0 : p.getArrowsInBody()) / 60.0));
+            }
+        }
+
         if(getHorse(p)!=null){ // both are on horses
-            Horse h = getHorse(p);
             e.setDamage(e.getDamage() * 1.25); // Deal more damage regardless if on horseback
             if(getHorse(ent)!=null) {
                 if (getHorseArmor(p) != null) {
@@ -1567,7 +1632,7 @@ public class listener implements Listener {
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,10000,0,false,false));
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING,10000,0,false,false));
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,10000,0,false,false));
-                    mon.setHealth(mon.getHealth()+12 > 20 ? 20 : mon.getHealth()+12);
+                    mon.setHealth(Math.min(mon.getAttribute(Attribute.MAX_HEALTH).getValue(),12));
                     mon.setSilent(true);
                     mon.getEquipment().setHelmet(new ItemStack(Material.SKELETON_SKULL,1));
                     //mon.setTarget(null);
@@ -1694,8 +1759,7 @@ public class listener implements Listener {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                             List<Entity> near = ent.getNearbyEntities(10, 10, 10);
                             for (Entity a : near) {
-                                if (a instanceof Player) {
-                                    Player b = (Player) a;
+                                if (a instanceof Player b) {
                                     if (!b.equals(p))
                                         if (b.getInventory().getBoots() != null) {
                                             b.getWorld().strikeLightningEffect(b.getLocation());
@@ -1765,8 +1829,7 @@ public class listener implements Listener {
             int level = pje.getEnchantLevel(weapon,Enchant.FRACTURE);
 
             if(pje.percentChance(33)){
-                if(ent instanceof Player){
-                    Player p2 = (Player)ent;
+                if(ent instanceof Player p2){
                     ItemStack[] armor = p.getInventory().getArmorContents();
                     for(int i=0;i<armor.length;i++)
                         if(armor[i].hasItemMeta()){
@@ -2162,7 +2225,6 @@ public class listener implements Listener {
                 Vector v = p.getVelocity();
                 p.setVelocity(v.multiply(0.1));
                 p.getWorld().playSound(p.getLocation(),Sound.ITEM_SHIELD_BLOCK,1,1);
-                //p.sendMessage("Grounded");
             }
         }
 
@@ -2223,6 +2285,7 @@ public class listener implements Listener {
                 if(pje.percentChance(5)&&!spikes.containsKey(id)){
                     p.setArrowsInBody(300);
                     spikes.put(id,true);
+                    needles.remove(id);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                         p.setArrowsInBody(0);
@@ -2261,6 +2324,8 @@ public class listener implements Listener {
                                     }
                             }
                             ent.damage(dmg,p);
+                            if(dmg > 0)
+                                ent.getWorld().strikeLightningEffect(ent.getLocation());
                         }
                     }
                 }
@@ -2389,56 +2454,42 @@ public class listener implements Listener {
         Inventory inv = e.getInventory();
         ItemStack item = e.getCurrentItem();
 
-        if(item!=null&&type.equals(InventoryType.GRINDSTONE)) {
-            if (pje.hasCurse(item)|| pje.hasCustomEnchants(item)) {
-                e.setCancelled(true);
-                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.5F, 1);
-            }
-        }
-
-        // Anvil functionality
-        if (item != null && type.equals(InventoryType.ANVIL)) {
-            if(pje.hasCurse(item)||(pje.getCustomEnchants(item).size()>6&&!item.getType().equals(Material.ENCHANTED_BOOK))) {
-                e.setCancelled(true);
-                return;
-            }
-            if(slot==2){
-                if(inv.getItem(2)!=null) {
-                    if (!inv.getItem(2).getType().equals(Material.AIR)) {
-                        ItemStack prod = inv.getItem(2);
-
-                        if(prod.equals(inv.getItem(0))){
-                            e.setCancelled(true);
-                            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_BASS,1,1);
-                            return;
-                        }
-
-                        inv.setItem(0, null);
-                        inv.setItem(1, null);
-                        e.getView().setCursor(prod);
-                        inv.setItem(2, null);
-                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
-                    }
-                }
-            }
-        }
+//        // Anvil functionality
+//        if (item != null && type.equals(InventoryType.ANVIL)) {
+//            if(slot==2){
+//                if(inv.getItem(2)!=null) {
+//                    if (!inv.getItem(2).getType().equals(Material.AIR)) {
+//                        ItemStack prod = inv.getItem(2);
+//
+//                        if(prod.equals(inv.getItem(0))){
+//                            e.setCancelled(true);
+//                            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_BASS,1,1);
+//                            return;
+//                        }
+//
+//                        inv.setItem(0, null);
+//                        inv.setItem(1, null);
+//                        e.getView().setCursor(prod);
+//                        inv.setItem(2, null);
+//                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
+//                    }
+//                }
+//            }
+//        }
 
         if(inv instanceof HorseInventory){
 
-            //p.sendMessage("Horse Inventory");
             Horse horse = (Horse)e.getInventory().getHolder();
 
             if(slot==1) {
                 if (inv.getItem(1) != null) {
                     ItemStack armor = inv.getItem(1);
                     takeOffHorseArmor(horse,armor);
-                    //p.sendMessage("Took off horse armor");
                 }
                 else if(e.getView().getCursor()!=null){
                     if(pje.isHorseArmor(e.getView().getCursor())){
                         ItemStack armor = e.getView().getCursor();
                         putOnHorseArmor(horse,armor,p);
-                        //p.sendMessage("Put on horse armor");
                     }
                 }
             }
@@ -2446,7 +2497,6 @@ public class listener implements Listener {
                 ItemStack armor = e.getCurrentItem();
                 if(pje.isHorseArmor(armor)) {
                     putOnHorseArmor(horse, armor,p);
-                    //p.sendMessage("Put on horse armor");
                 }
             }
         }

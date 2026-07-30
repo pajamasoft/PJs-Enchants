@@ -1,5 +1,6 @@
 package net.pajamasoft.pjenchants;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,22 +25,28 @@ public final class PJEnchants extends JavaPlugin {
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
-    final List<Enchant> all_enchants = Enchant.getAllEnchants();
-    final List<Enchant> all_curses = Enchant.getAllCurses();
-    final List<Enchant> sword_enchants = getAvailableEnchants(ItemType.SWORD);
-    final List<Enchant> pick_enchants = getAvailableEnchants(ItemType.PICKAXE);
-    final List<Enchant> axe_enchants = getAvailableEnchants(ItemType.AXE);
-    final List<Enchant> helmet_enchants = getAvailableEnchants(ItemType.HELMET);
-    final List<Enchant> chestplate_enchants = getAvailableEnchants(ItemType.CHESTPLATE);
-    final List<Enchant> leggings_enchants = getAvailableEnchants(ItemType.LEGGINGS);
-    final List<Enchant> boots_enchants = getAvailableEnchants(ItemType.BOOTS);
-    final List<Enchant> bow_enchants = getAvailableEnchants(ItemType.BOW);
-    final List<Enchant> hoe_enchants = getAvailableEnchants(ItemType.HOE);
-    final List<Enchant> spear_enchants = getAvailableEnchants(ItemType.SPEAR);
-    final List<Enchant> elytra_enchants = getAvailableEnchants(ItemType.ELYTRA);
-    final List<Enchant> t1_enchants = getEnchantsOfTier(1);
-    final List<Enchant> t2_enchants = getEnchantsOfTier(2);
-    final List<Enchant> t3_enchants = getEnchantsOfTier(3);
+    public final List<Enchant> all_enchants = Enchant.getAllEnchants();
+    public final List<Enchant> all_curses = Enchant.getAllCurses();
+    public final List<Enchant> sword_enchants = getAvailableEnchants(ItemType.SWORD);
+    public final List<Enchant> spear_enchants = getAvailableEnchants(ItemType.SPEAR);
+    public final List<Enchant> axe_enchants = getAvailableEnchants(ItemType.AXE);
+    public final List<Enchant> melee_enchants = Enchant.getSharedEnchants(Set.of(ItemType.SPEAR, ItemType.AXE, ItemType.SWORD));
+    public final List<Enchant> pick_enchants = getAvailableEnchants(ItemType.PICKAXE);
+    public final List<Enchant> shovel_enchants = getAvailableEnchants(ItemType.SHOVEL);
+    public final List<Enchant> hoe_enchants = getAvailableEnchants(ItemType.HOE);
+    public final List<Enchant> tool_enchants = Enchant.getSharedEnchants(Set.of(ItemType.PICKAXE, ItemType.AXE, ItemType.SHOVEL, ItemType.HOE));
+    public final List<Enchant> helmet_enchants = getAvailableEnchants(ItemType.HELMET);
+    public final List<Enchant> chestplate_enchants = getAvailableEnchants(ItemType.CHESTPLATE);
+    public final List<Enchant> leggings_enchants = getAvailableEnchants(ItemType.LEGGINGS);
+    public final List<Enchant> boots_enchants = getAvailableEnchants(ItemType.BOOTS);
+    public final List<Enchant> armor_enchants = Enchant.getSharedEnchants(Set.of(ItemType.HELMET, ItemType.CHESTPLATE, ItemType.LEGGINGS, ItemType.BOOTS));
+    public final List<Enchant> bow_enchants = getAvailableEnchants(ItemType.BOW);
+    public final List<Enchant> horse_enchants = getAvailableEnchants(ItemType.HORSE_ARMOR);
+    public final List<Enchant> elytra_enchants = getAvailableEnchants(ItemType.ELYTRA);
+    public final List<Enchant> wolf_enchants = getAvailableEnchants(ItemType.WOLF_ARMOR);
+    public final List<Enchant> t1_enchants = getEnchantsOfTier(1);
+    public final List<Enchant> t2_enchants = getEnchantsOfTier(2);
+    public final List<Enchant> t3_enchants = getEnchantsOfTier(3);
     final List<Material> mVals = Arrays.stream(Material.values()).toList();
     final List<Material> pickaxe_blocks = new ArrayList<>(mVals){{
        removeIf(m -> !m.name().toUpperCase().contains("_ORE"));
@@ -262,6 +269,16 @@ public final class PJEnchants extends JavaPlugin {
         return time<23000&&time>13000;
     }
 
+    public boolean isAllowedToFly(Player p){
+        if(hasEnchantment(p.getEquipment().getChestplate(),Enchant.WINGS))
+            return true;
+        if(hasEnchantment(p.getEquipment().getBoots(),Enchant.ANTIGRAVITY))
+            return true;
+        if(p.getEquipment().getChestplate().getType() == Material.ELYTRA)
+            return true;
+        return false;
+    }
+
     public String getTierColor(Enchant enchant){
         int tier = enchant.getTier();
         if(tier == 4)
@@ -308,6 +325,26 @@ public final class PJEnchants extends JavaPlugin {
             }
         }
         return enchants;
+    }
+
+    public void removeCustomEnchantments(ItemStack item){
+        if(item == null)
+            return;
+        if(!item.hasItemMeta())
+            return;
+        ItemMeta meta = item.getItemMeta();
+        if(meta.hasLore()){
+            meta.getLore().removeIf(l->!isEnchantmentLine(l));
+        }
+    }
+
+    public boolean isEnchantmentLine(String line){
+        try{
+            Enchant.valueOf(line.substring(2,line.indexOf(' ')).toUpperCase());
+            return true;
+        }catch(Exception ex){
+            return false;
+        }
     }
 
     public int getEnchantLevel(ItemStack i, Enchant enchant, boolean debug){
@@ -383,6 +420,12 @@ public final class PJEnchants extends JavaPlugin {
         if(num >= numerals.length)
             return "";
         return numerals[num-1];
+    }
+
+    public void enchant(ItemStack item, int tier){
+        final List<Enchant> local_enchants = getEnchantsOfTier(tier);
+        Enchant enchant = local_enchants.get((int)(Math.random()*local_enchants.size()));
+        enchant(item,enchant,(int)(Math.random()*enchant.getMaxLevel() + 1));
     }
 
     public void enchant(ItemStack item, Enchant enchant, int level){
