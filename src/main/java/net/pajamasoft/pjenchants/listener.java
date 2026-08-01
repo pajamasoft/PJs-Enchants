@@ -271,7 +271,13 @@ public class listener implements Listener {
                 }
             }
 
-            if(System.currentTimeMillis()-lunartime.get(p.getUniqueId())>=500&&!p.isInWater()&& pje.hasEnchantment(p.getInventory().getChestplate(),Enchant.LUNAR)&&((pje.isNight(p.getWorld())&&!p.getWorld().hasStorm()&&!p.getWorld().isThundering())||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)
+            if(System.currentTimeMillis()-lunartime.get(p.getUniqueId())>=500
+                    &&!p.isInWater()
+                    && pje.hasEnchantment(p.getInventory().getChestplate(),Enchant.LUNAR)
+                    &&((pje.isNight(p.getWorld())
+                    &&!p.getWorld().hasStorm()
+                    &&!p.getWorld().isThundering())
+                    ||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)
             )))){
                 p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.5));
                 lunartime.put(p.getUniqueId(),System.currentTimeMillis());
@@ -364,7 +370,7 @@ public class listener implements Listener {
                                 hasiron = true;
 
                     for(ItemStack i:armor)
-                        if(!i.isEmpty())
+                        if(i != null)
                             if(i.getType().toString().toUpperCase().contains("IRON"))
                                 hasiron = true;
 
@@ -1635,7 +1641,7 @@ public class listener implements Listener {
                     mon.setHealth(Math.min(mon.getAttribute(Attribute.MAX_HEALTH).getValue(),12));
                     mon.setSilent(true);
                     mon.getEquipment().setHelmet(new ItemStack(Material.SKELETON_SKULL,1));
-                    //mon.setTarget(null);
+                    mon.setTarget(null);
                     ghosts.get(p.getUniqueId()).add(mon);
 
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
