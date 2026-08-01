@@ -95,7 +95,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![][sword]![][axe]![][spear] | Chance to strike target with lightning | (5 + 5 * level)% chance to activate. Deals 10 raw damage. |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
 | $\color{#ffff77}{\text{Unholy}}$ | 1 | ![][sword]![][axe]![][spear] | Chance to turn slain enemies into an ally ghost. | 25% chance to activate. Only works on armorable monsters. Maximum of 8 ghosts at once. Ghosts last 4 minutes before ascending. |
-| $\color{#77ff77}{\text{Unstable}}$ | 5 | ![][chestplate] | Chance to set off an explosion when hit, damaging nearby enemies. | (3 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
+| $\color{#ffff77}{\text{Unstable}}$ | 5 | ![][chestplate] | Chance to set off an explosion when hit, damaging nearby enemies. | (3 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
 | $\color{#77ff77}{\text{Venom}}$ | 5 | ![][sword]![][axe]![][spear]![][bow] | Chance to poison the target. | (Sword) 20% chance to give Poison 2 for (1 + level) seconds. (Bow) 30% chance to give Poison 2 for (2 + level) seconds. |
 | $\color{#ffaa55}{\text{Waverider}}$ | 2 | ![][horse]![][boots] | Gain the ability to run on water. | Speed increases with level. |
 | $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![][wolf] | Increases the wolf's strength and size at night when aggravated. | Wolf gains (Level < 3: Strength I, Level 3: Strength II and Speed that matches the level. |
