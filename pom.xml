@@ -6,7 +6,7 @@
 
     <groupId>net.pajamasoft</groupId>
     <artifactId>pjenchants</artifactId>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <name>PJEnchants</name>
@@ -75,6 +75,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>net.pajamasoft</groupId>
+            <artifactId>pj-lib</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>

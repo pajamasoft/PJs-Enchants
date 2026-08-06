@@ -10,7 +10,6 @@ import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,9 +20,7 @@ import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
-import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
-import org.bukkit.event.world.ChunkPopulateEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.inventory.meta.Damageable;
@@ -35,6 +32,8 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.util.*;
 
+import static net.pajamasoft.pjLib.PJLib.*;
+
 public class listener implements Listener {
 
     PJEnchants pje;
@@ -43,20 +42,11 @@ public class listener implements Listener {
     List<PotionEffectType> curses = Arrays.asList(PotionEffectType.BLINDNESS,PotionEffectType.SLOWNESS,PotionEffectType.WEAKNESS,PotionEffectType.NAUSEA,
             PotionEffectType.POISON,PotionEffectType.INSTANT_DAMAGE,PotionEffectType.WITHER,PotionEffectType.LEVITATION);
     HashMap<UUID,Boolean> doublejump = new HashMap<>();
-    HashMap<UUID, Long> solartime = new HashMap<>();
-    HashMap<UUID, Long> lunartime = new HashMap<>();
-    HashMap<UUID, Long> stealthtime = new HashMap<>();
-    HashMap<UUID, Long> draconictime = new HashMap<>();
-    HashMap<UUID, Long> adrenaline = new HashMap<>();
-    HashMap<UUID, Long> rage = new HashMap<>();
-    HashMap<UUID, Long> skulls = new HashMap<>();
-    HashMap<UUID, Boolean> spikes = new HashMap<>();
-    HashMap<UUID, Long> needles = new HashMap<>();
-    HashMap<UUID, Boolean> grounded = new HashMap<>();
-    HashMap<UUID, Long> blaze = new HashMap<>();
-    HashMap<UUID, Long> grav = new HashMap<>();
+    Map<UUID, Map<Enchant, Long>> cooldowns = new HashMap<>();
     HashMap<UUID, List<Entity>> ricochetlimit = new HashMap<>();
     HashMap<UUID, List<Monster>> ghosts = new HashMap<>();
+    HashMap<UUID, Boolean> grounded = new HashMap<>();
+    HashMap<UUID, Boolean> spikes = new HashMap<>();
     HashMap<UUID, Long> wolf_mending = new HashMap<>();
     HashMap<UUID, Pair<ItemStack,Long>> anvil_cooldown = new HashMap<>(); // Anvil prep event triple triggers causing dupe enchants on result
     List<Block> untouchable = new ArrayList<>();
@@ -75,6 +65,7 @@ public class listener implements Listener {
         UUID id = p.getUniqueId();
         p.setFlying(false);
         doublejump.put(id,false);
+        cooldowns.putIfAbsent(id, new HashMap<>());
         if(getHorseArmor(p)!=null)
             putOnHorseArmor(getHorse(p),getHorse(p).getInventory().getArmor(),p);
         pje.online.add(p);
@@ -110,51 +101,6 @@ public class listener implements Listener {
             }
         }
     }
-
-//    public void onChunkGen(ChunkPopulateEvent e){
-//        World world = e.getWorld();
-//        Chunk chunk = e.getChunk();
-//        for(BlockState b:chunk.getTileEntities()){
-//            if(b.getType().equals(Material.CHEST)){
-//                try {
-//                    World.Environment env = world.getEnvironment();
-//                    Chest chest = (Chest) b.getBlock();
-//                    Inventory inv = chest.getBlockInventory();
-//                    List<Enchant> available = pje.sword_enchants;
-//                    List<String> enchants;
-//                    switch (env) {
-//                        case NETHER:
-//                            enchants = available.keySet().stream().toList();
-//                            for (ItemStack item : inv) {
-//                                if(pje.isSword(item)){
-//                                    if(pje.percentChance(5))
-//                                        pje.enchant(item,"judgment",1);
-//                                    if(pje.percentChance(10))
-//                                        pje.enchant(item,"wilting",(int)(Math.random()*3)+1);
-//                                }
-//                                else if(item.getType().equals(Material.ENCHANTED_BOOK)){
-//                                    for(int i=0;i<3;i++) {
-//                                        if (pje.percentChance(75)) {
-//                                            String enchant = enchants.get((int) (Math.random() * enchants.size()));
-//                                            pje.enchant(item, enchant, 1 + (int) (Math.random() * available.get(enchant)));
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                            break;
-//                        case THE_END:
-//                            for (ItemStack item : inv) {
-//                                //if(sp.isEnchantable(item))
-//                            }
-//                            break;
-//                    }
-//
-//                }catch(Exception ex){
-//                    //
-//                }
-//            }
-//        }
-//    }
 
     @EventHandler
     public void onFly(PlayerToggleFlightEvent e){
@@ -256,13 +202,13 @@ public class listener implements Listener {
 
         if(p.isGliding()&&!p.isSneaking()){
             assert p.getInventory().getChestplate() != null;
-            solartime.putIfAbsent(p.getUniqueId(),0L);
-            lunartime.putIfAbsent(p.getUniqueId(),0L);
+            cooldowns.get(p.getUniqueId()).putIfAbsent(Enchant.SOLAR,0L);
+            cooldowns.get(p.getUniqueId()).putIfAbsent(Enchant.LUNAR,0L);
 
-            if(System.currentTimeMillis()-solartime.get(p.getUniqueId())>=1000&&!p.isInWater()&& pje.hasEnchantment(p.getInventory().getChestplate(),Enchant.SOLAR)&&p.getWorld().getTime()>=0
+            if(isCooldownOver(id,Enchant.SOLAR)&&!p.isInWater()&& pje.hasEnchantment(p.getInventory().getChestplate(),Enchant.SOLAR)&&p.getWorld().getTime()>=0
                     &&p.getWorld().getTime()<12500&&!p.getWorld().hasStorm()&&!p.getWorld().isThundering()&&p.getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
                 p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75));
-                solartime.put(p.getUniqueId(),System.currentTimeMillis());
+                updateCooldown(id,Enchant.SOLAR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_SHULKER_SHOOT,0.6F,1);
                 for(int i=0;i<5;i++){
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
@@ -271,7 +217,7 @@ public class listener implements Listener {
                 }
             }
 
-            if(System.currentTimeMillis()-lunartime.get(p.getUniqueId())>=500
+            if(isCooldownOver(p.getUniqueId(),Enchant.LUNAR)
                     &&!p.isInWater()
                     && pje.hasEnchantment(p.getInventory().getChestplate(),Enchant.LUNAR)
                     &&((pje.isNight(p.getWorld())
@@ -280,7 +226,7 @@ public class listener implements Listener {
                     ||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)
             )))){
                 p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.5));
-                lunartime.put(p.getUniqueId(),System.currentTimeMillis());
+                updateCooldown(id,Enchant.LUNAR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ENDER_DRAGON_FLAP,0.6F,1);
                 for(int i=0;i<15;i++){
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
@@ -292,9 +238,8 @@ public class listener implements Listener {
 
         if(hasStealthLeggings(p)){
             ItemStack legs = p.getInventory().getLeggings();
-            stealthtime.putIfAbsent(p.getUniqueId(),0L);
             if(p.getVehicle() == null) {
-                if (!p.isSneaking() && e.isSneaking() && !p.isGliding() && System.currentTimeMillis() - stealthtime.get(p.getUniqueId()) >= 5000) {
+                if (!p.isSneaking() && e.isSneaking() && !p.isGliding() && isCooldownOver(id,Enchant.STEALTH)) {
 
                     for (Entity ent : p.getNearbyEntities(20, 20, 20))
                         if (ent instanceof Monster) {
@@ -328,7 +273,7 @@ public class listener implements Listener {
                     p.removePotionEffect(PotionEffectType.INVISIBILITY);
                     if (pje.armor.containsKey(p.getUniqueId())) {
                         pje.pasteArmor(p);
-                        stealthtime.put(p.getUniqueId(), System.currentTimeMillis());
+                        updateCooldown(id,Enchant.STEALTH);
                     }
                     p.removePotionEffect(PotionEffectType.RESISTANCE);
                     p.removePotionEffect(PotionEffectType.SPEED);
@@ -357,7 +302,7 @@ public class listener implements Listener {
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
                     if(arrows > 0) {
-                        needles.remove(p2.getUniqueId());
+                        //needles.remove(p2.getUniqueId());
                         p2.setArrowsInBody(0);
                         p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 1, 1);
                         p2.damage(arrows * 0.5, p);
@@ -474,7 +419,7 @@ public class listener implements Listener {
                     }
                 }
                 if(armor.getEnchantments().containsKey(Enchantment.UNBREAKING)){
-                    if(pje.percentChance(30*armor.getEnchantmentLevel(Enchantment.UNBREAKING))){
+                    if(percentChance(30*armor.getEnchantmentLevel(Enchantment.UNBREAKING))){
                         e.setCancelled(true);
                     }
                 }
@@ -508,25 +453,24 @@ public class listener implements Listener {
         }
 
         if(e.getEntity() instanceof Player p) {
+            UUID id = p.getUniqueId();
             if(cause.equals(EntityDamageEvent.DamageCause.FALL)) {
                 if (pje.hasEnchantment(p.getInventory().getChestplate(), Enchant.DRAG) && p.isGliding())
                     e.setCancelled(true);
             }
             if(pje.hasEnchantment(p.getInventory().getChestplate(),Enchant.RAGE)){
-                rage.putIfAbsent(p.getUniqueId(),0L);
-                if(p.getHealth() > 5 && p.getHealth() - e.getDamage() < 5 && System.currentTimeMillis() - rage.get(p.getUniqueId()) >= 6000){
+                if(p.getHealth() > 5 && p.getHealth() - e.getDamage() < 5 && isCooldownOver(id,Enchant.RAGE)){
                     int level = pje.getEnchantLevel(p.getInventory().getChestplate(),Enchant.RAGE);
-                    rage.put(p.getUniqueId(),System.currentTimeMillis());
+                    updateCooldown(id,Enchant.RAGE);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH,80+20*level,1));
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ENDER_DRAGON_GROWL,1,1);
                 }
             }
             if(pje.hasEnchantment(p.getInventory().getLeggings(),Enchant.ADRENALINE)){
-                adrenaline.putIfAbsent(p.getUniqueId(),0L);
-                if(p.getHealth() > 5 && p.getHealth() - e.getDamage() < 5 && System.currentTimeMillis() - adrenaline.get(p.getUniqueId()) >= 6000){
+                if(p.getHealth() > 5 && p.getHealth() - e.getDamage() < 5 && isCooldownOver(id,Enchant.ADRENALINE)){
                     int level = pje.getEnchantLevel(p.getInventory().getLeggings(),Enchant.ADRENALINE);
                     int currentspeed = 0;
-                    adrenaline.put(p.getUniqueId(),System.currentTimeMillis());
+                    updateCooldown(id,Enchant.ADRENALINE);
                     if(p.hasPotionEffect(PotionEffectType.SPEED))
                         currentspeed = p.getPotionEffect(PotionEffectType.SPEED).getAmplifier();
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,80+20*level,currentspeed + 1));
@@ -545,7 +489,7 @@ public class listener implements Listener {
                 if(active){
                     p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 60 + 20 * level, 1));
                     p.getWorld().playSound(p.getLocation(),Sound.BLOCK_ANVIL_LAND,0.5F,1);
-                    pje.particleRing(Particle.ENCHANT,p.getEyeLocation(),0.8,2);
+                    particleRing(Particle.ENCHANT,p.getEyeLocation(),0.8,2);
                 }
             }
         }
@@ -620,18 +564,6 @@ public class listener implements Listener {
                 p.getInventory().setChestplate(pje.wings.get(id));
                 pje.wings.remove(id);
             }
-//            if(p.getVelocity().length()>1&& pje.hasEnchantment(elytra,"comet")){
-//                comettime.putIfAbsent(id,0L);
-//                if(System.currentTimeMillis()-comettime.get(id)>=200){
-//                    comettime.put(id,System.currentTimeMillis());
-//                    List<Entity> near = p.getNearbyEntities(2,2,2);
-//                    pje.particleRing(Particle.FLAME,p.getEyeLocation(),1,5);
-//                    for(Entity ent:near)
-//                        if(!ent.equals(p))
-//                            if(ent instanceof LivingEntity)
-//                                ((LivingEntity)ent).damage(2);
-//                }
-//            }
         }
 
 
@@ -641,9 +573,18 @@ public class listener implements Listener {
                 int level = pje.getEnchantLevel(p.getInventory().getBoots(),Enchant.WAVERIDER);
                 if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.WATER)&&p.isSprinting())
                     if(p.getLocation().getBlock().getType().equals(Material.AIR)) {
-                        p.setVelocity(p.getLocation().getDirection().multiply(0.35*level).multiply(new Vector(1,0.75,1)));
-                        pje.particleRing(Particle.FISHING,p.getLocation(),1.5,5);
+                        p.setVelocity(p.getLocation().getDirection().multiply(0.5*level).multiply(new Vector(1,0.75,1)));
+                        particleRing(Particle.FISHING,p.getLocation(),1.5,5);
                         p.getWorld().playSound(p.getLocation(),Sound.ENTITY_AXOLOTL_SWIM,0.2F,1);
+                    }
+            }
+            if(pje.hasEnchantment(p.getInventory().getBoots(),Enchant.FIREWALKER)){
+                int level = pje.getEnchantLevel(p.getInventory().getBoots(),Enchant.FIREWALKER);
+                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)&&p.isSprinting())
+                    if(p.getLocation().getBlock().getType().equals(Material.AIR)) {
+                        p.setVelocity(p.getLocation().getDirection().multiply(0.5*level).multiply(new Vector(1,0.75,1)));
+                        particleRing(Particle.LAVA,p.getLocation(),1.5,30);
+                        p.getWorld().playSound(p.getLocation(),Sound.BLOCK_LAVA_EXTINGUISH,0.2F,1);
                     }
             }
         }
@@ -657,7 +598,7 @@ public class listener implements Listener {
                     if(horse.getLocation().subtract(0,0.4,0).getBlock().getType().equals(Material.WATER)) {
                         if (horse.getLocation().getBlock().getType().equals(Material.AIR)||horse.getLocation().add(0,1,0).getBlock().getType().equals(Material.AIR)) {
                             horse.setVelocity(p.getLocation().getDirection().multiply(0.3 * level).multiply(new Vector(2, 0, 2)).add(new Vector(0, 0.3, 0)));
-                            pje.particleRing(Particle.FISHING, horse.getLocation(), 2, 5);
+                            particleRing(Particle.FISHING, horse.getLocation(), 2, 5);
                             horse.getWorld().playSound(p.getLocation(), Sound.ENTITY_AXOLOTL_SWIM, 0.2F, 1);
                         }
                     }
@@ -707,6 +648,7 @@ public class listener implements Listener {
 //        }
 
         if(p!=null) {
+            UUID id = p.getUniqueId();
             proj.setCustomName(p.getName() + "%");
 
             if (p.getInventory().getChestplate() != null) {
@@ -714,16 +656,15 @@ public class listener implements Listener {
                     ItemStack elytra = p.getInventory().getChestplate();
                     if (pje.hasEnchantment(elytra, Enchant.DRACONIC) && p.isGliding() && p.getInventory().contains(Material.FIRE_CHARGE)) {
                         int index = pje.invIndexOf(pje.getInventoryAsList(p), Material.FIRE_CHARGE);
-                        draconictime.putIfAbsent(p.getUniqueId(), 0L);
                         Vector vel = proj.getVelocity();
                         Location loc = proj.getLocation();
-                        if (System.currentTimeMillis() - draconictime.get(p.getUniqueId()) > 1500 && p.getInventory().getItem(index).getAmount() > 2) {
+                        if (isCooldownOver(id,Enchant.DRACONIC) && p.getInventory().getItem(index).getAmount() > 2) {
                             p.getInventory().getItem(index).setAmount(p.getInventory().getItem(index).getAmount() - 3);
                             DragonFireball fb = p.getWorld().spawn(loc, DragonFireball.class);
                             proj.remove();
                             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PARROT_IMITATE_ENDER_DRAGON, 0.5F, 1);
                             fb.setVelocity(vel);
-                            draconictime.put(p.getUniqueId(), System.currentTimeMillis());
+                            updateCooldown(id,Enchant.DRACONIC);
                             for (int i = 0; i < 40; i++) {
                                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                                     if (!fb.isDead())
@@ -928,7 +869,7 @@ public class listener implements Listener {
                         if (!target.isDead()) {
                             if (target.getFreezeTicks() > 200) {
                                 Location loc = target.getLocation();
-                                pje.particleDisc(Particle.SNOWFLAKE, new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() + 0.5), 0.5, 5);
+                                particleDisc(Particle.SNOWFLAKE, new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() + 0.5), 0.5, 5);
                                 target.setFireTicks(0);
                             }
                         }
@@ -946,7 +887,7 @@ public class listener implements Listener {
                 if(!(target instanceof EnderDragon)){
 
                     int lvl = enchants.get("gravity");
-                    if (pje.percentChance(15+5*lvl)) {
+                    if (percentChance(15+5*lvl)) {
                         target.teleport(target.getLocation().subtract(0, 1, 0));
                         target.removePotionEffect(PotionEffectType.LEVITATION);
                         target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 50, 2, false, true));
@@ -968,7 +909,7 @@ public class listener implements Listener {
                 int power = 0;
                 if(enchants.containsKey("power"))
                     power = enchants.get("power");
-                pje.particleRing(Particle.HEART,target.getLocation().add(0,2,0),1,5);
+                particleRing(Particle.HEART,target.getLocation().add(0,2,0),1,5);
                 try {
                     target.setHealth(target.getHealth() +2+power);
                 }catch(Exception ex){}
@@ -1017,7 +958,7 @@ public class listener implements Listener {
 
         if(enchants.containsKey("venom")){
             int lvl = enchants.get("venom");
-            if(pje.percentChance(30)) {
+            if(percentChance(30)) {
                 if (e.getHitEntity() instanceof LivingEntity) {
                     LivingEntity ent = (LivingEntity) e.getHitEntity();
                     if(ent instanceof Zombie || ent instanceof Skeleton)
@@ -1180,7 +1121,7 @@ public class listener implements Listener {
                 chanceToAdd = 0;
 
             // Choose level # custom enchants from all possible enchants. Depending on the tier of the random enchant, determine the odds of it actually being applied.
-            if(pje.percentChance(100-chanceToAdd))
+            if(percentChance(100-chanceToAdd))
                 continue;
             for(Enchantment real:e.getEnchantsToAdd().keySet()) // Only enchants if compatible with all real enchants on list, favors real over custom
                 if(!pje.isCompatible(enchant, real))
@@ -1324,9 +1265,11 @@ public class listener implements Listener {
         boolean silk = false;
         int fortune = 1;
         int exp = e.getExpToDrop();
-        if(tool.hasItemMeta())
-            if(tool.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH))
+        if(tool.hasItemMeta()) {
+            if (tool.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH))
                 silk = true;
+            fortune = tool.getItemMeta().hasEnchant(Enchantment.FORTUNE) ? tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE) : 0;
+        }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
 
             if(pje.hasEnchantment(tool,Enchant.TALENT)) {
@@ -1337,6 +1280,22 @@ public class listener implements Listener {
                 if(pje.isPickaxe(tool))
                     if(pje.pickaxe_blocks.contains(b))
                         exp = (int)(Math.random()*3);
+            }
+
+            if(pje.hasEnchantment(tool, Enchant.ROCK_CANDY)){
+                int feed = pje.breakWithRockCandy(p, tool, block);
+                if(feed > 0) {
+                    Material mat = block.getDrops().stream().toList().getFirst().getType();
+                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 1, 1);
+                    block.getWorld().spawnParticle(Particle.ITEM,block.getLocation().add(0.5,0.5,0.5),1, 0,0,0,new ItemStack(mat));
+                }
+                int saturation = 0;
+                if(feed + p.getFoodLevel() > 20){
+                    saturation = feed - p.getFoodLevel();
+                    feed = 20;
+                }
+                p.setFoodLevel(feed + p.getFoodLevel());
+                p.setSaturation(saturation);
             }
 
             if (pje.hasEnchantment(tool, Enchant.FORGING)) {
@@ -1437,9 +1396,8 @@ public class listener implements Listener {
             if(pje.isSword(item)){
                 if(pje.hasEnchantment(item,Enchant.GRAVITY)){
                     int level = pje.getEnchantLevel(item,Enchant.GRAVITY);
-                    grav.putIfAbsent(id,0L);
-                    if(System.currentTimeMillis()-grav.get(id)>=800) {
-                        grav.put(id,System.currentTimeMillis());
+                    if(isCooldownOver(id,Enchant.GRAVITY)) {
+                        updateCooldown(id,Enchant.GRAVITY);
                         List<Entity> near = p.getNearbyEntities(level+1, level+1, level+1);
                         for (Entity n : near)
                             if (n instanceof Monster || n instanceof Player) {
@@ -1450,9 +1408,8 @@ public class listener implements Listener {
                 }
                 if(pje.hasEnchantment(item,Enchant.ANTIGRAVITY)){
                     int level = pje.getEnchantLevel(item,Enchant.ANTIGRAVITY);
-                    grav.putIfAbsent(id,0L);
-                    if(System.currentTimeMillis()-grav.get(id)>=800) {
-                        grav.put(id,System.currentTimeMillis());
+                    if(isCooldownOver(id,Enchant.GRAVITY)) {
+                        updateCooldown(id,Enchant.GRAVITY);
                         List<Entity> near = p.getNearbyEntities(level+1, level+1, level+1);
                         for (Entity n : near)
                             if (n instanceof Monster || n instanceof Player) {
@@ -1462,13 +1419,9 @@ public class listener implements Listener {
                     }
                 }
                 if(pje.hasEnchantment(item, Enchant.BLAZE) && e.getAction() == Action.LEFT_CLICK_AIR){
-                    blaze.putIfAbsent(id,0L);
                     int level = pje.getEnchantLevel(item,Enchant.BLAZE);
-                    double cooldown = 5000- 1000L*level;
-                    if(pje.hasEnchantment(item, Enchant.ARTFUL))
-                        cooldown *= .75;
-                    if(System.currentTimeMillis()-blaze.get(id)>=cooldown){
-                        blaze.put(id,System.currentTimeMillis());
+                    if(isCooldownOver(id,Enchant.BLAZE,level,pje.hasEnchantment(item, Enchant.ARTFUL))){
+                        updateCooldown(id,Enchant.BLAZE);
                         SmallFireball fireball = p.getWorld().spawn(p.getEyeLocation().add(p.getLocation().getDirection()), SmallFireball.class);
                         fireball.setIsIncendiary(false);
                         fireball.setVelocity(p.getLocation().getDirection());
@@ -1477,13 +1430,9 @@ public class listener implements Listener {
                     }
                 }
                 if(pje.hasEnchantment(item, Enchant.BREEZE) && (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK)){
-                    blaze.putIfAbsent(id,0L);
                     int level = pje.getEnchantLevel(item,Enchant.BREEZE);
-                    double cooldown = 5000- 1000L*level;
-                    if(pje.hasEnchantment(item, Enchant.ARTFUL))
-                        cooldown *= .75;
-                    if(System.currentTimeMillis()-blaze.get(id)>=cooldown){
-                        blaze.put(id,System.currentTimeMillis());
+                    if(isCooldownOver(id,Enchant.BREEZE,level,pje.hasEnchantment(item, Enchant.ARTFUL))){
+                        updateCooldown(id,Enchant.BREEZE);
                         WindCharge fireball = p.getWorld().spawn(p.getEyeLocation().add(p.getLocation().getDirection()), WindCharge.class);
                         fireball.setVelocity(p.getLocation().getDirection());
                         fireball.setShooter(p);
@@ -1508,11 +1457,7 @@ public class listener implements Listener {
         ItemStack weapon = p.getInventory().getItemInMainHand();
 
         if(pje.hasEnchantment(weapon,Enchant.SKULLS)&& a == Action.RIGHT_CLICK_AIR){
-            skulls.putIfAbsent(id,0L);
-            double cooldown = 3000.0;
-            if(pje.hasEnchantment(weapon,Enchant.ARTFUL))
-                cooldown *= .75;
-            if(System.currentTimeMillis()-skulls.get(id)>cooldown) {
+            if(isCooldownOver(id,Enchant.SKULLS,pje.hasEnchantment(weapon,Enchant.ARTFUL))) {
                 int level = pje.getEnchantLevel(weapon,Enchant.SKULLS) - 1;
                 WitherSkull skull = p.launchProjectile(WitherSkull.class,p.getLocation().getDirection());
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje,() -> {
@@ -1520,11 +1465,21 @@ public class listener implements Listener {
                         skull.remove();
                 },120L);
 
-                skulls.put(id,System.currentTimeMillis());
+                updateCooldown(id,Enchant.SKULLS);
                 if(level==1)
                     skull.setCharged(true);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_SHOOT,1,1);
                 skull.setShooter(p);
+            }
+        }
+
+        if(pje.hasEnchantment(weapon,Enchant.METEOR)&& rc && p.isSneaking()){
+            if(isCooldownOver(id,Enchant.METEOR,pje.getEnchantLevel(weapon,Enchant.METEOR),pje.hasEnchantment(weapon,Enchant.ARTFUL))) {
+                Fireball ball = p.launchProjectile(Fireball.class,p.getLocation().getDirection());
+
+                updateCooldown(id,Enchant.METEOR);
+                p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GHAST_SHOOT,1,1);
+                ball.setShooter(p);
             }
         }
     }
@@ -1596,21 +1551,21 @@ public class listener implements Listener {
         if(pje.nightrider.contains(p)&& pje.isNight(p.getWorld()))
             e.setDamage(e.getDamage() * 1.25);
 
-        if(needles.containsKey(id)){
-            if(System.currentTimeMillis() - needles.get(id) >= 30000){
-                needles.remove(id);
-            }
-            else {
-                e.setDamage(e.getDamage() * (1 - (p.getArrowsInBody() > 30.0 ? 30.0 : p.getArrowsInBody()) / 60.0));
-            }
-        }
+//        if(cooldowns.get(id).containsKey(Enchant.NEEDLES)){
+//            if(System.currentTimeMillis() - needles.get(id) >= 30000){
+//                needles.remove(id);
+//            }
+//            else {
+//                e.setDamage(e.getDamage() * (1 - (p.getArrowsInBody() > 30.0 ? 30.0 : p.getArrowsInBody()) / 60.0));
+//            }
+//        }
 
         if(getHorse(p)!=null){ // both are on horses
             e.setDamage(e.getDamage() * 1.25); // Deal more damage regardless if on horseback
             if(getHorse(ent)!=null) {
                 if (getHorseArmor(p) != null) {
                     ItemStack armor = getHorseArmor(p);
-                    if (pje.hasEnchantment(armor, Enchant.JOUST) && pje.percentChance(25)) {
+                    if (pje.hasEnchantment(armor, Enchant.JOUST) && percentChance(25)) {
                         ent.getVehicle().removePassenger(ent);
                     }
                 }
@@ -1630,10 +1585,10 @@ public class listener implements Listener {
         if(ent instanceof Monster mon && pje.isArmorable(mon)){
             if(mon.getHealth()-e.getDamage()<=0){
                 ghosts.putIfAbsent(p.getUniqueId(),new ArrayList<>());
-                if(pje.hasEnchantment(weapon,Enchant.UNHOLY)&&!ghosts.get(p.getUniqueId()).contains(mon) && ghosts.get(p.getUniqueId()).size()<9&& pje.percentChance(25)){
+                if(pje.hasEnchantment(weapon,Enchant.UNHOLY)&&!ghosts.get(p.getUniqueId()).contains(mon) && ghosts.get(p.getUniqueId()).size()<9&& percentChance(25)){
                     p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_GHAST_SCREAM,0.8F,1);
-                    pje.particleCube(Particle.SMOKE,mon.getLocation(),5);
-                    pje.particleCube(Particle.SMOKE,mon.getLocation().add(0,1,0),5);
+                    particleCube(Particle.SMOKE,mon.getLocation(),5);
+                    particleCube(Particle.SMOKE,mon.getLocation().add(0,1,0),5);
                     e.setCancelled(true);
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,10000,0,false,false));
                     mon.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING,10000,0,false,false));
@@ -1671,9 +1626,9 @@ public class listener implements Listener {
                     ent.getWorld().playSound(ent.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1, 1);
                     ent.setVelocity(new Vector(0, 0, 0));
                     for (int i = 1; i < 25; i++)
-                        pje.particleRing(Particle.FIREWORK, ent.getLocation().add(0, i, 0), 1, 5);
+                        particleRing(Particle.FIREWORK, ent.getLocation().add(0, i, 0), 1, 5);
 
-                    if (pje.percentChance(90)) {
+                    if (percentChance(90)) {
                         meta.setDamage(weapon.getType().getMaxDurability() - 5);
                         weapon.setItemMeta(meta);
                     }
@@ -1683,10 +1638,10 @@ public class listener implements Listener {
                     if (!(ent instanceof EnderDragon) && !(ent instanceof Wither)) {
                         try {
                             ent.getWorld().playSound(ent.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 1);
-                            pje.particleCube(Particle.SQUID_INK, ent.getLocation(), 5);
-                            pje.particleCube(Particle.SQUID_INK, ent.getLocation().add(0, 1, 0), 5);
+                            particleCube(Particle.SQUID_INK, ent.getLocation(), 5);
+                            particleCube(Particle.SQUID_INK, ent.getLocation().add(0, 1, 0), 5);
                             ent.teleport(new Location(pje.getServer().getWorld("world_the_end"), 0, 0, 0));
-                            if (pje.percentChance(90)) {
+                            if (percentChance(90)) {
                                 meta.setDamage(weapon.getType().getMaxDurability() - 5);
                                 weapon.setItemMeta(meta);
                             }
@@ -1726,7 +1681,7 @@ public class listener implements Listener {
                             ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 90, 2));
                             ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 90, 2));
                             ent.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 90, 2));
-                            if (pje.percentChance(90)) {
+                            if (percentChance(90)) {
                                 meta.setDamage(weapon.getType().getMaxDurability() - 5);
                                 weapon.setItemMeta(meta);
                             }
@@ -1734,7 +1689,7 @@ public class listener implements Listener {
                                 int finalI = i;
                                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                                     if (!ent.isDead()) {
-                                        pje.particleRing(Particle.FLAME, ent.getLocation().add(0, 1, 0), 1 - 0.1 * finalI, 5);
+                                        particleRing(Particle.FLAME, ent.getLocation().add(0, 1, 0), 1 - 0.1 * finalI, 5);
                                         p.getWorld().playSound(ent.getLocation(), Sound.ENTITY_ENDERMAN_SCREAM, 1, 1);
                                         ent.getWorld().spawnParticle(Particle.LAVA, ent.getLocation(), 20);
                                         ent.setVelocity(new Vector(0, -0.2, 0));
@@ -1786,7 +1741,7 @@ public class listener implements Listener {
                             }
                         }, 10 * i);
                     }
-                    if (pje.percentChance(90)) {
+                    if (percentChance(90)) {
                         meta.setDamage(weapon.getType().getMaxDurability() - 5);
                         weapon.setItemMeta(meta);
                     }
@@ -1796,7 +1751,7 @@ public class listener implements Listener {
         }
 
         if(pje.hasEnchantment(weapon,Enchant.FROSTBITE)){
-            if(pje.percentChance(20)) {
+            if(percentChance(20)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.FROSTBITE);
                 ent.setFreezeTicks(460 + 60 * level);
                 if(ent instanceof Player){
@@ -1806,7 +1761,7 @@ public class listener implements Listener {
                         ent.setFreezeTicks(460+20*level-20*score);
                     }
                 }
-                pje.particleDisc(Particle.SNOWFLAKE, ent.getLocation().add(-0.5, 1.5, 0.5), 1, 5);
+                particleDisc(Particle.SNOWFLAKE, ent.getLocation().add(-0.5, 1.5, 0.5), 1, 5);
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_ZOMBIE_VILLAGER_CURE,0.5F,1);
             }
         }
@@ -1820,7 +1775,7 @@ public class listener implements Listener {
         }
 
         if(pje.hasEnchantment(weapon,Enchant.VENOM)) {
-            if (pje.percentChance(20)) {
+            if (percentChance(20)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.VENOM);
                 if(ent instanceof Zombie || ent instanceof Skeleton)
                     ent.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40 + 20 * level, 1, false, true));
@@ -1834,7 +1789,7 @@ public class listener implements Listener {
         if(pje.hasEnchantment(weapon,Enchant.FRACTURE)){
             int level = pje.getEnchantLevel(weapon,Enchant.FRACTURE);
 
-            if(pje.percentChance(33)){
+            if(percentChance(33)){
                 if(ent instanceof Player p2){
                     ItemStack[] armor = p.getInventory().getArmorContents();
                     for(int i=0;i<armor.length;i++)
@@ -1851,7 +1806,7 @@ public class listener implements Listener {
                 Monster mon = (Monster)ent;
                 ItemStack[] armor = Objects.requireNonNull(mon.getEquipment()).getArmorContents();
                 for(int i=0;i<armor.length;i++)
-                    if(pje.percentChance(10+10*level)&&!armor[i].getType().equals(Material.AIR)){
+                    if(percentChance(10+10*level)&&!armor[i].getType().equals(Material.AIR)){
                         armor[i].setType(Material.AIR);
                         mon.getEquipment().setArmorContents(armor);
                         p.getWorld().playSound(mon.getLocation(),Sound.ENTITY_ITEM_BREAK,1,1);
@@ -1862,7 +1817,7 @@ public class listener implements Listener {
 
         if(pje.hasEnchantment(weapon,Enchant.THUNDER)){
             int level = pje.getEnchantLevel(weapon,Enchant.THUNDER);
-            if(pje.percentChance(5+5*level)){
+            if(percentChance(5+5*level)){
                 p.getWorld().strikeLightningEffect(ent.getLocation());
                 List<Entity> near = ent.getNearbyEntities(3,3,3);
                 for(Entity a:near){
@@ -1883,10 +1838,10 @@ public class listener implements Listener {
         }
 
         if(pje.hasEnchantment(weapon, Enchant.DARKNESS)){
-            if(pje.percentChance(20)) {
+            if(percentChance(20)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.DARKNESS);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40 + 20 * level, 0, false, true));
-                pje.particleDisc(Particle.SQUID_INK, ent.getEyeLocation(), 1, 30);
+                particleDisc(Particle.SQUID_INK, ent.getEyeLocation(), 1, 30);
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_SQUID_DEATH,1,1);
 
                 if(ent instanceof Monster){
@@ -1898,60 +1853,118 @@ public class listener implements Listener {
         }
 
         if(pje.hasEnchantment(weapon, Enchant.ANTIGRAVITY)){
-            if(pje.percentChance(20)) {
+            if(percentChance(20)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.ANTIGRAVITY);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 40 + 20 * level, 0, false, true));
-                pje.particleRing(Particle.FIREWORK, ent.getLocation().add(0, 0.75, 0), 1, 5);
+                particleRing(Particle.FIREWORK, ent.getLocation().add(0, 0.75, 0), 1, 5);
                 p.getWorld().playSound(ent.getLocation(),Sound.BLOCK_BREWING_STAND_BREW,1,1);
             }
         }
 
         if(pje.hasEnchantment(weapon, Enchant.DEVOUR)){
-            if(pje.percentChance(33)) {
-                int level = pje.getEnchantLevel(weapon, Enchant.DEVOUR);
-                double multiplier = 1;
-                ItemStack item = new ItemStack(Material.COOKED_BEEF, 64);
-                switch (e.getEntity().getType()) {
-                    case SKELETON, WITHER_SKELETON -> multiplier = 0.5;
-                    case SPIDER -> {
-                        if (pje.percentChance(10))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 300, 0));
-                    }
-                    case SNOW_GOLEM -> {
-                        if (pje.percentChance(20))
-                            p.setFreezeTicks(120);
-                    }
-                    case BLAZE, MAGMA_CUBE -> {
-                        if (pje.percentChance(10))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 300, 0));
-                    }
-                    case WITCH -> {
-                        if (pje.percentChance(10))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 0));
-                    }
-                    case GUARDIAN, ELDER_GUARDIAN -> {
-                        if (pje.percentChance(10))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 200, 0));
+            int level = pje.getEnchantLevel(weapon, Enchant.DEVOUR);
+            boolean fire_aspect = weapon.getItemMeta().hasEnchant(Enchantment.FIRE_ASPECT);
+            int feed = 1;
+            Material mat = fire_aspect ? Material.COOKED_BEEF : Material.BEEF;
+            String cooked = fire_aspect ? "COOKED_" : "";
+            EntityType type = e.getEntityType();
+            switch (type) {
+                case SKELETON, WITHER_SKELETON -> {
+                    mat = Material.BONE;
+                }
+                case SPIDER-> {
+                    mat = Material.SPIDER_EYE;
+                    if (percentChance(6*level)) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 300, 0));
+                        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_DRINK,1,1);
                     }
                 }
-                p.setFoodLevel((int) (p.getFoodLevel() + (1 + 0.2 * level * e.getDamage() * multiplier)));
-                p.setSaturation(1F);
-                p.getWorld().spawnParticle(Particle.ITEM, p.getEyeLocation(), 0, 0, 0, 0, item);
-                p.getWorld().playSound(ent.getLocation(), Sound.ENTITY_PLAYER_BURP, 1F, 1);
+                case SNOW_GOLEM -> {
+                    mat = Material.SNOWBALL;
+                    if (percentChance(8*level)){
+                        p.setFreezeTicks(120);
+                    }
+                }
+                case BLAZE -> {
+                    mat = Material.BLAZE_POWDER;
+                    if (percentChance(6*level)) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 300, 0));
+                        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_DRINK,1,1);
+                    }
+                }
+                case MAGMA_CUBE -> {
+                    mat = Material.MAGMA_CREAM;
+                    if (percentChance(6*level)) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 300, 0));
+                        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_DRINK,1,1);
+                    }
+                }
+                case WITCH -> {
+                    if (percentChance(6*level)) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 100, 0));
+                        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_DRINK,1,1);
+                    }
+                }
+                case GUARDIAN, ELDER_GUARDIAN -> {
+                    mat = Material.valueOf(cooked + "COD");
+                    feed = fire_aspect ? 5 : 2;
+                    if (percentChance(6*level)) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 200, 0));
+                        p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_GENERIC_DRINK,1,1);
+                    }
+                }
+                case COD -> {
+                    mat = Material.valueOf(cooked + "COD");
+                    feed = fire_aspect ? 5 : 2;
+                }
+                case SALMON -> {
+                    mat = Material.valueOf(cooked + "SALMON");
+                    feed = fire_aspect ? 6 : 2;
+                }
+                case CHICKEN -> {
+                    mat = Material.valueOf(cooked + "CHICKEN");
+                    feed = fire_aspect ? 6 : 2;
+                }
+                case RABBIT -> {
+                    mat = Material.valueOf(cooked + "RABBIT");
+                    feed = fire_aspect ? 5 : 3;
+                }
+                case PIG -> {
+                    mat = Material.valueOf(cooked + "PORK");
+                    feed = fire_aspect ? 8 : 3;
+                }
+                case COW -> {
+                    mat = Material.valueOf(cooked + "BEEF");
+                    feed = fire_aspect ? 8 : 3;
+                }
+                case SHEEP -> {
+                    mat = Material.valueOf(cooked + "MUTTON");
+                    feed = fire_aspect ? 6 : 3;
+                }
             }
+            ItemStack item = new ItemStack(mat, 64);
+            int saturation = 0;
+            if(feed + p.getFoodLevel() > 20){
+                saturation = feed - p.getFoodLevel();
+                feed = 20;
+            }
+            p.setFoodLevel(feed);
+            p.setSaturation(saturation);
+            p.getWorld().spawnParticle(Particle.ITEM, p.getEyeLocation(), 0, 0, 0, 0, item);
+            p.getWorld().playSound(ent.getLocation(), Sound.ENTITY_PLAYER_BURP, 1F, 1);
         }
 
         if(pje.hasEnchantment(weapon, Enchant.WILTING)){
-            if(pje.percentChance(20)){
+            if(percentChance(20)){
                 int level = pje.getEnchantLevel(weapon, Enchant.WILTING);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40 + 20 * level, 1, false, true));
-                pje.particleRing(Particle.SOUL,ent.getLocation().add(0,2,0),0.5,20);
+                particleRing(Particle.SOUL,ent.getLocation().add(0,2,0),0.5,20);
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_WITHER_HURT,0.3F,1);
             }
         }
 
         if(pje.hasEnchantment(weapon, Enchant.LEECHING)){
-            if(pje.percentChance(20)) {
+            if(percentChance(20)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.LEECHING);
                 double max = p.getAttribute(Attribute.MAX_HEALTH).getValue();
                 double newhealth = p.getHealth()+(0.2+0.1*level)*e.getDamage();
@@ -1967,7 +1980,7 @@ public class listener implements Listener {
         if(pje.hasEnchantment(weapon, Enchant.GRAVITY)){
             if(!ent.getType().equals(EntityType.ENDER_DRAGON)&&!ent.getType().equals(EntityType.WITHER)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.GRAVITY);
-                if (pje.percentChance(10 + 5 * level)) {
+                if (percentChance(10 + 5 * level)) {
                     ent.teleport(ent.getLocation().subtract(0, 1, 0));
                     ent.removePotionEffect(PotionEffectType.LEVITATION);
                     ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 50, 2, false, true));
@@ -1978,9 +1991,8 @@ public class listener implements Listener {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                             ent.setVelocity(new Vector(0, -10, 0));
                         }, 5L * i);
-                    grav.putIfAbsent(id,0L);
-                    if(System.currentTimeMillis()-grav.get(id)>=800) {
-                        grav.put(id, System.currentTimeMillis());
+                    if(isCooldownOver(id,Enchant.GRAVITY)) {
+                        updateCooldown(id,Enchant.GRAVITY);
                         List<Entity> near = p.getNearbyEntities(level + 1, level + 1, level + 1);
                         for (Entity n : near)
                             if (n instanceof Monster || n instanceof Player) {
@@ -2008,10 +2020,10 @@ public class listener implements Listener {
         }
 
         if(pje.hasEnchantment(weapon, Enchant.HALLUCINATION)){
-            if(pje.percentChance(20)) {
+            if(percentChance(20)) {
                 int level = pje.getEnchantLevel(weapon, Enchant.HALLUCINATION);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 40 + 20 * level, 0, false, true));
-                pje.particleRing(Particle.SOUL_FIRE_FLAME,ent.getLocation().add(0,1.5,0),0.5,5);
+                particleRing(Particle.SOUL_FIRE_FLAME,ent.getLocation().add(0,1.5,0),0.5,5);
                 ent.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, ent.getLocation().add(0, 1, 0), 10);
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_PLAYER_BREATH,1,1);
 
@@ -2029,7 +2041,7 @@ public class listener implements Listener {
 
         if(pje.hasEnchantment(weapon, Enchant.DIZZY)){
             int level = pje.getEnchantLevel(weapon, Enchant.DIZZY);
-            if(pje.percentChance(5+5*level)) {
+            if(percentChance(5+5*level)) {
                 for(int i=0;i<6;i++) {
                     int finalI = i;
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
@@ -2053,7 +2065,7 @@ public class listener implements Listener {
         if(pje.hasEnchantment(weapon,Enchant.PHANTOM)){
             if(p.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 e.setDamage(e.getDamage() * 1.25);
-                pje.particleRing(Particle.WITCH,ent.getLocation(),1,5);
+                particleRing(Particle.WITCH,ent.getLocation(),1,5);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GHAST_WARN,0.5F,0.1F);
             }
         }
@@ -2085,10 +2097,10 @@ public class listener implements Listener {
                     if (p.getInventory().getChestplate() != null) {
                         ItemStack chestplate = p.getInventory().getChestplate();
                         if (pje.hasEnchantment(chestplate, Enchant.ANTIDOTE)) {
-                            if (pje.percentChance(30 + 10 * pje.getEnchantLevel(chestplate, Enchant.ANTIDOTE))) {
+                            if (percentChance(30 + 10 * pje.getEnchantLevel(chestplate, Enchant.ANTIDOTE))) {
                                 e.setCancelled(true);
                                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_VILLAGER_CELEBRATE, 0.5F, 1);
-                                pje.particleRing(Particle.HAPPY_VILLAGER, p.getEyeLocation(), 1, 5);
+                                particleRing(Particle.HAPPY_VILLAGER, p.getEyeLocation(), 1, 5);
                             }
                         }
                     }
@@ -2147,7 +2159,7 @@ public class listener implements Listener {
                         }
                     }
                     if(e.getEntity() instanceof Player p){
-                        if(pje.percentChance(15)){
+                        if(percentChance(15)){
                             int mainslot = p.getInventory().getHeldItemSlot();
                             int swapslot = mainslot + 1;
                             if(mainslot > 1){
@@ -2166,7 +2178,7 @@ public class listener implements Listener {
                 }
                 if(pje.hasEnchantment(armor,Enchant.FLING)){
                     if(e.getEntity() instanceof LivingEntity ent) {
-                        if (pje.percentChance(30)) {
+                        if (percentChance(30)) {
                             wolf.getWorld().playSound(wolf.getLocation(),Sound.ENTITY_BREEZE_SHOOT,1,1);
                             ent.setVelocity(ent.getVelocity().add(new Vector(0,6,0)));
                         }
@@ -2207,7 +2219,7 @@ public class listener implements Listener {
                 for(Monster mon:ghosts.get(id))
                     mon.setTarget((LivingEntity)e.getDamager());
 
-        if(pje.percentChance(25* pje.getNumArmorPieces(p,Enchant.MOLTEN)))       // burns attacker if player has molten
+        if(percentChance(25* pje.getNumArmorPieces(p,Enchant.MOLTEN)))       // burns attacker if player has molten
             attacker.setFireTicks(40+20* pje.getArmorScore(p,Enchant.MOLTEN));
 
         if(p.getInventory().getBoots()!=null){
@@ -2217,7 +2229,7 @@ public class listener implements Listener {
                     for(int i=0;i<10;i++) {
                         Location free = p.getLocation().add(Math.random() * 10, 0, Math.random() * 10);
                         if(free.add(0,1,0).getBlock().isPassable()&&free.getBlock().isPassable()){
-                            pje.particleRing(Particle.PORTAL, p.getLocation().add(0, 1, 0), 1, 5);
+                            particleRing(Particle.PORTAL, p.getLocation().add(0, 1, 0), 1, 5);
                             p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                             p.teleport(free);
                             break;
@@ -2234,13 +2246,13 @@ public class listener implements Listener {
             }
         }
 
-        if(pje.percentChance(pje.getArmorScore(p,Enchant.PLAGUE))){
+        if(percentChance(pje.getArmorScore(p,Enchant.PLAGUE))){
             Location loc = p.getLocation();
             p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GHAST_WARN,0.3F,0.1F);
             for(int i=0;i<12;i++){
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                     Collection<Entity> near = Objects.requireNonNull(loc.getWorld()).getNearbyEntities(loc,5,1,5);
-                    pje.particleDisc(Particle.SPORE_BLOSSOM_AIR,loc,5,15);
+                    particleDisc(Particle.SPORE_BLOSSOM_AIR,loc,5,15);
                     for(Entity ent:near){
                         if(ent instanceof LivingEntity lent) {
                             if (ent instanceof Player) {
@@ -2271,7 +2283,7 @@ public class listener implements Listener {
                         defuse = 0;
                 }
                 double chance = 2*level*((int)(((21-p.getHealth())/10+1)*defuse));
-                if(pje.percentChance(chance)){
+                if(percentChance(chance)){
                     p.getWorld().spawnParticle(Particle.EXPLOSION,p.getLocation().add(0.5,1,0.5),1);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE,1,1);
 
@@ -2288,10 +2300,10 @@ public class listener implements Listener {
             }
 
             if(pje.hasEnchantment(chest,Enchant.SPIKES)){
-                if(pje.percentChance(5)&&!spikes.containsKey(id)){
+                if(percentChance(5)&&!spikes.containsKey(id)){
                     p.setArrowsInBody(300);
                     spikes.put(id,true);
-                    needles.remove(id);
+                    //needles.remove(id);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                         p.setArrowsInBody(0);
@@ -2315,7 +2327,7 @@ public class listener implements Listener {
 
             if(pje.hasEnchantment(chest,Enchant.DISCHARGE)){
                 int level = pje.getEnchantLevel(chest,Enchant.DISCHARGE);
-                if(pje.percentChance(5*level)){
+                if(percentChance(5*level)){
                     List<Entity> near = p.getNearbyEntities(3,3,3);
                     for(Entity a:near) {
                         if (a instanceof LivingEntity ent) {
@@ -2339,7 +2351,7 @@ public class listener implements Listener {
 
             if(pje.hasEnchantment(chest,Enchant.INFESTED)){
                 int level = pje.getEnchantLevel(chest,Enchant.INFESTED);
-                if(pje.percentChance(5+5*level)){
+                if(percentChance(5+5*level)){
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_SILVERFISH_HURT,1,1);
                     p.getWorld().spawnParticle(Particle.CLOUD,p.getLocation(),10);
                     Monster mob = p.getWorld().spawn(p.getLocation(), Silverfish.class);
@@ -2351,7 +2363,7 @@ public class listener implements Listener {
                             else mob.setTarget((LivingEntity)e.getDamager());
                         },20*i);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
-                        pje.particleDisc(Particle.CLOUD,mob.getLocation(),0.5,5);
+                        particleDisc(Particle.CLOUD,mob.getLocation(),0.5,5);
                         mob.remove();
                     },200);
                 }
@@ -2359,7 +2371,7 @@ public class listener implements Listener {
 
             if(pje.hasEnchantment(chest,Enchant.HIVE)){
                 int level = pje.getEnchantLevel(chest,Enchant.HIVE);
-                if(pje.percentChance(3*level)){
+                if(percentChance(3*level)){
                     p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEEHIVE_EXIT,1,1);
                     Bee bee = p.getWorld().spawn(p.getLocation().add(0,2,0),Bee.class);
                     bee.setAnger(1000);
@@ -2387,12 +2399,12 @@ public class listener implements Listener {
 
             if(pje.hasEnchantment(helmet,Enchant.PSYCHIC)){
                 int level = pje.getEnchantLevel(helmet,Enchant.PSYCHIC);
-                if(pje.percentChance(level*5)) {
+                if(percentChance(level*5)) {
                     Vector dif = attacker.getEyeLocation().toVector().subtract(p.getEyeLocation().toVector());
                     Location loc = p.getLocation();
                     loc.setDirection(dif);
                     p.teleport(loc);
-                    pje.particleRing(Particle.REVERSE_PORTAL,p.getLocation().add(0,2,0),1,2);
+                    particleRing(Particle.REVERSE_PORTAL,p.getLocation().add(0,2,0),1,2);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ENDER_EYE_DEATH,1,1);
                 }
             }
@@ -2400,7 +2412,7 @@ public class listener implements Listener {
 
         if(p.getInventory().getLeggings()!=null){
             ItemStack legs = p.getInventory().getLeggings();
-            if(pje.hasEnchantment(legs,Enchant.REPULSION)&& pje.percentChance(33)){
+            if(pje.hasEnchantment(legs,Enchant.REPULSION)&& percentChance(33)){
                 if(!pje.hasEnchantment(attacker.getEquipment().getBoots(),Enchant.GROUNDED)) {
                     int level = pje.getEnchantLevel(legs, Enchant.REPULSION);
                     Vector v = ((p.getLocation().subtract(attacker.getLocation())).toVector()).normalize();
@@ -2596,6 +2608,32 @@ public class listener implements Listener {
                 return true;
         }
         return false;
+    }
+
+    public boolean isCooldownOver(UUID id, Enchant en){
+        return isCooldownOver(id, en, 0, false);
+    }
+
+    public boolean isCooldownOver(UUID id, Enchant en, boolean hasArtful){
+        return isCooldownOver(id, en, 0, hasArtful);
+    }
+
+    public boolean isCooldownOver(UUID id, Enchant en, int level, boolean hasArtful){
+        if(cooldowns.get(id).containsKey(en)){
+            double cooldown = en.getCooldown();
+            cooldown -= 1000L * level;
+            if(cooldown < 1000)
+                cooldown = 1000L;
+            if(hasArtful)
+                cooldown *=0.75;
+            return System.currentTimeMillis() - cooldowns.get(id).get(en) >= cooldown;
+        }
+        cooldowns.put(id,new HashMap<Enchant,Long>());
+        return true;
+    }
+
+    public void updateCooldown(UUID id, Enchant en){
+        cooldowns.get(id).put(en,System.currentTimeMillis());
     }
 
 }

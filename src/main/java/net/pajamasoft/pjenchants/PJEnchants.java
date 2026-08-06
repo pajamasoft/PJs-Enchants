@@ -1,6 +1,14 @@
 package net.pajamasoft.pjenchants;
 
-import net.kyori.adventure.text.Component;
+/*
+ * ---------------------------------------------------
+ *  PJ's Enchants
+ *      71 Custom Enchantments for survival Minecraft
+ * ---------------------------------------------------
+ * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
+ * ---------------------------------------------------
+ */
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +24,8 @@ import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.*;
+
+import static net.pajamasoft.pjLib.PJLib.*;
 
 public final class PJEnchants extends JavaPlugin {
 
@@ -185,6 +195,9 @@ public final class PJEnchants extends JavaPlugin {
             return true;
         Set<Enchant> combo = Set.of(e1,e2);
 
+        if(combo.contains(Enchant.PERMAFROST))
+            if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER))
+                return false;
         if(combo.contains(Enchant.GRAVITY)&&combo.contains(Enchant.ANTIGRAVITY))
             return false;
         if(combo.contains(Enchant.THRUST)){
@@ -245,15 +258,16 @@ public final class PJEnchants extends JavaPlugin {
                     getLogger().info("Has lore: "+lore);
                 assert lore != null;
                 for(String s:lore){
-                    if(s.contains(" ")) {
-                        if (s.toUpperCase().substring(2, s.lastIndexOf(' ')).equals(enchant.name().toUpperCase()))
+                    if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
+                        return true;
+                    else if(s.lastIndexOf(' ') > -1 && s.lastIndexOf(' ') == s.indexOf(' ')) {
+                        if (s.substring(2, s.lastIndexOf(' ')).equals(format(enchant.name())))
                             return true;
-                        else if(debug)
-                            getLogger().info("Contains ' ' but enchant.upper is not "+s.toUpperCase().substring(2, s.lastIndexOf(' '))+" ("+enchant.name().toUpperCase()+")");
                     }
                     else if(s.length() > 2)
-                        if(s.substring(2).toUpperCase().equalsIgnoreCase(enchant.name().toUpperCase()))
+                        if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
                             return true;
+
                 }
             }
         }
@@ -459,8 +473,7 @@ public final class PJEnchants extends JavaPlugin {
         // COMPATIBILITY CHECK ------------
         List<Enchantment> re = getRealEnchants(item);
         List<Enchant> ce = getCustomEnchants(item);
-        String enchantment = enchant.name().toLowerCase(Locale.ROOT);
-        enchantment = enchantment.substring(0,1).toUpperCase(Locale.ROOT)+enchantment.substring(1); // capitalizes first letter
+        String enchantment = format(enchant.name());
 
         if(!isTypeCompatible(item,enchant))
             return;
@@ -532,34 +545,6 @@ public final class PJEnchants extends JavaPlugin {
         return list;
     }
 
-    public void particleRing(Particle p, Location loc, double r, int inc){
-        double x = loc.getX();
-        double y = loc.getY();
-        double z = loc.getZ();
-        for(int i=0;i<360;i+=inc){
-            loc.getWorld().spawnParticle(p,new Location(loc.getWorld(),x+Math.cos(i)*r,y,z+Math.sin(i)*r+(0.15+.1*r)),0); // loc.add(Math.cos(i)*r,0,Math.sin(i)*r)
-        }
-    }
-
-    public void particleDisc(Particle p, Location loc, double r, int inc){
-        for(double i=0;i<r;i+=1.0/inc)
-            particleRing(p,loc,r-i,inc);
-    }
-
-    public void particleCube(Particle p, Location corner,int inc){
-        for(double x=0;x<=1;x+=(1F/inc))
-            for(double y=0;y<=1;y+=(1F/inc))
-                for(double z=0;z<=1;z+=(1F/inc))
-                    corner.getWorld().spawnParticle(p,new Location(corner.getWorld(),corner.getX()+x,corner.getY()+y,corner.getZ()+z),0);
-    }
-
-    public boolean percentChance(double chance){
-        return chance>(Math.random()*101);
-    }
-    public boolean percentChance(int chance){
-        return chance > (Math.random()*101);
-    }
-
     public int random(int low, int high){
         int range = high-low;
         int end = (int)(Math.random()*range)+1+low;
@@ -614,11 +599,11 @@ public final class PJEnchants extends JavaPlugin {
         if(Objects.requireNonNull(tool.getItemMeta()).hasEnchant(Enchantment.FORTUNE))
             fortune = tool.getEnchantmentLevel(Enchantment.FORTUNE);
         if(fortune == 1)
-            multiplier = pjEnchants.percentChance(33) ? 2 : 1;
+            multiplier = percentChance(33) ? 2 : 1;
         if(fortune == 2)
-            multiplier = pjEnchants.percentChance(25) ? 3 : pjEnchants.percentChance(25) ? 2 : 1;
+            multiplier = percentChance(25) ? 3 : percentChance(25) ? 2 : 1;
         if(fortune == 3)
-            multiplier = pjEnchants.percentChance(20) ? 4 : pjEnchants.percentChance(20) ? 3 : pjEnchants.percentChance(20) ? 2 : 1;
+            multiplier = percentChance(20) ? 4 : percentChance(20) ? 3 : percentChance(20) ? 2 : 1;
 
         if (pjEnchants.isPickaxe(tool)) {
             for(ItemStack i:items) {
@@ -708,7 +693,7 @@ public final class PJEnchants extends JavaPlugin {
             }
         }
         if(showflame){
-            pjEnchants.particleCube(Particle.FLAME,block.getLocation(),3);
+            particleCube(Particle.FLAME,block.getLocation(),3);
             p.getWorld().playSound(block.getLocation(),Sound.ITEM_FIRECHARGE_USE,0.2F,1);
             ExperienceOrb orb = block.getWorld().spawn(block.getLocation(), ExperienceOrb.class);
             orb.setExperience(exp);
@@ -717,12 +702,84 @@ public final class PJEnchants extends JavaPlugin {
             block.getWorld().dropItemNaturally(block.getLocation().clone().add(0.5,0.5,0.5),drop);
     }
 
+    public int breakWithRockCandy(Player p, ItemStack tool, Block b){
+        int items_dropped = 0;
+        for(ItemStack drop:b.getDrops(tool))
+            items_dropped += drop.getAmount();
+        int feed = 0;
+        switch(b.getType()){
+            case COAL_ORE,DEEPSLATE_COAL_ORE -> {
+                feed = (int)(0.5 * items_dropped);
+                if(percentChance(20)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 80, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case IRON_ORE,DEEPSLATE_IRON_ORE -> {
+                feed = items_dropped;
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 80, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case GOLD_ORE,DEEPSLATE_GOLD_ORE -> {
+                feed = 2 * items_dropped;
+                if(percentChance(40)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 80, 1));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case COPPER_ORE,DEEPSLATE_COPPER_ORE -> {
+                feed = (int)(0.5 * items_dropped);
+                if(percentChance(20)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 60, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case DIAMOND_ORE,DEEPSLATE_DIAMOND_ORE -> {
+                feed = 3 * items_dropped;
+                if(percentChance(70)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case EMERALD_ORE,DEEPSLATE_EMERALD_ORE -> {
+                feed = 3 * items_dropped;
+                if(percentChance(60)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 80, 1));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case REDSTONE_ORE,DEEPSLATE_REDSTONE_ORE -> {
+                feed = (int)(0.5*items_dropped);
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 2));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case LAPIS_ORE, DEEPSLATE_LAPIS_ORE -> {
+                feed = (int)(0.3 * items_dropped);
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 120, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case GLOWSTONE -> {
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 2));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+        }
+        return feed;
+    }
+
     public boolean isArmorable(Entity e){
         if(!(e instanceof Monster))
             return false;
         List<EntityType> armorable = new ArrayList<>();
-        armorable.addAll(Arrays.asList(EntityType.ZOMBIE,EntityType.ZOMBIE_VILLAGER,EntityType.SKELETON,EntityType.PIGLIN,EntityType.HUSK,EntityType.DROWNED,
-                EntityType.PIGLIN_BRUTE,EntityType.ZOMBIFIED_PIGLIN));
+        armorable.addAll(Arrays.asList(EntityType.ZOMBIE,EntityType.ZOMBIE_VILLAGER,EntityType.SKELETON,EntityType.PIGLIN,EntityType.HUSK,EntityType.BOGGED,EntityType.DROWNED,
+                EntityType.PIGLIN_BRUTE,EntityType.ZOMBIFIED_PIGLIN,EntityType.PARCHED));
         return armorable.contains(e.getType());
     }
 
@@ -730,7 +787,7 @@ public final class PJEnchants extends JavaPlugin {
         new BukkitRunnable(){
             public void run(){
                 for(Player p:online){
-                    if(!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+                    if(p.getInventory().getItemInMainHand().getType() != Material.AIR) {
                         ItemStack hand = p.getInventory().getItemInMainHand();
                         if (hasCurse(hand)) {
                             Location loc = p.getLocation().add(0, 1, 0).add(p.getLocation().getDirection());
@@ -742,10 +799,18 @@ public final class PJEnchants extends JavaPlugin {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,3));
                     }
 
+                    boolean fullset_molten = true;
+                    boolean fullset_permafrost = true;
+
                     p.getInventory().getHelmet();
                     ItemStack helm = p.getInventory().getHelmet();
                     if(hasEnchantment(helm, Enchant.NIGHTEYE))
                         p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+                    if(!hasEnchantment(helm, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(helm, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
+
 
                     p.getInventory().getLeggings();
                     ItemStack legs = p.getInventory().getLeggings();
@@ -753,6 +818,10 @@ public final class PJEnchants extends JavaPlugin {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE,50,0));
                     if(hasEnchantment(legs,Enchant.LEAPING))
                         p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,60,getEnchantLevel(legs,Enchant.LEAPING)-1));
+                    if(!hasEnchantment(legs, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(legs, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
 
                     p.getInventory().getBoots();
                     ItemStack boots = p.getInventory().getBoots();
@@ -765,18 +834,28 @@ public final class PJEnchants extends JavaPlugin {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0));
                         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.isSprinting() && !p.isInWater()) {
                             p.setVelocity(p.getVelocity().multiply(new Vector(0,1,0)).add(p.getLocation().getDirection().multiply(new Vector(0.5,0,0.5))));
-                            pjEnchants.particleRing(Particle.CLOUD,p.getLocation(),0.75,5);
+                            particleRing(Particle.CLOUD,p.getLocation(),0.75,5);
                         }
 
                     }
                     if(hasEnchantment(boots,Enchant.DASH))
                         p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,getEnchantLevel(boots,Enchant.DASH)-1));
+                    if(hasEnchantment(boots,Enchant.FIREWALKER))
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,60,0));
+                    if(!hasEnchantment(boots, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(boots, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
 
                     p.getInventory().getChestplate();
                     ItemStack chest = p.getInventory().getChestplate();
                     if(hasEnchantment(chest,Enchant.SPONGE))
                         if(p.isInWater())
                             p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,50,0));
+                    if(!hasEnchantment(chest, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(chest, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
 
                     if(p.getVehicle() instanceof Horse){
                         Horse h = (Horse)p.getVehicle();
@@ -791,6 +870,13 @@ public final class PJEnchants extends JavaPlugin {
 
                     if(!p.isSneaking()){
                         magnet.remove(p.getUniqueId());
+                    }
+
+                    if(fullset_molten){
+
+                    }
+                    if(fullset_permafrost){
+
                     }
                 }
 
