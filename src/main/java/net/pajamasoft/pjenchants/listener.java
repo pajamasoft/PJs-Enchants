@@ -2647,29 +2647,6 @@ public class listener implements Listener {
         Inventory inv = e.getInventory();
         ItemStack item = e.getCurrentItem();
 
-//        // Anvil functionality
-//        if (item != null && type.equals(InventoryType.ANVIL)) {
-//            if(slot==2){
-//                if(inv.getItem(2)!=null) {
-//                    if (!inv.getItem(2).getType().equals(Material.AIR)) {
-//                        ItemStack prod = inv.getItem(2);
-//
-//                        if(prod.equals(inv.getItem(0))){
-//                            e.setCancelled(true);
-//                            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_BASS,1,1);
-//                            return;
-//                        }
-//
-//                        inv.setItem(0, null);
-//                        inv.setItem(1, null);
-//                        e.getView().setCursor(prod);
-//                        inv.setItem(2, null);
-//                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
-//                    }
-//                }
-//            }
-//        }
-
         if(inv instanceof HorseInventory){
 
             Horse horse = (Horse)e.getInventory().getHolder();
