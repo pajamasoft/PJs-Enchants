@@ -49,6 +49,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Endereyes}}$ | 1 | ![][helmet] | Allows the wearer to look Endermen in the eyes. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
 | $\color{#ffff77}{\text{Escape}}$ | 1 | ![][boots] | Teleport to a safe location if hit while sneaking with low health. | Triggers when sneaking below 10HP. Teleported to a random safe location within 10 blocks. |
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![][wolf] | Increases wolf attack damage. | Damage is an additional (2HP * level). |
+| $\color{#ffaa55}{\text{Firewalker}}$ | 2 | ![][horse]![][boots] | Gain the ability to run on lava. | Speed increases with level. |
 | $\color{#ffff77}{\text{Fling}}$ | 1 | ![][wolf] | Chance for wolf to toss enemy into the air. | 30% chance to activate. |
 | $\color{#ffaa55}{\text{Forging}}$ | 1 | ![][pickaxe]![][axe]![][shovel]![][hoe] | Automatically smelts block drops. |  |
 | $\color{#77ff77}{\text{Fracture}}$ | 4 | ![][axe] | Chance to deal additional damage to armor durability. | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
@@ -71,10 +72,12 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![][elytra]![][chestplate] | Double-jumping from the ground will launch you upwards before flight. | Upwards velocity is (1.2 * level) blocks/second. |
 | $\color{#ffff77}{\text{Lunar}}$ | 1 | ![][elytra]![][chestplate] | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![][helmet]![][chestplate]![][leggings]![][boots] | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron items in their inventories. |
-| $\color{#77ff77}{\text{Molten}}$ | 3 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. Decreases freezing time from Frostbite. |
+| $\color{#ffaa55}{\text{Meteor}}$ | 2 | ![][sword] | Shift + right-clicking launches a large fireball. | 6s cooldown. |
+| $\color{#77ff77}{\text{Molten}}$ | 3 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. Decreases freezing time from Frostbite. Full set bonus: freeze immunity. |
 | $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![][helmet] | Gain permanent night vision while worn. |  |
 | $\color{#ffff77}{\text{Nightrider}}$ | 1 | ![][horse] | Rider will gain permanent night vision and increased melee damage at night. | Increases damage by 1.25x. |
 | $\color{#ffff77}{\text{Nitro}}$ | 5 | ![][bow] | Arrows explode shortly after impact. | Arrows will explode (5 - level) seconds after impact. |
+| $\color{#ffff77}{\text{Permafrost}}$ | 3 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Chance to freeze attackers on contact. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds of freeze damage. Decreases burning time. Full set bonus: fire resistance. |
 | $\color{#ffff77}{\text{Phantom}}$ | 1 | ![][sword] | Increases damage when invisible. | 25% damage boost when invisible. |
 | $\color{#ffff77}{\text{Plague}}$ | 5 | ![][helmet]![][chestplate]![][leggings]![][boots] | Chance to summon a poison cloud when hit. | Radius is 5 blocks. (armor score)% chance to activate. Inflicts Poison I and Nausea I for 5 seconds. |
 | $\color{#ffaa55}{\text{Psychic}}$ | 3 | ![][helmet] | Chance to automatically face your attacker when hit. | (5 * level)% chance to activate. |
@@ -84,7 +87,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![][bow] | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![][horse] | Gives the horse permanent Speed while worn. | Horse gains Speed (level). |
 | $\color{#ffff77}{\text{Sealegs}}$ | 1 | ![][leggings] | Gain permanent Dolphin's Grace when in water. | |
-| $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![][sword] | Right-clicking launches a wither skull. | 5s cooldown. Level 1: -45 durability. Level 2: Charged skull, -135 durability. |
+| $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![][sword] | Right-clicking launches a wither skull. | 5s cooldown. Wither skull is charged at level 2. |
 | $\color{#ffff77}{\text{Snatch}}$ | 1 | ![][wolf] | The wolf will disarm opponents on contact. | Monsters will drop their weapons on contact. On player opponents, there is a 15% chance that the item in their main hand will switch places in their inventory. |
 | $\color{#ffff77}{\text{Solar}}$ | 1 | ![][elytra]![][chestplate] | Sneaking while gliding gives you a small boost during the day. | |
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![][chestplate] | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
