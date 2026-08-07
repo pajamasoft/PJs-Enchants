@@ -1,6 +1,13 @@
 package net.pajamasoft.pjenchants;
-
 import net.pajamasoft.pjcomputers.*;
+/*
+ * ---------------------------------------------------
+ *  PJ's Enchants
+ *      71 Custom Enchantments for survival Minecraft
+ * ---------------------------------------------------
+ * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
+ * ---------------------------------------------------
+ */
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,6 +24,8 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.util.*;
 
+import static net.pajamasoft.pjLib.PJLib.*;
+
 public final class PJEnchants extends JavaPlugin {
 
     FileConfiguration data;
@@ -26,22 +35,28 @@ public final class PJEnchants extends JavaPlugin {
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
-    final List<Enchant> all_enchants = Enchant.getAllEnchants();
-    final List<Enchant> all_curses = Enchant.getAllCurses();
-    final List<Enchant> sword_enchants = getAvailableEnchants(ItemType.SWORD);
-    final List<Enchant> pick_enchants = getAvailableEnchants(ItemType.PICKAXE);
-    final List<Enchant> axe_enchants = getAvailableEnchants(ItemType.AXE);
-    final List<Enchant> helmet_enchants = getAvailableEnchants(ItemType.HELMET);
-    final List<Enchant> chestplate_enchants = getAvailableEnchants(ItemType.CHESTPLATE);
-    final List<Enchant> leggings_enchants = getAvailableEnchants(ItemType.LEGGINGS);
-    final List<Enchant> boots_enchants = getAvailableEnchants(ItemType.BOOTS);
-    final List<Enchant> bow_enchants = getAvailableEnchants(ItemType.BOW);
-    final List<Enchant> hoe_enchants = getAvailableEnchants(ItemType.HOE);
-    final List<Enchant> spear_enchants = getAvailableEnchants(ItemType.SPEAR);
-    final List<Enchant> elytra_enchants = getAvailableEnchants(ItemType.ELYTRA);
-    final List<Enchant> t1_enchants = getEnchantsOfTier(1);
-    final List<Enchant> t2_enchants = getEnchantsOfTier(2);
-    final List<Enchant> t3_enchants = getEnchantsOfTier(3);
+    public final List<Enchant> all_enchants = Enchant.getAllEnchants();
+    public final List<Enchant> all_curses = Enchant.getAllCurses();
+    public final List<Enchant> sword_enchants = getAvailableEnchants(ItemType.SWORD);
+    public final List<Enchant> spear_enchants = getAvailableEnchants(ItemType.SPEAR);
+    public final List<Enchant> axe_enchants = getAvailableEnchants(ItemType.AXE);
+    public final List<Enchant> melee_enchants = Enchant.getSharedEnchants(Set.of(ItemType.SPEAR, ItemType.AXE, ItemType.SWORD));
+    public final List<Enchant> pick_enchants = getAvailableEnchants(ItemType.PICKAXE);
+    public final List<Enchant> shovel_enchants = getAvailableEnchants(ItemType.SHOVEL);
+    public final List<Enchant> hoe_enchants = getAvailableEnchants(ItemType.HOE);
+    public final List<Enchant> tool_enchants = Enchant.getSharedEnchants(Set.of(ItemType.PICKAXE, ItemType.AXE, ItemType.SHOVEL, ItemType.HOE));
+    public final List<Enchant> helmet_enchants = getAvailableEnchants(ItemType.HELMET);
+    public final List<Enchant> chestplate_enchants = getAvailableEnchants(ItemType.CHESTPLATE);
+    public final List<Enchant> leggings_enchants = getAvailableEnchants(ItemType.LEGGINGS);
+    public final List<Enchant> boots_enchants = getAvailableEnchants(ItemType.BOOTS);
+    public final List<Enchant> armor_enchants = Enchant.getSharedEnchants(Set.of(ItemType.HELMET, ItemType.CHESTPLATE, ItemType.LEGGINGS, ItemType.BOOTS));
+    public final List<Enchant> bow_enchants = getAvailableEnchants(ItemType.BOW);
+    public final List<Enchant> horse_enchants = getAvailableEnchants(ItemType.HORSE_ARMOR);
+    public final List<Enchant> elytra_enchants = getAvailableEnchants(ItemType.ELYTRA);
+    public final List<Enchant> wolf_enchants = getAvailableEnchants(ItemType.WOLF_ARMOR);
+    public final List<Enchant> t1_enchants = getEnchantsOfTier(1);
+    public final List<Enchant> t2_enchants = getEnchantsOfTier(2);
+    public final List<Enchant> t3_enchants = getEnchantsOfTier(3);
     final List<Material> mVals = Arrays.stream(Material.values()).toList();
     final List<Material> pickaxe_blocks = new ArrayList<>(mVals){{
        removeIf(m -> !m.name().toUpperCase().contains("_ORE"));
@@ -178,6 +193,8 @@ public final class PJEnchants extends JavaPlugin {
         }
         if(e1 == Enchant.WAVERIDER && e2 == Enchantment.FROST_WALKER)
             return false;
+        if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
+            return false;
         return true;
     }
     public boolean isCompatible(Enchant e1, Enchant e2){
@@ -185,6 +202,9 @@ public final class PJEnchants extends JavaPlugin {
             return true;
         Set<Enchant> combo = Set.of(e1,e2);
 
+        if(combo.contains(Enchant.PERMAFROST))
+            if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER))
+                return false;
         if(combo.contains(Enchant.GRAVITY)&&combo.contains(Enchant.ANTIGRAVITY))
             return false;
         if(combo.contains(Enchant.THRUST)){
@@ -245,15 +265,16 @@ public final class PJEnchants extends JavaPlugin {
                     getLogger().info("Has lore: "+lore);
                 assert lore != null;
                 for(String s:lore){
-                    if(s.contains(" ")) {
-                        if (s.toUpperCase().substring(2, s.lastIndexOf(' ')).equals(enchant.name().toUpperCase()))
+                    if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
+                        return true;
+                    else if(s.lastIndexOf(' ') > -1 && s.lastIndexOf(' ') == s.indexOf(' ')) {
+                        if (s.substring(2, s.lastIndexOf(' ')).equals(format(enchant.name())))
                             return true;
-                        else if(debug)
-                            getLogger().info("Contains ' ' but enchant.upper is not "+s.toUpperCase().substring(2, s.lastIndexOf(' '))+" ("+enchant.name().toUpperCase()+")");
                     }
                     else if(s.length() > 2)
-                        if(s.substring(2).toUpperCase().equalsIgnoreCase(enchant.name().toUpperCase()))
+                        if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
                             return true;
+
                 }
             }
         }
@@ -267,6 +288,18 @@ public final class PJEnchants extends JavaPlugin {
     public boolean isNight(World w){
         long time = w.getTime();
         return time<23000&&time>13000;
+    }
+
+    public boolean isAllowedToFly(Player p){
+        if(hasEnchantment(p.getEquipment().getChestplate(),Enchant.WINGS))
+            return true;
+        if(hasEnchantment(p.getEquipment().getBoots(),Enchant.ANTIGRAVITY))
+            return true;
+        if(p.getEquipment().getChestplate().getType() == Material.ELYTRA)
+            return true;
+        if(hasFullSet(p, Enchant.MAGNETIC))
+            return true;
+        return false;
     }
 
     public String getTierColor(Enchant enchant){
@@ -317,6 +350,26 @@ public final class PJEnchants extends JavaPlugin {
         return enchants;
     }
 
+    public void removeCustomEnchantments(ItemStack item){
+        if(item == null)
+            return;
+        if(!item.hasItemMeta())
+            return;
+        ItemMeta meta = item.getItemMeta();
+        if(meta.hasLore()){
+            meta.getLore().removeIf(l->!isEnchantmentLine(l));
+        }
+    }
+
+    public boolean isEnchantmentLine(String line){
+        try{
+            Enchant.valueOf(line.substring(2,line.indexOf(' ')).toUpperCase());
+            return true;
+        }catch(Exception ex){
+            return false;
+        }
+    }
+
     public int getEnchantLevel(ItemStack i, Enchant enchant, boolean debug){
         if(hasEnchantment(i,enchant,debug)){
             String str = "";
@@ -359,6 +412,14 @@ public final class PJEnchants extends JavaPlugin {
         return count;
     }
 
+    public boolean hasFullSet(Player p, Enchant en){
+        for(ItemStack item:p.getEquipment().getArmorContents()){
+            if(!hasEnchantment(item,en))
+                return false;
+        }
+        return true;
+    }
+
     public List<ItemStack> getInventoryAsList(Player p){
         PlayerInventory inv = p.getInventory();
         List<ItemStack> inventory = new ArrayList<>();
@@ -392,6 +453,12 @@ public final class PJEnchants extends JavaPlugin {
         return numerals[num-1];
     }
 
+    public void enchant(ItemStack item, int tier){
+        final List<Enchant> local_enchants = getEnchantsOfTier(tier);
+        Enchant enchant = local_enchants.get((int)(Math.random()*local_enchants.size()));
+        enchant(item,enchant,(int)(Math.random()*enchant.getMaxLevel() + 1));
+    }
+
     public void enchant(ItemStack item, Enchant enchant, int level){
         if(item==null)
             return;
@@ -423,8 +490,7 @@ public final class PJEnchants extends JavaPlugin {
         // COMPATIBILITY CHECK ------------
         List<Enchantment> re = getRealEnchants(item);
         List<Enchant> ce = getCustomEnchants(item);
-        String enchantment = enchant.name().toLowerCase(Locale.ROOT);
-        enchantment = enchantment.substring(0,1).toUpperCase(Locale.ROOT)+enchantment.substring(1); // capitalizes first letter
+        String enchantment = format(enchant.name());
 
         if(!isTypeCompatible(item,enchant))
             return;
@@ -496,34 +562,6 @@ public final class PJEnchants extends JavaPlugin {
         return list;
     }
 
-    public void particleRing(Particle p, Location loc, double r, int inc){
-        double x = loc.getX();
-        double y = loc.getY();
-        double z = loc.getZ();
-        for(int i=0;i<360;i+=inc){
-            loc.getWorld().spawnParticle(p,new Location(loc.getWorld(),x+Math.cos(i)*r,y,z+Math.sin(i)*r+(0.15+.1*r)),0); // loc.add(Math.cos(i)*r,0,Math.sin(i)*r)
-        }
-    }
-
-    public void particleDisc(Particle p, Location loc, double r, int inc){
-        for(double i=0;i<r;i+=1.0/inc)
-            particleRing(p,loc,r-i,inc);
-    }
-
-    public void particleCube(Particle p, Location corner,int inc){
-        for(double x=0;x<=1;x+=(1F/inc))
-            for(double y=0;y<=1;y+=(1F/inc))
-                for(double z=0;z<=1;z+=(1F/inc))
-                    corner.getWorld().spawnParticle(p,new Location(corner.getWorld(),corner.getX()+x,corner.getY()+y,corner.getZ()+z),0);
-    }
-
-    public boolean percentChance(double chance){
-        return chance>(Math.random()*101);
-    }
-    public boolean percentChance(int chance){
-        return chance > (Math.random()*101);
-    }
-
     public int random(int low, int high){
         int range = high-low;
         int end = (int)(Math.random()*range)+1+low;
@@ -578,11 +616,11 @@ public final class PJEnchants extends JavaPlugin {
         if(Objects.requireNonNull(tool.getItemMeta()).hasEnchant(Enchantment.FORTUNE))
             fortune = tool.getEnchantmentLevel(Enchantment.FORTUNE);
         if(fortune == 1)
-            multiplier = pjEnchants.percentChance(33) ? 2 : 1;
+            multiplier = percentChance(33) ? 2 : 1;
         if(fortune == 2)
-            multiplier = pjEnchants.percentChance(25) ? 3 : pjEnchants.percentChance(25) ? 2 : 1;
+            multiplier = percentChance(25) ? 3 : percentChance(25) ? 2 : 1;
         if(fortune == 3)
-            multiplier = pjEnchants.percentChance(20) ? 4 : pjEnchants.percentChance(20) ? 3 : pjEnchants.percentChance(20) ? 2 : 1;
+            multiplier = percentChance(20) ? 4 : percentChance(20) ? 3 : percentChance(20) ? 2 : 1;
 
         if (pjEnchants.isPickaxe(tool)) {
             for(ItemStack i:items) {
@@ -672,7 +710,7 @@ public final class PJEnchants extends JavaPlugin {
             }
         }
         if(showflame){
-            pjEnchants.particleCube(Particle.FLAME,block.getLocation(),3);
+            particleCube(Particle.FLAME,block.getLocation(),3);
             p.getWorld().playSound(block.getLocation(),Sound.ITEM_FIRECHARGE_USE,0.2F,1);
             ExperienceOrb orb = block.getWorld().spawn(block.getLocation(), ExperienceOrb.class);
             orb.setExperience(exp);
@@ -681,12 +719,84 @@ public final class PJEnchants extends JavaPlugin {
             block.getWorld().dropItemNaturally(block.getLocation().clone().add(0.5,0.5,0.5),drop);
     }
 
+    public int breakWithRockCandy(Player p, ItemStack tool, Block b){
+        int items_dropped = 0;
+        for(ItemStack drop:b.getDrops(tool))
+            items_dropped += drop.getAmount();
+        int feed = 0;
+        switch(b.getType()){
+            case COAL_ORE,DEEPSLATE_COAL_ORE -> {
+                feed = (int)(0.5 * items_dropped);
+                if(percentChance(20)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 80, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case IRON_ORE,DEEPSLATE_IRON_ORE -> {
+                feed = items_dropped;
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 80, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case GOLD_ORE,DEEPSLATE_GOLD_ORE -> {
+                feed = 2 * items_dropped;
+                if(percentChance(40)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 80, 1));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case COPPER_ORE,DEEPSLATE_COPPER_ORE -> {
+                feed = (int)(0.5 * items_dropped);
+                if(percentChance(20)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 60, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case DIAMOND_ORE,DEEPSLATE_DIAMOND_ORE -> {
+                feed = 3 * items_dropped;
+                if(percentChance(70)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case EMERALD_ORE,DEEPSLATE_EMERALD_ORE -> {
+                feed = 3 * items_dropped;
+                if(percentChance(60)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 80, 1));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case REDSTONE_ORE,DEEPSLATE_REDSTONE_ORE -> {
+                feed = (int)(0.5*items_dropped);
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 2));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case LAPIS_ORE, DEEPSLATE_LAPIS_ORE -> {
+                feed = (int)(0.3 * items_dropped);
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 120, 0));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case GLOWSTONE -> {
+                if(percentChance(30)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 2));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+        }
+        return feed;
+    }
+
     public boolean isArmorable(Entity e){
         if(!(e instanceof Monster))
             return false;
         List<EntityType> armorable = new ArrayList<>();
-        armorable.addAll(Arrays.asList(EntityType.ZOMBIE,EntityType.ZOMBIE_VILLAGER,EntityType.SKELETON,EntityType.PIGLIN,EntityType.HUSK,EntityType.DROWNED,
-                EntityType.PIGLIN_BRUTE,EntityType.ZOMBIFIED_PIGLIN));
+        armorable.addAll(Arrays.asList(EntityType.ZOMBIE,EntityType.ZOMBIE_VILLAGER,EntityType.SKELETON,EntityType.PIGLIN,EntityType.HUSK,EntityType.BOGGED,EntityType.DROWNED,
+                EntityType.PIGLIN_BRUTE,EntityType.ZOMBIFIED_PIGLIN,EntityType.PARCHED));
         return armorable.contains(e.getType());
     }
 
@@ -697,29 +807,41 @@ public final class PJEnchants extends JavaPlugin {
                     if(pjc != null)
                         if(pjc.findPlayer(p.getUniqueId()).isInParkour())
                             continue;
-                    if(!p.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+                    if(p.getInventory().getItemInMainHand().getType() != Material.AIR) {
                         ItemStack hand = p.getInventory().getItemInMainHand();
                         if (hasCurse(hand)) {
                             Location loc = p.getLocation().add(0, 1, 0).add(p.getLocation().getDirection());
                             loc.getWorld().spawnParticle(Particle.WITCH, loc, 0);
                         }
                         if(pjEnchants.hasEnchantment(hand,Enchant.ARTFUL))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,1,false,false));
                         if(pjEnchants.hasEnchantment(hand,Enchant.PULVERIZING))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,3));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,3,false,false));
                     }
+
+                    boolean fullset_molten = true;
+                    boolean fullset_permafrost = true;
 
                     p.getInventory().getHelmet();
                     ItemStack helm = p.getInventory().getHelmet();
                     if(hasEnchantment(helm, Enchant.NIGHTEYE))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0,false,false));
+                    if(!hasEnchantment(helm, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(helm, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
+
 
                     p.getInventory().getLeggings();
                     ItemStack legs = p.getInventory().getLeggings();
                     if(hasEnchantment(legs,Enchant.SEALEGS)&&p.isInWater())
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE,50,0));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE,50,0,false,false));
                     if(hasEnchantment(legs,Enchant.LEAPING))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,60,getEnchantLevel(legs,Enchant.LEAPING)-1));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,60,getEnchantLevel(legs,Enchant.LEAPING)-1,false,false));
+                    if(!hasEnchantment(legs, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(legs, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
 
                     p.getInventory().getBoots();
                     ItemStack boots = p.getInventory().getBoots();
@@ -729,35 +851,58 @@ public final class PJEnchants extends JavaPlugin {
                     boolean isInAir = (below == Material.AIR || below == Material.CAVE_AIR || below == Material.WATER) && (feet == Material.AIR || feet == Material.CAVE_AIR || feet == Material.WATER);
                     if (hasEnchantment(boots, Enchant.GLIDE)) {
                         if(!p.isSneaking()&&isInAir)
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0,false,false));
                         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.isSprinting() && !p.isInWater()) {
                             p.setVelocity(p.getVelocity().multiply(new Vector(0,1,0)).add(p.getLocation().getDirection().multiply(new Vector(0.5,0,0.5))));
-                            pjEnchants.particleRing(Particle.CLOUD,p.getLocation(),0.75,5);
+                            particleRing(Particle.CLOUD,p.getLocation(),0.75,5);
                         }
 
                     }
                     if(hasEnchantment(boots,Enchant.DASH))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,getEnchantLevel(boots,Enchant.DASH)-1));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,getEnchantLevel(boots,Enchant.DASH)-1,false,false));
+                    if(hasEnchantment(boots,Enchant.FIREWALKER)) {
+                        if (p.isInWater()){
+                            p.getWorld().spawnParticle(Particle.BUBBLE_COLUMN_UP,p.getLocation(),0);
+                        }
+                    }
+                    if(!hasEnchantment(boots, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(boots, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
 
                     p.getInventory().getChestplate();
                     ItemStack chest = p.getInventory().getChestplate();
                     if(hasEnchantment(chest,Enchant.SPONGE))
                         if(p.isInWater())
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,50,0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,50,0,false,false));
+                    if(!hasEnchantment(chest, Enchant.MOLTEN))
+                        fullset_molten = false;
+                    if(!hasEnchantment(chest, Enchant.PERMAFROST))
+                        fullset_permafrost = false;
 
                     if(p.getVehicle() instanceof Horse){
                         Horse h = (Horse)p.getVehicle();
                         if(h.getInventory().getArmor()!=null){
                             ItemStack armor = h.getInventory().getArmor();
                             if(hasEnchantment(armor,Enchant.NIGHTRIDER))
-                                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0,false,false));
                             if(hasEnchantment(armor,Enchant.RUSH))
-                                h.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,80,getEnchantLevel(armor,Enchant.RUSH)-1));
+                                h.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,80,getEnchantLevel(armor,Enchant.RUSH)-1,false,false));
                         }
                     }
 
                     if(!p.isSneaking()){
                         magnet.remove(p.getUniqueId());
+                    }
+
+                    if(fullset_molten){
+                        particleRing(Particle.LAVA,p.getLocation(),0.75,90);
+                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,90);
+                    }
+                    if(fullset_permafrost){
+                        particleRing(Particle.SNOWFLAKE,p.getLocation(),0.75,90);
+                        particleRing(Particle.SNOWFLAKE,p.getLocation().add(0,1,0),0.75,90);
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,60,0,false,false));
                     }
                 }
 

@@ -4,148 +4,504 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public enum Enchant {
 
     // Enchantments
-    ADRENALINE(3,1,ItemType.LEGGINGS),
-    ANTIDOTE(4,1,ItemType.CHESTPLATE),
-    ANTIGRAVITY(3,2,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR,ItemType.BOW,ItemType.BOOTS)),
-    ARTFUL(1,2,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    BLAZE(3,3,Set.of(ItemType.SWORD,ItemType.AXE)),
-    BOLT(4,2,ItemType.WOLF_ARMOR),
-    BREEZE(3,3,ItemType.SWORD),
-    CLUSTER(3,2,Set.of(ItemType.PICKAXE,ItemType.AXE)),
-    CONSTITUTION(5,1,ItemType.HELMET),
-    DARKNESS(4,1,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    DASH(2,2,ItemType.BOOTS),
-    DEFUSE(1,2,Set.of(ItemType.SWORD,ItemType.SPEAR)),
-    DEVOUR(4,1,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    DISCHARGE(3,2,ItemType.CHESTPLATE),
-    DIZZY(3,1,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    DRACONIC(1,3,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE),true),
-    DRAG(1,2,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE)),
-    ENDEREYES(1,3,ItemType.HELMET),
-    ESCAPE(1,2,ItemType.BOOTS),
-    FANGS(3,1,ItemType.WOLF_ARMOR),
-    FLING(1,2,ItemType.WOLF_ARMOR),
-    FORGING(1,3,Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SHOVEL,ItemType.HOE)),
-    FRACTURE(4,1,ItemType.AXE),
-    FREEZING(3,1,ItemType.BOW),
-    FROSTBITE(5,1,Set.of(ItemType.SWORD,ItemType.SPEAR,ItemType.AXE)),
-    GLIDE(1,3,Set.of(ItemType.BOOTS,ItemType.WOLF_ARMOR)),
-    GRAPPLING(1,3,ItemType.BOW),
-    GRAVITY(3,3,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.BOW)),
-    GROUNDED(1,3,ItemType.BOOTS),
-    HALLUCINATION(3,1,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    HEALING(1,2,ItemType.BOW),
-    HELLHOUND(1,2,ItemType.WOLF_ARMOR),
-    HELLISH(1,2,ItemType.HORSE_ARMOR),
-    HIVE(3,2,ItemType.CHESTPLATE),
-    HOMING(1,3,ItemType.BOW),
-    INFESTED(3,2,ItemType.CHESTPLATE),
-    JOUST(1,2,ItemType.HORSE_ARMOR),
-    LEAPING(3,1,ItemType.LEGGINGS),
-    LEECHING(5,2,Set.of(ItemType.SWORD,ItemType.SPEAR)),
-    LIFT(2,2,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE)),
-    LUNAR(1,2,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE)),
-    MAGNETIC(1,1,Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS)),
-    MOLTEN(3,1,Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR)),
-    NIGHTEYE(1,2,ItemType.HELMET),
-    NIGHTRIDER(1,2,ItemType.HORSE_ARMOR),
-    NITRO(5,2,ItemType.BOW),
-    PHANTOM(1,2,ItemType.SWORD),
-    PLAGUE(5,2,Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS)),
-    PSYCHIC(3,3,ItemType.HELMET),
-    PULVERIZING(1,2,Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SHOVEL,ItemType.HOE)),
-    RAGE(5,2,ItemType.CHESTPLATE),
-    REPULSION(3,1,ItemType.LEGGINGS),
-    RICOCHET(3,3,ItemType.BOW),
-    RUSH(3,2,ItemType.HORSE_ARMOR),
-    SEALEGS(1,2,ItemType.LEGGINGS),
-    SKULLS(2,3,ItemType.SWORD),
-    SNATCH(1, 2,ItemType.WOLF_ARMOR),
-    SOLAR(1,2,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE)),
-    SPIKES(1,2,ItemType.CHESTPLATE),
-    SPONGE(1,2,ItemType.CHESTPLATE),
-    STEALTH(3,2,ItemType.LEGGINGS),
-    TALENT(5,1,Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SWORD,ItemType.SPEAR)), // Unique case of Pickaxe + Melee
-    THRUST(1,2,Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE)),
-    THUNDER(4,3,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    TOXIC(1,1,Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR)),
-    UNHOLY(1,2,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    UNSTABLE(5,1,ItemType.CHESTPLATE),
-    VENOM(5,1,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR,ItemType.BOW)),
-    WAVERIDER(2,3,Set.of(ItemType.BOOTS,ItemType.HORSE_ARMOR)),
-    WEREWOLF(3,3,ItemType.WOLF_ARMOR),
-    WILTING(3,3,Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR)),
-    WINGS(1,3,ItemType.CHESTPLATE,true),
+    ABSORB(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+    ),
+    ADRENALINE(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(ItemType.LEGGINGS)
+    ),
+    ANTIDOTE(new EnchantData()
+            .max_level(4)
+            .tier(1)
+            .types(ItemType.CHESTPLATE)
+    ),
+    ANTIGRAVITY(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR,ItemType.BOW,ItemType.BOOTS))
+    ),
+    ARTFUL(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    BLAZE(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE))
+            .cooldown(5000L)
+    ),
+    BOLT(new EnchantData()
+            .max_level(4)
+            .tier(2)
+            .types(ItemType.WOLF_ARMOR)
+    ),
+    BREEZE(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.SWORD)
+            .cooldown(5000L)
+    ),
+    CLUSTER(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(Set.of(ItemType.PICKAXE,ItemType.AXE))
+    ),
+    CONSTITUTION(new EnchantData()
+            .max_level(5)
+            .tier(1)
+            .types(ItemType.HELMET)
+    ),
+    CRITICALITY(new EnchantData()
+            .max_level(2)
+            .tier(2)
+            .types(ItemType.SPEAR)
+    ),
+    DARKNESS(new EnchantData()
+            .max_level(4)
+            .tier(1)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    DASH(new EnchantData()
+            .max_level(2)
+            .tier(2)
+            .types(ItemType.BOOTS)
+    ),
+    DEFUSE(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.SWORD,ItemType.SPEAR))
+    ),
+    DEVOUR(new EnchantData()
+            .max_level(4)
+            .tier(1)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    DISCHARGE(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+    ),
+    DIZZY(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    DRACONIC(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
+            .restricted(true)
+            .cooldown(1500L)
+    ),
+    DRAG(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
+    ),
+    ENDEREYES(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(ItemType.HELMET)
+    ),
+    ERUPTION(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.HELMET)
+    ),
+    ESCAPE(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.BOOTS)
+    ),
+    FANGS(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(ItemType.WOLF_ARMOR)
+    ),
+    FIREWALKER(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.BOOTS)
+    ),
+    FLING(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.WOLF_ARMOR)
+    ),
+    FORGING(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SHOVEL,ItemType.HOE))
+    ),
+    FRACTURE(new EnchantData()
+            .max_level(4)
+            .tier(1)
+            .types(ItemType.AXE)
+    ),
+    FREEZING(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(ItemType.BOW)
+    ),
+    FROSTBITE(new EnchantData()
+            .max_level(5)
+            .tier(1)
+            .types(Set.of(ItemType.SWORD,ItemType.SPEAR,ItemType.AXE))
+    ),
+    GLIDE(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(Set.of(ItemType.BOOTS,ItemType.WOLF_ARMOR))
+    ),
+    GRAPPLING(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(ItemType.BOW)
+    ),
+    GRAVITY(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.BOW))
+            .cooldown(800L)
+    ),
+    GROUNDED(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(ItemType.BOOTS)
+    ),
+    HALLUCINATION(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    HEALING(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.BOW)
+    ),
+    HELLHOUND(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.WOLF_ARMOR)
+    ),
+    HELLISH(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.HORSE_ARMOR)
+    ),
+    HIVE(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+    ),
+    HOMING(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(ItemType.BOW)
+    ),
+    INFESTED(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+    ),
+    JOUST(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.HORSE_ARMOR)
+    ),
+    LEAPING(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(ItemType.LEGGINGS)
+    ),
+    LEECHING(new EnchantData()
+            .max_level(5)
+            .tier(2)
+            .types(Set.of(ItemType.SWORD,ItemType.SPEAR))
+    ),
+    LIFT(new EnchantData()
+            .max_level(2)
+            .tier(2)
+            .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
+    ),
+    LUNAR(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
+            .cooldown(1000L)
+    ),
+    MAGNETIC(new EnchantData()
+            .max_level(1)
+            .tier(1)
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+    ),
+    METEOR(new EnchantData()
+            .max_level(2)
+            .tier(3)
+            .types(ItemType.SWORD)
+            .restricted(true)
+            .cooldown(6000L)
+    ),
+    MOLTEN(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR))
+    ),
+    NEEDLES(new EnchantData()
+            .max_level(2)
+            .tier(2)
+            .types(ItemType.SPEAR)
+    ),
+    NIGHTEYE(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.HELMET)
+    ),
+    NIGHTRIDER(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.HORSE_ARMOR)
+    ),
+    NITRO(new EnchantData()
+            .max_level(5)
+            .tier(2)
+            .types(ItemType.BOW)
+    ),
+    PERMAFROST(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+    ),
+    PHANTOM(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.SWORD)
+    ),
+    PLAGUE(new EnchantData()
+            .max_level(5)
+            .tier(2)
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+    ),
+    PSYCHIC(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.HELMET)
+    ),
+    PULVERIZING(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SHOVEL,ItemType.HOE))
+    ),
+    PUNCTURE(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.SPEAR)
+            .cooldown(4000L)
+    ),
+    RAGE(new EnchantData()
+            .max_level(5)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+            .cooldown(6000L)
+    ),
+    REPULSION(new EnchantData()
+            .max_level(3)
+            .tier(1)
+            .types(ItemType.LEGGINGS)
+    ),
+    RICOCHET(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.BOW)
+    ),
+    ROCK_CANDY(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.PICKAXE)
+    ),
+    RUSH(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(ItemType.HORSE_ARMOR)
+    ),
+    SEALEGS(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.LEGGINGS)
+    ),
+    SKULLS(new EnchantData()
+            .max_level(2)
+            .tier(3)
+            .types(ItemType.SWORD)
+            .cooldown(5000L)
+    ),
+    SNATCH(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.WOLF_ARMOR)
+    ),
+    SOLAR(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
+            .cooldown(1000L)
+    ),
+    SPIKES(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+    ),
+    SPONGE(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+    ),
+    STEALTH(new EnchantData()
+            .max_level(3)
+            .tier(2)
+            .types(ItemType.LEGGINGS)
+            .cooldown(5000L)
+    ),
+    TALENT(new EnchantData()
+            .max_level(5)
+            .tier(1)
+            .types(Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SWORD,ItemType.SPEAR))
+    ),
+    THRUST(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
+    ),
+    THUNDER(new EnchantData()
+            .max_level(4)
+            .tier(3)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    TOXIC(new EnchantData()
+            .max_level(1)
+            .tier(1)
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR))
+    ),
+    UNHOLY(new EnchantData()
+            .max_level(1)
+            .tier(2)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    UNSTABLE(new EnchantData()
+            .max_level(5)
+            .tier(2)
+            .types(ItemType.CHESTPLATE)
+    ),
+    VENOM(new EnchantData()
+            .max_level(5)
+            .tier(1)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR,ItemType.BOW))
+    ),
+    WAVERIDER(new EnchantData()
+            .max_level(2)
+            .tier(3)
+            .types(Set.of(ItemType.BOOTS,ItemType.HORSE_ARMOR))
+    ),
+    WEREWOLF(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.WOLF_ARMOR)
+    ),
+    WILTING(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+    ),
+    WINGS(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(ItemType.CHESTPLATE)
+            .restricted(true)
+    ),
 
     // Curses
-    JUDGEMENT(ItemType.SWORD),
-    RAPTURE(ItemType.SWORD),
-    THUNDERSTORM(ItemType.SWORD),
-    VOID(ItemType.SWORD);
-
+    JUDGEMENT(new EnchantData()
+            .types(ItemType.SWORD)
+            .isCurse(true)
+    ),
+    RAPTURE(new EnchantData()
+            .types(ItemType.SWORD)
+            .isCurse(true)
+    ),
+    THUNDERSTORM(new EnchantData()
+            .types(ItemType.SWORD)
+            .isCurse(true)
+    ),
+    VOID(new EnchantData()
+            .types(ItemType.SWORD)
+            .isCurse(true)
+    ),
+    ;
 
     private final int max_level;
     private final int tier;
     private final Set<ItemType> types;
     private final boolean restricted;
     private final boolean isCurse;
+    private final long cooldown;
+
 
     // Enchant Constructors
-    Enchant(int max_level, int tier, Set<ItemType> types){
-        this.max_level = max_level;
-        this.tier = tier;
-        this.types = types;
-        this.restricted = false;
-        isCurse = false;
+    Enchant(EnchantData data){
+        this.max_level = data.max_level;
+        this.tier = data.tier;
+        this.types = data.types;
+        this.restricted = data.restricted;
+        this.isCurse = data.isCurse;
+        this.cooldown = data.cooldown;
     }
 
-    Enchant(int max_level, int tier, ItemType type){
-        this.max_level = max_level;
-        this.tier = tier;
-        types = Set.of(type);
-        restricted = false;
-        isCurse = false;
-    }
-
-    Enchant(int max_level, int tier, ItemType type, boolean restricted){
-        this.max_level = max_level;
-        this.tier = tier;
-        types = Set.of(type);
-        this.restricted = restricted;
-        isCurse = false;
-    }
-
-    Enchant(int max_level, int tier, Set<ItemType> types, boolean restricted){
-        this.max_level = max_level;
-        this.tier = tier;
-        this.types = types;
-        this.restricted = restricted;
-        isCurse = false;
-    }
-
-    // Curse Constructors
-    Enchant(Set<ItemType> types){
-        this.types = types;
-        this.max_level = 1;
-        this.tier = 4;
-        this.restricted = true;
-        isCurse = true;
-    }
-
-    Enchant(ItemType type){
-        this.types = Set.of(type);
-        this.max_level = 1;
-        this.tier = 4;
-        this.restricted = true;
-        isCurse = true;
+    private static final class EnchantData{
+        private int max_level;
+        private int tier;
+        private Set<ItemType> types;
+        private boolean restricted;
+        private boolean isCurse;
+        private long cooldown;
+        EnchantData max_level(int x){
+            this.max_level = x;
+            return this;
+        }
+        EnchantData tier(int x){
+            this.tier = x;
+            return this;
+        }
+        EnchantData types(Set<ItemType> x){
+            this.types = x;
+            return this;
+        }
+        EnchantData types(ItemType x){
+            this.types = Set.of(x);
+            return this;
+        }
+        EnchantData restricted(boolean x){
+            this.restricted = x;
+            return this;
+        }
+        EnchantData isCurse(boolean x){
+            this.isCurse = x;
+            return this;
+        }
+        EnchantData cooldown(long x){
+            this.cooldown = x;
+            return this;
+        }
     }
 
     public int getMaxLevel(){
@@ -154,6 +510,10 @@ public enum Enchant {
 
     public int getTier(){
         return tier;
+    }
+
+    public long getCooldown(){
+        return cooldown;
     }
 
     private Set<ItemType> getTypes(){
@@ -173,13 +533,27 @@ public enum Enchant {
     }
 
     public boolean isTypeCompatible(ItemStack i){
-        if(i.getType() == Material.BOOK)
+        if(i.getType() == Material.BOOK || i.getType() == Material.ENCHANTED_BOOK)
             return true;
         for(ItemType type : types){
             if(type.isOfType(i))
                 return true;
         };
         return false;
+    }
+
+    public static List<Enchant> getSharedEnchants(Set<ItemType> types){
+        List<Enchant> list = new ArrayList<>();
+        outer:
+        for(Enchant e : values()){
+            for(ItemType type : types){
+                if(!e.isTypeCompatible(type)) {
+                    continue outer;
+                }
+            }
+            list.add(e);
+        }
+        return list;
     }
 
     public boolean isTypeCompatible(ItemType type){
