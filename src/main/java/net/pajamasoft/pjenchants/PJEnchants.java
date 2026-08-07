@@ -188,6 +188,8 @@ public final class PJEnchants extends JavaPlugin {
         }
         if(e1 == Enchant.WAVERIDER && e2 == Enchantment.FROST_WALKER)
             return false;
+        if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
+            return false;
         return true;
     }
     public boolean isCompatible(Enchant e1, Enchant e2){
@@ -289,6 +291,8 @@ public final class PJEnchants extends JavaPlugin {
         if(hasEnchantment(p.getEquipment().getBoots(),Enchant.ANTIGRAVITY))
             return true;
         if(p.getEquipment().getChestplate().getType() == Material.ELYTRA)
+            return true;
+        if(hasFullSet(p, Enchant.MAGNETIC))
             return true;
         return false;
     }
@@ -401,6 +405,14 @@ public final class PJEnchants extends JavaPlugin {
                     count+=getEnchantLevel(i,enchant);
         }
         return count;
+    }
+
+    public boolean hasFullSet(Player p, Enchant en){
+        for(ItemStack item:p.getEquipment().getArmorContents()){
+            if(!hasEnchantment(item,en))
+                return false;
+        }
+        return true;
     }
 
     public List<ItemStack> getInventoryAsList(Player p){
@@ -794,9 +806,9 @@ public final class PJEnchants extends JavaPlugin {
                             loc.getWorld().spawnParticle(Particle.WITCH, loc, 0);
                         }
                         if(pjEnchants.hasEnchantment(hand,Enchant.ARTFUL))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,1,false,false));
                         if(pjEnchants.hasEnchantment(hand,Enchant.PULVERIZING))
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,3));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,3,false,false));
                     }
 
                     boolean fullset_molten = true;
@@ -805,7 +817,7 @@ public final class PJEnchants extends JavaPlugin {
                     p.getInventory().getHelmet();
                     ItemStack helm = p.getInventory().getHelmet();
                     if(hasEnchantment(helm, Enchant.NIGHTEYE))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0,false,false));
                     if(!hasEnchantment(helm, Enchant.MOLTEN))
                         fullset_molten = false;
                     if(!hasEnchantment(helm, Enchant.PERMAFROST))
@@ -815,9 +827,9 @@ public final class PJEnchants extends JavaPlugin {
                     p.getInventory().getLeggings();
                     ItemStack legs = p.getInventory().getLeggings();
                     if(hasEnchantment(legs,Enchant.SEALEGS)&&p.isInWater())
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE,50,0));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE,50,0,false,false));
                     if(hasEnchantment(legs,Enchant.LEAPING))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,60,getEnchantLevel(legs,Enchant.LEAPING)-1));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST,60,getEnchantLevel(legs,Enchant.LEAPING)-1,false,false));
                     if(!hasEnchantment(legs, Enchant.MOLTEN))
                         fullset_molten = false;
                     if(!hasEnchantment(legs, Enchant.PERMAFROST))
@@ -831,7 +843,7 @@ public final class PJEnchants extends JavaPlugin {
                     boolean isInAir = (below == Material.AIR || below == Material.CAVE_AIR || below == Material.WATER) && (feet == Material.AIR || feet == Material.CAVE_AIR || feet == Material.WATER);
                     if (hasEnchantment(boots, Enchant.GLIDE)) {
                         if(!p.isSneaking()&&isInAir)
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 0,false,false));
                         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.isSprinting() && !p.isInWater()) {
                             p.setVelocity(p.getVelocity().multiply(new Vector(0,1,0)).add(p.getLocation().getDirection().multiply(new Vector(0.5,0,0.5))));
                             particleRing(Particle.CLOUD,p.getLocation(),0.75,5);
@@ -839,9 +851,12 @@ public final class PJEnchants extends JavaPlugin {
 
                     }
                     if(hasEnchantment(boots,Enchant.DASH))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,getEnchantLevel(boots,Enchant.DASH)-1));
-                    if(hasEnchantment(boots,Enchant.FIREWALKER))
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,60,0));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,60,getEnchantLevel(boots,Enchant.DASH)-1,false,false));
+                    if(hasEnchantment(boots,Enchant.FIREWALKER)) {
+                        if (p.isInWater()){
+                            p.getWorld().spawnParticle(Particle.BUBBLE_COLUMN_UP,p.getLocation(),0);
+                        }
+                    }
                     if(!hasEnchantment(boots, Enchant.MOLTEN))
                         fullset_molten = false;
                     if(!hasEnchantment(boots, Enchant.PERMAFROST))
@@ -851,7 +866,7 @@ public final class PJEnchants extends JavaPlugin {
                     ItemStack chest = p.getInventory().getChestplate();
                     if(hasEnchantment(chest,Enchant.SPONGE))
                         if(p.isInWater())
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,50,0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE,50,0,false,false));
                     if(!hasEnchantment(chest, Enchant.MOLTEN))
                         fullset_molten = false;
                     if(!hasEnchantment(chest, Enchant.PERMAFROST))
@@ -862,9 +877,9 @@ public final class PJEnchants extends JavaPlugin {
                         if(h.getInventory().getArmor()!=null){
                             ItemStack armor = h.getInventory().getArmor();
                             if(hasEnchantment(armor,Enchant.NIGHTRIDER))
-                                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 240, 0,false,false));
                             if(hasEnchantment(armor,Enchant.RUSH))
-                                h.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,80,getEnchantLevel(armor,Enchant.RUSH)-1));
+                                h.addPotionEffect(new PotionEffect(PotionEffectType.SPEED,80,getEnchantLevel(armor,Enchant.RUSH)-1,false,false));
                         }
                     }
 
@@ -873,10 +888,13 @@ public final class PJEnchants extends JavaPlugin {
                     }
 
                     if(fullset_molten){
-
+                        particleRing(Particle.LAVA,p.getLocation(),0.75,90);
+                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,90);
                     }
                     if(fullset_permafrost){
-
+                        particleRing(Particle.SNOWFLAKE,p.getLocation(),0.75,90);
+                        particleRing(Particle.SNOWFLAKE,p.getLocation().add(0,1,0),0.75,90);
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,60,0,false,false));
                     }
                 }
 

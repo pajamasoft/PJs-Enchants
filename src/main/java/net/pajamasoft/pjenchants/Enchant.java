@@ -50,6 +50,7 @@ public enum Enchant {
             .max_level(3)
             .tier(3)
             .types(ItemType.SWORD)
+            .cooldown(5000L)
     ),
     CLUSTER(new EnchantData()
             .max_level(3)
@@ -158,13 +159,6 @@ public enum Enchant {
             .tier(1)
             .types(Set.of(ItemType.SWORD,ItemType.SPEAR,ItemType.AXE))
     ),
-    METEOR(new EnchantData()
-            .max_level(2)
-            .tier(3)
-            .types(ItemType.SWORD)
-            .restricted(true)
-            .cooldown(6000L)
-    ),
     GLIDE(new EnchantData()
             .max_level(1)
             .tier(3)
@@ -252,6 +246,13 @@ public enum Enchant {
             .tier(1)
             .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
     ),
+    METEOR(new EnchantData()
+            .max_level(2)
+            .tier(3)
+            .types(ItemType.SWORD)
+            .restricted(true)
+            .cooldown(6000L)
+    ),
     MOLTEN(new EnchantData()
             .max_level(3)
             .tier(1)
@@ -278,7 +279,7 @@ public enum Enchant {
             .types(ItemType.BOW)
     ),
     PERMAFROST(new EnchantData()
-            .max_level(3)
+            .max_level(1)
             .tier(2)
             .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
     ),
@@ -306,6 +307,7 @@ public enum Enchant {
             .max_level(1)
             .tier(2)
             .types(ItemType.SPEAR)
+            .cooldown(4000L)
     ),
     RAGE(new EnchantData()
             .max_level(5)
