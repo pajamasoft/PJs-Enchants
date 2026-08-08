@@ -883,8 +883,8 @@ public final class PJEnchants extends JavaPlugin {
                     }
 
                     if(fullset_molten){
-                        particleRing(Particle.LAVA,p.getLocation(),0.75,90);
-                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,90);
+                        particleRing(Particle.LAVA,p.getLocation(),0.75,120);
+                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,120);
                     }
                     if(fullset_permafrost){
                         particleRing(Particle.SNOWFLAKE,p.getLocation(),0.75,90);

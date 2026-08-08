@@ -87,6 +87,10 @@ public class listener implements Listener {
                 }
             }
         }
+        if(maglev.containsKey(p.getUniqueId())){
+            maglev.get(p.getUniqueId()).cancel();
+            maglev.remove(p.getUniqueId());
+        }
     }
 
     @EventHandler
@@ -133,6 +137,8 @@ public class listener implements Listener {
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
                 p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
+                if(maglev.containsKey(id))
+                    maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
                     public void run(){
                         p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 0, false, false));
