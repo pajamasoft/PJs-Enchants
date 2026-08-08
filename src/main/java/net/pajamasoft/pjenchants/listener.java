@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import it.unimi.dsi.fastutil.Pair;
+import net.pajamasoft.pjCombat.CombatPlayer;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.*;
@@ -772,7 +773,10 @@ public class listener implements Listener {
                                         if (p1.isFriendsWith(p2))
                                             rightType = true;
                                     }
-                                    else if(p2.getHandicap() == 4)
+                                }
+                                else if (pje.combat != null){
+                                    CombatPlayer cp = pje.combat.findPlayer(((Player) nearest).getUniqueId());
+                                    if(cp.getDifficulty() == 4)
                                         rightType = true;
                                 }
                                 else if(hasHealing && nearest instanceof Animals)
@@ -800,17 +804,17 @@ public class listener implements Listener {
         if(e.isCancelled())
             return;
 
-        if(pjc != null){
+        if(pje.combat != null){
             if(e.getHitEntity() != null) {
                 if (e.getHitEntity() instanceof Player && proj.getShooter() instanceof Player) {
                     Player p1 = (Player) proj.getShooter();
                     Player p2 = (Player) e.getHitEntity();
-                    if (!pjc.canPVP(p1, p2))
+                    if (!pje.combat.canPVP(p1, p2))
                         return;
                 }
                 else if(proj.getShooter() instanceof Player){
                     Player p = (Player)proj.getShooter();
-                    if(pjc.findPlayer(p.getUniqueId()).getHandicap() == 1)
+                    if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1)
                         return;
                 }
             }
@@ -1413,9 +1417,10 @@ public class listener implements Listener {
                 return;
             if(pjc.findPlayer(id).isInParkour())
                 return;
-            if(pjc.findPlayer(id).getHandicap() == 1)
-                return;
         }
+        if(pje.combat != null)
+            if(pje.combat.findPlayer(id).getDifficulty() == 1)
+                return;
 
         if(a.equals(Action.LEFT_CLICK_AIR)||a.equals(Action.LEFT_CLICK_BLOCK)|| a == Action.PHYSICAL){
             if(isSword(item)){
@@ -1579,11 +1584,13 @@ public class listener implements Listener {
         if(pjc != null) {
             if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
                 return;
-            if(pjc.findPlayer(p.getUniqueId()).getHandicap() == 1) // If player is in peaceful mode, stop secondary effects of enchants
+        }
+        if(pje.combat != null){
+            if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1) // If player is in peaceful mode, stop secondary effects of enchants
                 return;
             if(ent instanceof Player){
                 Player v = (Player)ent;
-                if(!pjc.canPVP(v,p)) // If victim does not have PVP enabled, cancel
+                if(!pje.combat.canPVP(v,p)) // If victim does not have PVP enabled, cancel
                     return;
             }
         }

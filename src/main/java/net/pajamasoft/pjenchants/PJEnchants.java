@@ -1,4 +1,5 @@
 package net.pajamasoft.pjenchants;
+import net.pajamasoft.pjCombat.PJCombat;
 import net.pajamasoft.pjcomputers.*;
 /*
  * ---------------------------------------------------
@@ -32,6 +33,7 @@ public final class PJEnchants extends JavaPlugin {
     File playerdata;
     public PJEnchants pjEnchants;
     public PJComputers pjc;
+    public PJCombat combat;
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
@@ -80,6 +82,12 @@ public final class PJEnchants extends JavaPlugin {
         pjEnchants = (PJEnchants)Bukkit.getPluginManager().getPlugin("PJEnchants");
         try {
             pjc = (PJComputers) Bukkit.getPluginManager().getPlugin("PJComputers");
+        }catch(Exception ex){
+            //
+        }
+
+        try {
+            combat = (PJCombat) Bukkit.getPluginManager().getPlugin("PJsCombat");
         }catch(Exception ex){
             //
         }

@@ -102,8 +102,26 @@
         <dependency>
             <groupId>net.pajamasoft</groupId>
             <artifactId>pjcomputers</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-PJSMP</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.pajamasoft</groupId>
+                    <artifactId>pj-lib</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.pajamasoft</groupId>
+            <artifactId>pj-combat</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.pajamasoft</groupId>
+                    <artifactId>pj-lib</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
