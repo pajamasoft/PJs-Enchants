@@ -262,6 +262,7 @@ public enum Enchant {
             .max_level(2)
             .tier(2)
             .types(ItemType.SPEAR)
+            .cooldown(30000L)
     ),
     NIGHTEYE(new EnchantData()
             .max_level(1)
