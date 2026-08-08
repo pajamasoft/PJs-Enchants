@@ -2478,6 +2478,17 @@ public class listener implements Listener {
                         },20*i);
                 }
             }
+
+            if(pje.hasEnchantment(chest,Enchant.ABSORB)){
+                if(percentChance(5)){
+                    int level = pje.getEnchantLevel(chest,Enchant.ABSORB);
+                    double absorb = level / 3.0 * e.getDamage();
+                    p.setAbsorptionAmount(absorb);
+                    e.setDamage(0);
+                    particleRing(Particle.BUBBLE,p.getLocation().add(0,1,0),1,40);
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_PLAYER_HURT_DROWN,1,1);
+                }
+            }
         }
 
         if(p.getInventory().getHelmet()!=null){
