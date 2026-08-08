@@ -1,5 +1,5 @@
 package net.pajamasoft.pjenchants;
-import net.pajamasoft.pjcomputers.*;
+
 /*
  * ---------------------------------------------------
  *  PJ's Enchants
@@ -8,6 +8,7 @@ import net.pajamasoft.pjcomputers.*;
  * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
  * ---------------------------------------------------
  */
+
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,7 +32,6 @@ public final class PJEnchants extends JavaPlugin {
     FileConfiguration data;
     File playerdata;
     public PJEnchants pjEnchants;
-    public PJComputers pjc;
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
@@ -78,11 +78,6 @@ public final class PJEnchants extends JavaPlugin {
     @Override
     public void onEnable() {
         pjEnchants = (PJEnchants)Bukkit.getPluginManager().getPlugin("PJEnchants");
-        try {
-            pjc = (PJComputers) Bukkit.getPluginManager().getPlugin("PJComputers");
-        }catch(Exception ex){
-            //
-        }
 
         getLogger().info("[PJEnchants] Plugin is active");
         getServer().getPluginManager().registerEvents(new listener(this), this);
@@ -799,9 +794,6 @@ public final class PJEnchants extends JavaPlugin {
         new BukkitRunnable(){
             public void run(){
                 for(Player p:online){
-                    if(pjc != null)
-                        if(pjc.findPlayer(p.getUniqueId()).isInParkour())
-                            continue;
                     if(p.getInventory().getItemInMainHand().getType() != Material.AIR) {
                         ItemStack hand = p.getInventory().getItemInMainHand();
                         if (hasCurse(hand)) {
