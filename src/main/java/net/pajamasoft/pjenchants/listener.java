@@ -2366,7 +2366,7 @@ public class listener implements Listener {
         if(percentChance(25* pje.getNumArmorPieces(p,Enchant.MOLTEN)))
             attacker.setFireTicks(40+20* pje.getArmorScore(p,Enchant.MOLTEN));
         if(percentChance(25* pje.getNumArmorPieces(p,Enchant.PERMAFROST)))
-            attacker.setFireTicks(160+20* pje.getArmorScore(p,Enchant.PERMAFROST));
+            attacker.setFreezeTicks(160+20* pje.getArmorScore(p,Enchant.PERMAFROST));
 
         if(p.getInventory().getBoots()!=null){
             ItemStack boots = p.getInventory().getBoots();
@@ -2539,6 +2539,17 @@ public class listener implements Listener {
                             if(!bee.isDead())
                                 bee.setTarget((LivingEntity) e.getDamager());
                         },20*i);
+                }
+            }
+
+            if(pje.hasEnchantment(chest,Enchant.ABSORB)){
+                if(percentChance(5)){
+                    int level = pje.getEnchantLevel(chest,Enchant.ABSORB);
+                    double absorb = level / 3.0 * e.getDamage();
+                    p.setAbsorptionAmount(absorb);
+                    e.setDamage(0);
+                    particleRing(Particle.BUBBLE,p.getLocation().add(0,1,0),1,40);
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_PLAYER_HURT_DROWN,1,1);
                 }
             }
         }

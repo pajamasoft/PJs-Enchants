@@ -13,7 +13,7 @@ public enum Enchant {
     ABSORB(new EnchantData()
             .max_level(3)
             .tier(1)
-            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+            .types(ItemType.CHESTPLATE)
     ),
     ADRENALINE(new EnchantData()
             .max_level(3)
@@ -29,17 +29,20 @@ public enum Enchant {
             .max_level(3)
             .tier(2)
             .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR,ItemType.BOW,ItemType.BOOTS))
+            .restricted(true)
     ),
     ARTFUL(new EnchantData()
             .max_level(1)
             .tier(2)
             .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+            .restricted(true)
     ),
     BLAZE(new EnchantData()
             .max_level(3)
             .tier(3)
             .types(Set.of(ItemType.SWORD,ItemType.AXE))
             .cooldown(5000L)
+            .restricted(true)
     ),
     BOLT(new EnchantData()
             .max_level(4)
@@ -51,11 +54,13 @@ public enum Enchant {
             .tier(3)
             .types(ItemType.SWORD)
             .cooldown(5000L)
+            .restricted(true)
     ),
     CLUSTER(new EnchantData()
             .max_level(3)
             .tier(2)
             .types(Set.of(ItemType.PICKAXE,ItemType.AXE))
+            .restricted(true)
     ),
     CONSTITUTION(new EnchantData()
             .max_level(5)
@@ -86,6 +91,7 @@ public enum Enchant {
             .max_level(4)
             .tier(1)
             .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+            .restricted(true)
     ),
     DISCHARGE(new EnchantData()
             .max_level(3)
@@ -103,6 +109,7 @@ public enum Enchant {
             .types(Set.of(ItemType.ELYTRA,ItemType.CHESTPLATE))
             .restricted(true)
             .cooldown(1500L)
+            .restricted(true)
     ),
     DRAG(new EnchantData()
             .max_level(1)
@@ -113,6 +120,7 @@ public enum Enchant {
             .max_level(1)
             .tier(3)
             .types(ItemType.HELMET)
+            .restricted(true)
     ),
     ERUPTION(new EnchantData()
             .max_level(3)
@@ -143,16 +151,19 @@ public enum Enchant {
             .max_level(1)
             .tier(3)
             .types(Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SHOVEL,ItemType.HOE))
+            .restricted(true)
     ),
     FRACTURE(new EnchantData()
             .max_level(4)
             .tier(1)
             .types(ItemType.AXE)
+            .restricted(true)
     ),
     FREEZING(new EnchantData()
             .max_level(3)
             .tier(1)
             .types(ItemType.BOW)
+            .restricted(true)
     ),
     FROSTBITE(new EnchantData()
             .max_level(5)
@@ -163,6 +174,7 @@ public enum Enchant {
             .max_level(1)
             .tier(3)
             .types(Set.of(ItemType.BOOTS,ItemType.WOLF_ARMOR))
+            .restricted(true)
     ),
     GRAPPLING(new EnchantData()
             .max_level(1)
@@ -252,17 +264,21 @@ public enum Enchant {
             .types(ItemType.SWORD)
             .restricted(true)
             .cooldown(6000L)
+            .restricted(true)
     ),
     MOLTEN(new EnchantData()
             .max_level(3)
             .tier(1)
-            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR))
+            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,
+                    ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR))
+            .restricted(true)
     ),
     NEEDLES(new EnchantData()
             .max_level(2)
             .tier(2)
             .types(ItemType.SPEAR)
             .cooldown(30000L)
+            .restricted(true)
     ),
     NIGHTEYE(new EnchantData()
             .max_level(1)
@@ -278,6 +294,7 @@ public enum Enchant {
             .max_level(5)
             .tier(2)
             .types(ItemType.BOW)
+            .restricted(true)
     ),
     PERMAFROST(new EnchantData()
             .max_level(1)
@@ -335,17 +352,20 @@ public enum Enchant {
             .max_level(3)
             .tier(2)
             .types(ItemType.HORSE_ARMOR)
+            .restricted(true)
     ),
     SEALEGS(new EnchantData()
             .max_level(1)
             .tier(2)
             .types(ItemType.LEGGINGS)
+            .restricted(true)
     ),
     SKULLS(new EnchantData()
             .max_level(2)
             .tier(3)
             .types(ItemType.SWORD)
             .cooldown(5000L)
+            .restricted(true)
     ),
     SNATCH(new EnchantData()
             .max_level(1)
@@ -376,7 +396,7 @@ public enum Enchant {
     ),
     TALENT(new EnchantData()
             .max_level(5)
-            .tier(1)
+            .tier(2)
             .types(Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SWORD,ItemType.SPEAR))
     ),
     THRUST(new EnchantData()
@@ -408,6 +428,7 @@ public enum Enchant {
             .max_level(5)
             .tier(1)
             .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR,ItemType.BOW))
+            .restricted(true)
     ),
     WAVERIDER(new EnchantData()
             .max_level(2)
@@ -423,6 +444,7 @@ public enum Enchant {
             .max_level(3)
             .tier(3)
             .types(Set.of(ItemType.SWORD,ItemType.AXE,ItemType.SPEAR))
+            .restricted(true)
     ),
     WINGS(new EnchantData()
             .max_level(1)
