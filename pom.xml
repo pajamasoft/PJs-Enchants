@@ -101,7 +101,7 @@
         </dependency>
         <dependency>
             <groupId>net.pajamasoft</groupId>
-            <artifactId>pjcomputers</artifactId>
+            <artifactId>pj-computers</artifactId>
             <version>1.0-PJSMP</version>
             <scope>provided</scope>
             <exclusions>
