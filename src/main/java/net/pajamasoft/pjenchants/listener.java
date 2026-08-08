@@ -56,6 +56,7 @@ public class listener implements Listener {
     HashMap<UUID,Long> puncture = new HashMap<>();
     List<Block> untouchable = new ArrayList<>();
     HashMap<UUID, BukkitTask> maglev = new HashMap<>();
+    HashMap<UUID, Long> needles = new HashMap<>();
 
     final int maxNumEnchants = 3;
 
@@ -393,19 +394,12 @@ public class listener implements Listener {
 //    }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent e){
+    public void onTakeDamage(EntityDamageEvent e){
         EntityDamageEvent.DamageCause cause = e.getCause();
 
         if(e.getEntity() instanceof Horse h){
             ItemStack ha = h.getInventory().getArmor();
             if(ha!=null){
-//                if(pje.hasEnchantment(ha,Enchant.HURDLE)) {
-//                    if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-//                        e.setDamage(e.getDamage() / pje.getEnchantLevel(ha, Enchant.HURDLE));
-//                        if (e.getDamage() < 1)
-//                            e.setCancelled(true);
-//                    }
-//                }
                 if(ha.getEnchantments().containsKey(Enchantment.PROTECTION)){
                     e.setDamage(e.getDamage() / ha.getEnchantmentLevel(Enchantment.PROTECTION));
                     if(e.getDamage() < 0.25)
@@ -1570,15 +1564,6 @@ public class listener implements Listener {
         if(pje.nightrider.contains(p)&& pje.isNight(p.getWorld()))
             e.setDamage(e.getDamage() * 1.25);
 
-//        if(cooldowns.get(id).containsKey(Enchant.NEEDLES)){
-//            if(System.currentTimeMillis() - needles.get(id) >= 30000){
-//                needles.remove(id);
-//            }
-//            else {
-//                e.setDamage(e.getDamage() * (1 - (p.getArrowsInBody() > 30.0 ? 30.0 : p.getArrowsInBody()) / 60.0));
-//            }
-//        }
-
         if(getHorse(p)!=null){ // both are on horses
             e.setDamage(e.getDamage() * 1.25); // Deal more damage regardless if on horseback
             if(getHorse(ent)!=null) {
@@ -1811,12 +1796,6 @@ public class listener implements Listener {
                                 puncture.remove(id2);
                     },900L);
                 }
-            }
-        }
-
-        if(pje.hasEnchantment(weapon,Enchant.CRITICALITY)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(5)) {
-                e.setDamage(e.getDamage() * 2);
             }
         }
 
@@ -2181,6 +2160,24 @@ public class listener implements Listener {
     }
 
     @EventHandler
+    public void onMobDealDamage(EntityDamageByEntityEvent e){
+        if(e.getEntity() instanceof LivingEntity ent){
+            UUID id = ent.getUniqueId();
+            if(needles.containsKey(id)){
+                if(System.currentTimeMillis() - needles.get(id) >= Enchant.NEEDLES.getCooldown()){
+                    needles.remove(id);
+                }
+                else {
+                    double damage = e.getDamage() * (1 - (ent.getArrowsInBody() > 30.0 ? 30.0 : ent.getArrowsInBody()) / 40);
+                    if(damage > e.getDamage())
+                        ent.getWorld().playSound(ent.getLocation(),Sound.BLOCK_WOOL_HIT,0.5F,0.8F);
+                    e.setDamage(damage);
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onTakeDamage(EntityDamageByEntityEvent e){
 
         if(e.getEntity() instanceof Wolf wolf){
@@ -2265,7 +2262,7 @@ public class listener implements Listener {
         DamageSource explosionSource = DamageSource.builder(DamageType.EXPLOSION)
                 .withCausingEntity(p)
                 .build();
-        DamageSource magicSource = DamageSource.builder(DamageType.EXPLOSION)
+        DamageSource magicSource = DamageSource.builder(DamageType.MAGIC)
                 .withCausingEntity(p)
                 .build();
         DamageSource meleeSource = DamageSource.builder(DamageType.PLAYER_ATTACK)
