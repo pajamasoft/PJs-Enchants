@@ -35,30 +35,30 @@ public final class PJEnchants extends JavaPlugin {
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
-    public final List<Enchant> all_enchants = Enchant.getAllEnchants();
-    public final List<Enchant> all_curses = Enchant.getAllCurses();
-    public final List<Enchant> sword_enchants = getAvailableEnchants(ItemType.SWORD);
-    public final List<Enchant> spear_enchants = getAvailableEnchants(ItemType.SPEAR);
-    public final List<Enchant> axe_enchants = getAvailableEnchants(ItemType.AXE);
-    public final List<Enchant> melee_enchants = Enchant.getSharedEnchants(Set.of(ItemType.SPEAR, ItemType.AXE, ItemType.SWORD));
-    public final List<Enchant> pick_enchants = getAvailableEnchants(ItemType.PICKAXE);
-    public final List<Enchant> shovel_enchants = getAvailableEnchants(ItemType.SHOVEL);
-    public final List<Enchant> hoe_enchants = getAvailableEnchants(ItemType.HOE);
-    public final List<Enchant> tool_enchants = Enchant.getSharedEnchants(Set.of(ItemType.PICKAXE, ItemType.AXE, ItemType.SHOVEL, ItemType.HOE));
-    public final List<Enchant> helmet_enchants = getAvailableEnchants(ItemType.HELMET);
-    public final List<Enchant> chestplate_enchants = getAvailableEnchants(ItemType.CHESTPLATE);
-    public final List<Enchant> leggings_enchants = getAvailableEnchants(ItemType.LEGGINGS);
-    public final List<Enchant> boots_enchants = getAvailableEnchants(ItemType.BOOTS);
-    public final List<Enchant> armor_enchants = Enchant.getSharedEnchants(Set.of(ItemType.HELMET, ItemType.CHESTPLATE, ItemType.LEGGINGS, ItemType.BOOTS));
-    public final List<Enchant> bow_enchants = getAvailableEnchants(ItemType.BOW);
-    public final List<Enchant> horse_enchants = getAvailableEnchants(ItemType.HORSE_ARMOR);
-    public final List<Enchant> elytra_enchants = getAvailableEnchants(ItemType.ELYTRA);
-    public final List<Enchant> wolf_enchants = getAvailableEnchants(ItemType.WOLF_ARMOR);
-    public final List<Enchant> t1_enchants = getEnchantsOfTier(1);
-    public final List<Enchant> t2_enchants = getEnchantsOfTier(2);
-    public final List<Enchant> t3_enchants = getEnchantsOfTier(3);
-    final List<Material> mVals = Arrays.stream(Material.values()).toList();
-    final List<Material> pickaxe_blocks = new ArrayList<>(mVals){{
+    public static final List<Enchant> all_enchants = Enchant.getAllEnchants();
+    public static final List<Enchant> all_curses = Enchant.getAllCurses();
+    public static final List<Enchant> sword_enchants = getAvailableEnchants(ItemType.SWORD);
+    public static final List<Enchant> spear_enchants = getAvailableEnchants(ItemType.SPEAR);
+    public static final List<Enchant> axe_enchants = getAvailableEnchants(ItemType.AXE);
+    public static final List<Enchant> melee_enchants = Enchant.getSharedEnchants(Set.of(ItemType.SPEAR, ItemType.AXE, ItemType.SWORD));
+    public static final List<Enchant> pick_enchants = getAvailableEnchants(ItemType.PICKAXE);
+    public static final List<Enchant> shovel_enchants = getAvailableEnchants(ItemType.SHOVEL);
+    public static final List<Enchant> hoe_enchants = getAvailableEnchants(ItemType.HOE);
+    public static final List<Enchant> tool_enchants = Enchant.getSharedEnchants(Set.of(ItemType.PICKAXE, ItemType.AXE, ItemType.SHOVEL, ItemType.HOE));
+    public static final List<Enchant> helmet_enchants = getAvailableEnchants(ItemType.HELMET);
+    public static final List<Enchant> chestplate_enchants = getAvailableEnchants(ItemType.CHESTPLATE);
+    public static final List<Enchant> leggings_enchants = getAvailableEnchants(ItemType.LEGGINGS);
+    public static final List<Enchant> boots_enchants = getAvailableEnchants(ItemType.BOOTS);
+    public static final List<Enchant> armor_enchants = Enchant.getSharedEnchants(Set.of(ItemType.HELMET, ItemType.CHESTPLATE, ItemType.LEGGINGS, ItemType.BOOTS));
+    public static final List<Enchant> bow_enchants = getAvailableEnchants(ItemType.BOW);
+    public static final List<Enchant> horse_enchants = getAvailableEnchants(ItemType.HORSE_ARMOR);
+    public static final List<Enchant> elytra_enchants = getAvailableEnchants(ItemType.ELYTRA);
+    public static final List<Enchant> wolf_enchants = getAvailableEnchants(ItemType.WOLF_ARMOR);
+    public static final List<Enchant> t1_enchants = getEnchantsOfTier(1);
+    public static final List<Enchant> t2_enchants = getEnchantsOfTier(2);
+    public static final List<Enchant> t3_enchants = getEnchantsOfTier(3);
+    final static List<Material> mVals = Arrays.stream(Material.values()).toList();
+    final static List<Material> pickaxe_blocks = new ArrayList<>(mVals){{
        removeIf(m -> !m.name().toUpperCase().contains("_ORE"));
     }};
     final List<Material> axe_blocks = new ArrayList<>(mVals){{
@@ -73,7 +73,7 @@ public final class PJEnchants extends JavaPlugin {
             Material.STONE,Material.ANCIENT_DEBRIS);
     List<Player> nightrider = new ArrayList<>();
     HashMap<UUID, List<ItemStack>> armor = new HashMap<>();
-    final String[] numerals = {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
+    final static String[] numerals = {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
 
     @Override
     public void onEnable() {
@@ -115,61 +115,60 @@ public final class PJEnchants extends JavaPlugin {
         }
     }
 
-    public boolean isNegativeEffect(PotionEffectType p){
-        List<PotionEffectType> list = new ArrayList<>();
-        list.addAll(Arrays.asList(PotionEffectType.NAUSEA,PotionEffectType.WITHER,PotionEffectType.POISON,PotionEffectType.LEVITATION,PotionEffectType.HUNGER,
-                PotionEffectType.BLINDNESS,PotionEffectType.SLOWNESS,PotionEffectType.MINING_FATIGUE,PotionEffectType.WEAKNESS));
+    public static boolean isNegativeEffect(PotionEffectType p){
+        List<PotionEffectType> list = new ArrayList<>(Arrays.asList(PotionEffectType.NAUSEA, PotionEffectType.WITHER, PotionEffectType.POISON, PotionEffectType.LEVITATION, PotionEffectType.HUNGER,
+                PotionEffectType.BLINDNESS, PotionEffectType.SLOWNESS, PotionEffectType.MINING_FATIGUE, PotionEffectType.WEAKNESS));
         return list.contains(p);
     }
 
-    public boolean isLog(Block b){
+    public static boolean isLog(Block b){
         String name = b.getType().name().toUpperCase();
         return name.contains("_LOG") || name.contains("_WOOD");
     }
 
-    public boolean isBoots(ItemStack i){
+    public static boolean isBoots(ItemStack i){
         return ItemType.BOOTS.isOfType(i);
     }
-    public boolean isLeggings(ItemStack i){
+    public static boolean isLeggings(ItemStack i){
         return ItemType.LEGGINGS.isOfType(i);
     }
-    public boolean isChestplate(ItemStack i){
+    public static boolean isChestplate(ItemStack i){
         return ItemType.CHESTPLATE.isOfType(i);
     }
-    public boolean isHelmet(ItemStack i){
+    public static boolean isHelmet(ItemStack i){
         return ItemType.HELMET.isOfType(i);
     }
-    public boolean isArmor(ItemStack i){
+    public static boolean isArmor(ItemStack i){
         return isHelmet(i) || isChestplate(i) || isLeggings(i) || isBoots(i);
     }
-    public boolean isTool(ItemStack i){return isPickaxe(i) || isShovel(i) || isAxe(i) || isHoe(i);}
-    public boolean isWeapon(ItemStack i){return isSword(i) || isAxe(i) || isSpear(i);}
-    public boolean isSword(ItemStack i){
+    public static boolean isTool(ItemStack i){return isPickaxe(i) || isShovel(i) || isAxe(i) || isHoe(i);}
+    public static boolean isWeapon(ItemStack i){return isSword(i) || isAxe(i) || isSpear(i);}
+    public static boolean isSword(ItemStack i){
         return ItemType.SWORD.isOfType(i);
     }
-    public boolean isPickaxe(ItemStack i){
+    public static boolean isPickaxe(ItemStack i){
         return ItemType.PICKAXE.isOfType(i);
     }
-    public boolean isAxe(ItemStack i){
+    public static boolean isAxe(ItemStack i){
         return ItemType.AXE.isOfType(i);
     }
-    public boolean isHoe(ItemStack i){
+    public static boolean isHoe(ItemStack i){
         return ItemType.HOE.isOfType(i);
     }
-    public boolean isShovel(ItemStack i){
+    public static boolean isShovel(ItemStack i){
         return ItemType.SHOVEL.isOfType(i);
     }
-    public boolean isHorseArmor(ItemStack i){
+    public static boolean isHorseArmor(ItemStack i){
         return ItemType.HORSE_ARMOR.isOfType(i);
     }
-    public boolean isSpear(ItemStack i){
+    public static boolean isSpear(ItemStack i){
         return ItemType.SPEAR.isOfType(i);
     }
-    public boolean isElytra(ItemStack i){return ItemType.ELYTRA.isOfType(i);}
-    public boolean isBow(ItemStack i){
+    public static boolean isElytra(ItemStack i){return ItemType.ELYTRA.isOfType(i);}
+    public static boolean isBow(ItemStack i){
         return ItemType.BOW.isOfType(i);
     }
-    public boolean isCompatible(Enchant e1, Enchantment e2){
+    public static boolean isCompatible(Enchant e1, Enchantment e2){
         if(e1 == Enchant.FREEZING && e2 == Enchantment.FLAME)
             return false;
         if(e1 == Enchant.FROSTBITE && e2 == Enchantment.FIRE_ASPECT)
@@ -192,7 +191,7 @@ public final class PJEnchants extends JavaPlugin {
             return false;
         return true;
     }
-    public boolean isCompatible(Enchant e1, Enchant e2){
+    public static boolean isCompatible(Enchant e1, Enchant e2){
         if(e1 == e2)
             return true;
         Set<Enchant> combo = Set.of(e1,e2);
@@ -240,24 +239,20 @@ public final class PJEnchants extends JavaPlugin {
         return true;
     }
 
-    public boolean isTypeCompatible(ItemStack i, Enchant enchant){
+    public static boolean isTypeCompatible(ItemStack i, Enchant enchant){
         if(i == null)
             return false;
         return enchant.isTypeCompatible(i);
     }
 
-    public boolean hasEnchantment(ItemStack i, Enchant enchant, boolean debug){
+    public static boolean hasEnchantment(ItemStack i, Enchant enchant, boolean debug){
         if(i==null)
             return false;
         if(i.hasItemMeta()){
-            if(debug)
-                getLogger().info("Has item meta!");
             ItemMeta meta = i.getItemMeta();
             assert meta != null;
             if(meta.hasLore()){
                 List<String> lore = meta.getLore();
-                if(debug)
-                    getLogger().info("Has lore: "+lore);
                 assert lore != null;
                 for(String s:lore){
                     if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
@@ -276,16 +271,16 @@ public final class PJEnchants extends JavaPlugin {
         return false;
     }
 
-    public boolean hasEnchantment(ItemStack i, Enchant enchant){
+    public static boolean hasEnchantment(ItemStack i, Enchant enchant){
         return hasEnchantment(i,enchant,false);
     }
 
-    public boolean isNight(World w){
+    public static boolean isNight(World w){
         long time = w.getTime();
         return time<23000&&time>13000;
     }
 
-    public boolean isAllowedToFly(Player p){
+    public static boolean isAllowedToFly(Player p){
         if(hasEnchantment(p.getEquipment().getChestplate(),Enchant.WINGS))
             return true;
         if(hasEnchantment(p.getEquipment().getBoots(),Enchant.ANTIGRAVITY))
@@ -297,7 +292,7 @@ public final class PJEnchants extends JavaPlugin {
         return false;
     }
 
-    public String getTierColor(Enchant enchant){
+    public static String getTierColor(Enchant enchant){
         int tier = enchant.getTier();
         if(tier == 4)
             return "§c";
@@ -308,11 +303,11 @@ public final class PJEnchants extends JavaPlugin {
         return "§a";
     }
 
-    public boolean hasCustomEnchants(ItemStack i){
+    public static boolean hasCustomEnchants(ItemStack i){
         return !getCustomEnchants(i).isEmpty();
     }
 
-    public boolean hasCurse(ItemStack i){
+    public static boolean hasCurse(ItemStack i){
         List<Enchant> enchants = getCustomEnchants(i);
         for(Enchant ench:enchants) {
             if(ench.isCurse())
@@ -321,7 +316,7 @@ public final class PJEnchants extends JavaPlugin {
         return false;
     }
 
-    public List<Enchant> getCustomEnchants(ItemStack i){
+    public static List<Enchant> getCustomEnchants(ItemStack i){
         List<Enchant> enchants = new ArrayList<>();
         if(i==null)
             return enchants;
@@ -365,7 +360,7 @@ public final class PJEnchants extends JavaPlugin {
         }
     }
 
-    public int getEnchantLevel(ItemStack i, Enchant enchant, boolean debug){
+    public static int getEnchantLevel(ItemStack i, Enchant enchant, boolean debug){
         if(hasEnchantment(i,enchant,debug)){
             String str = "";
             if(enchant.getMaxLevel()==1)
@@ -382,7 +377,7 @@ public final class PJEnchants extends JavaPlugin {
         return 0;
     }
 
-    public int getEnchantLevel(ItemStack i, Enchant enchant){
+    public static int getEnchantLevel(ItemStack i, Enchant enchant){
         return getEnchantLevel(i,enchant,false);
     }
 
@@ -396,7 +391,7 @@ public final class PJEnchants extends JavaPlugin {
         return count;
     }
 
-    public int getArmorScore(Player p, Enchant enchant){
+    public static int getArmorScore(Player p, Enchant enchant){
         int count = 0;
         ItemStack[] armor = p.getInventory().getArmorContents();
         for(ItemStack i:armor){
@@ -407,7 +402,7 @@ public final class PJEnchants extends JavaPlugin {
         return count;
     }
 
-    public boolean hasFullSet(Player p, Enchant en){
+    public static boolean hasFullSet(Player p, Enchant en){
         for(ItemStack item:p.getEquipment().getArmorContents()){
             if(!hasEnchantment(item,en))
                 return false;
@@ -424,7 +419,7 @@ public final class PJEnchants extends JavaPlugin {
         return inventory;
     }
 
-    public int invIndexOf(List<ItemStack> inv,Material mat){
+    public static int invIndexOf(List<ItemStack> inv,Material mat){
         for(int i=0;i<inv.size();i++) {
             if(inv.get(i)!=null)
                 if (inv.get(i).getType().equals(mat))
@@ -433,7 +428,7 @@ public final class PJEnchants extends JavaPlugin {
         return -1;
     }
 
-    public int getIntFromNumeral(String str){
+    public static int getIntFromNumeral(String str){
         for(int i=0;i<numerals.length;i++){
             if(numerals[i].equals(str)){
                 return i + 1;
@@ -442,7 +437,7 @@ public final class PJEnchants extends JavaPlugin {
         return 0;
     }
 
-    public String numeralize(int num){
+    public static String numeralize(int num){
         if(num >= numerals.length)
             return "";
         return numerals[num-1];
@@ -529,7 +524,7 @@ public final class PJEnchants extends JavaPlugin {
         item.setItemMeta(meta);
     }
 
-    public List<Enchantment> getRealEnchants(ItemStack item){
+    public static List<Enchantment> getRealEnchants(ItemStack item){
         List<Enchantment> re = new ArrayList<>();
         if(item==null)
             return re;
@@ -537,7 +532,7 @@ public final class PJEnchants extends JavaPlugin {
         return re;
     }
 
-    public List<Enchant> getEnchantsOfTier(int tier){
+    public static List<Enchant> getEnchantsOfTier(int tier){
         List<Enchant> list = new ArrayList<>();
         for(Enchant e:all_enchants){
             if(e.getTier() == tier)
@@ -546,7 +541,7 @@ public final class PJEnchants extends JavaPlugin {
         return list;
     }
 
-    public List<Enchant> getAvailableEnchants(ItemType type){
+    public static List<Enchant> getAvailableEnchants(ItemType type){
         List<Enchant> list = new ArrayList<>();
         if(type == null)
             return list;
@@ -557,7 +552,7 @@ public final class PJEnchants extends JavaPlugin {
         return list;
     }
 
-    public int random(int low, int high){
+    public static int random(int low, int high){
         int range = high-low;
         int end = (int)(Math.random()*range)+1+low;
         if(end<0)
