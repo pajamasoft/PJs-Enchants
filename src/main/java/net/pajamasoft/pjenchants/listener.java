@@ -569,8 +569,11 @@ public class listener implements Listener {
         if(p.getInventory().getBoots()!=null){
             if(hasEnchantment(p.getInventory().getBoots(),Enchant.WAVERIDER)){
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.WAVERIDER);
-                if((p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.WATER) ||
-                        p.getLocation().getBlock().getType() == Material.AIR || p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR) &&p.isSprinting())
+                if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.WATER &&
+                        p.getLocation().getBlock().getType() == Material.AIR) ||
+                        (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                                && p.getLocation().getBlock().getType() == Material.WATER))
+                        &&p.isSprinting())
                     if(p.getLocation().getBlock().getType().equals(Material.AIR)) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5*level).multiply(new Vector(1,0.75,1)));
                         particleRing(Particle.FISHING,p.getLocation(),1.5,5);
@@ -579,9 +582,13 @@ public class listener implements Listener {
             }
             if(hasEnchantment(p.getInventory().getBoots(),Enchant.FIREWALKER)){
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.FIREWALKER);
-                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)&&p.isSprinting()) {
+                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 0));
-                    if (p.getLocation().getBlock().getType() == Material.AIR || p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR) {
+                    if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.LAVA &&
+                            p.getLocation().getBlock().getType() == Material.AIR) ||
+                            (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                                    && p.getLocation().getBlock().getType() == Material.LAVA))
+                            &&p.isSprinting()) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5 * level).multiply(new Vector(1, 0.75, 1)));
                         particleRing(Particle.LAVA, p.getLocation(), 1.5, 30);
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.2F, 1);
