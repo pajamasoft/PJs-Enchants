@@ -142,9 +142,8 @@ public class listener implements Listener {
                     maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
                     public void run(){
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 0, false, false));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 4, 0, false, false));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.5F, 0.5F);
-                        p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
                     }
                 }.runTaskTimer(pje,0,5L));
                 doublejump.put(id, false);
