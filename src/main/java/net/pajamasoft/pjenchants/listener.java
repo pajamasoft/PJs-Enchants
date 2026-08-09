@@ -1761,7 +1761,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.FROSTBITE)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(20)) {
+            if(percentChance(20)) {
                 int level = getEnchantLevel(weapon, Enchant.FROSTBITE);
                 ent.setFreezeTicks(460 + 60 * level);
                 if(ent instanceof Player p2){
@@ -1776,7 +1776,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.PUNCTURE)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(5)){
+            if(percentChance(5)){
                 if(ent instanceof Player p2){
                     UUID id2 = p2.getUniqueId();
                     puncture.put(id2,System.currentTimeMillis());
@@ -1803,7 +1803,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.CRITICALITY)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(5)) {
+            if(percentChance(5)) {
                 e.setDamage(e.getDamage() * 2);
             }
         }
@@ -1824,7 +1824,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.VENOM)) {
-            if (p.getAttackCooldown() >= 0.9F && percentChance(20)) {
+            if (percentChance(20)) {
                 int level = getEnchantLevel(weapon, Enchant.VENOM);
                 if(ent instanceof Zombie || ent instanceof Skeleton)
                     ent.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40 + 20 * level, 1, false, true));
@@ -1838,7 +1838,7 @@ public class listener implements Listener {
         if(hasEnchantment(weapon,Enchant.FRACTURE)){
             int level = getEnchantLevel(weapon,Enchant.FRACTURE);
 
-            if(p.getAttackCooldown() >= 0.9F && percentChance(33)){
+            if(percentChance(33)){
                 if(ent instanceof Player p2){
                     ItemStack[] armor = p.getInventory().getArmorContents();
                     for(int i=0;i<armor.length;i++)
@@ -1866,7 +1866,7 @@ public class listener implements Listener {
 
         if(hasEnchantment(weapon,Enchant.THUNDER)){
             int level = getEnchantLevel(weapon,Enchant.THUNDER);
-            if(p.getAttackCooldown() >= 0.9F && percentChance(5+5*level)){
+            if(percentChance(5+5*level)){
                 p.getWorld().strikeLightningEffect(ent.getLocation());
                 List<Entity> near = ent.getNearbyEntities(3,3,3);
                 for(Entity a:near){
@@ -1887,7 +1887,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon, Enchant.DARKNESS)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(20)) {
+            if(percentChance(20)) {
                 int level = getEnchantLevel(weapon, Enchant.DARKNESS);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40 + 20 * level, 0, false, true));
                 particleDisc(Particle.SQUID_INK, ent.getEyeLocation(), 1, 30);
@@ -1902,7 +1902,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon, Enchant.ANTIGRAVITY)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(20)) {
+            if(percentChance(20)) {
                 int level = getEnchantLevel(weapon, Enchant.ANTIGRAVITY);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 40 + 20 * level, 0, false, true));
                 particleRing(Particle.FIREWORK, ent.getLocation().add(0, 0.75, 0), 1, 5);
@@ -1910,7 +1910,7 @@ public class listener implements Listener {
             }
         }
 
-        if(p.getAttackCooldown() >= 0.9F && hasEnchantment(weapon, Enchant.DEVOUR)){
+        if(hasEnchantment(weapon, Enchant.DEVOUR)){
             int level = getEnchantLevel(weapon, Enchant.DEVOUR);
             boolean fire_aspect = weapon.getItemMeta().hasEnchant(Enchantment.FIRE_ASPECT);
             int feed = 1;
@@ -2004,7 +2004,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon, Enchant.WILTING)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(20)){
+            if(percentChance(20)){
                 int level = getEnchantLevel(weapon, Enchant.WILTING);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40 + 20 * level, 1, false, true));
                 particleRing(Particle.SOUL,ent.getLocation().add(0,2,0),0.5,20);
@@ -2013,7 +2013,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon, Enchant.LEECHING)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(20)) {
+            if(percentChance(20)) {
                 int level = getEnchantLevel(weapon, Enchant.LEECHING);
                 double max = p.getAttribute(Attribute.MAX_HEALTH).getValue();
                 double newhealth = p.getHealth()+(0.2+0.1*level)*e.getDamage();
@@ -2029,7 +2029,7 @@ public class listener implements Listener {
         if(hasEnchantment(weapon, Enchant.GRAVITY)){
             if(!ent.getType().equals(EntityType.ENDER_DRAGON)&&!ent.getType().equals(EntityType.WITHER)) {
                 int level = getEnchantLevel(weapon, Enchant.GRAVITY);
-                if (p.getAttackCooldown() >= 0.9F && percentChance(10 + 5 * level)) {
+                if (percentChance(10 + 5 * level)) {
                     ent.teleport(ent.getLocation().subtract(0, 1, 0));
                     ent.removePotionEffect(PotionEffectType.LEVITATION);
                     ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 50, 2, false, true));
@@ -2069,7 +2069,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon, Enchant.HALLUCINATION)){
-            if(p.getAttackCooldown() >= 0.9F && percentChance(20)) {
+            if(percentChance(20)) {
                 int level = getEnchantLevel(weapon, Enchant.HALLUCINATION);
                 ent.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 40 + 20 * level, 0, false, true));
                 particleRing(Particle.SOUL_FIRE_FLAME,ent.getLocation().add(0,1.5,0),0.5,5);
@@ -2090,7 +2090,7 @@ public class listener implements Listener {
 
         if(hasEnchantment(weapon, Enchant.DIZZY)){
             int level = getEnchantLevel(weapon, Enchant.DIZZY);
-            if(p.getAttackCooldown() >= 0.9F && percentChance(5+5*level)) {
+            if(percentChance(5+5*level)) {
                 int loops = 6;
                 if(ent instanceof Player p2){
                     loops = 1;
