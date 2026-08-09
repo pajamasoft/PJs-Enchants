@@ -1497,8 +1497,9 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.METEOR)&& rc && p.isSneaking()){
-            if(isCooldownOver(id,Enchant.METEOR, getEnchantLevel(weapon,Enchant.METEOR), hasEnchantment(weapon,Enchant.ARTFUL))) {
+            if(isCooldownOver(id,Enchant.METEOR, hasEnchantment(weapon,Enchant.ARTFUL))) {
                 Fireball ball = p.launchProjectile(Fireball.class,p.getLocation().getDirection());
+                ball.setYield((float)getEnchantLevel(weapon,Enchant.METEOR));
 
                 updateCooldown(id,Enchant.METEOR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GHAST_SHOOT,1,1);
