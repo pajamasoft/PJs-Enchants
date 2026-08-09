@@ -190,6 +190,8 @@ public final class PJEnchants extends JavaPlugin {
             if(e2 == Enchantment.INFINITY || e2 == Enchantment.FLAME)
                 return false;
         }
+        if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
+            return false;
         if(e2 == Enchantment.INFINITY) {
             if(e1 == Enchant.HOMING || e1 == Enchant.GRAPPLING || e1 == Enchant.GRAVITY || e1 == Enchant.NITRO)
                 return false;
@@ -200,8 +202,6 @@ public final class PJEnchants extends JavaPlugin {
         }
         if(e1 == Enchant.WAVERIDER && e2 == Enchantment.FROST_WALKER)
             return false;
-        if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
-            return false;
         return true;
     }
     public static boolean isCompatible(Enchant e1, Enchant e2){
@@ -210,13 +210,19 @@ public final class PJEnchants extends JavaPlugin {
         Set<Enchant> combo = Set.of(e1,e2);
 
         if(combo.contains(Enchant.PERMAFROST))
-            if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER))
+            if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER)
+                    || combo.contains(Enchant.ERUPTION))
                 return false;
         if(combo.contains(Enchant.GRAVITY)&&combo.contains(Enchant.ANTIGRAVITY))
             return false;
         if(combo.contains(Enchant.THRUST)){
             if(combo.contains(Enchant.SOLAR)||combo.contains(Enchant.LUNAR))
                 return false;
+        }
+        if(combo.contains(Enchant.ROCK_CANDY) && combo.contains(Enchant.PULVERIZING))
+            return false;
+        if(combo.contains(Enchant.FIREWALKER) && combo.contains(Enchant.WAVERIDER)){
+            return false;
         }
         if(combo.contains(Enchant.BLAZE)&&combo.contains(Enchant.FROSTBITE))
             return false;
@@ -899,8 +905,8 @@ public final class PJEnchants extends JavaPlugin {
                     }
 
                     if(fullset_molten){
-                        particleRing(Particle.LAVA,p.getLocation(),0.75,90);
-                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,90);
+                        particleRing(Particle.LAVA,p.getLocation(),0.75,120);
+                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,120);
                     }
                     if(fullset_permafrost){
                         particleRing(Particle.SNOWFLAKE,p.getLocation(),0.75,90);

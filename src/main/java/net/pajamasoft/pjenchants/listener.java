@@ -92,6 +92,10 @@ public class listener implements Listener {
                 }
             }
         }
+        if(maglev.containsKey(p.getUniqueId())) {
+            maglev.get(p.getUniqueId()).cancel();
+            maglev.remove(p.getUniqueId());
+        }
     }
 
     @EventHandler
@@ -137,11 +141,13 @@ public class listener implements Listener {
 
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
-                p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
+                if(maglev.containsKey(id))
+                    maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
                     public void run(){
                         p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 0, false, false));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.5F, 0.5F);
+                        p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
                     }
                 }.runTaskTimer(pje,0,5L));
                 doublejump.put(id, false);
@@ -323,11 +329,11 @@ public class listener implements Listener {
                     p.getInventory().addItem(new ItemStack(Material.ARROW,1));
                     arrow.remove();
                 }
-                if(ent instanceof Player p2){
+                if(ent instanceof Player p2 && score > 2){
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
                     if(arrows > 0) {
-                        //needles.remove(p2.getUniqueId());
+                        needles.remove(p2.getUniqueId());
                         p2.setArrowsInBody(0);
                         p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 0.3F, 1);
                         p2.damage(arrows, DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(p).build());
@@ -374,28 +380,6 @@ public class listener implements Listener {
         else if(getArmorScore(p,Enchant.MAGNETIC)>0&&p.isSneaking()) pje.magnet.put(id,false);
     }
 
-//    @EventHandler
-//    public void onHorseJump(HorseJumpEvent e){
-//        if(!(e.getEntity() instanceof Horse))
-//            return;
-//        if(e.getEntity().getPassengers().isEmpty())
-//            return;
-//        if(!(e.getEntity().getPassengers().get(0) instanceof Player))
-//            return;
-//
-//        Player p = (Player)e.getEntity().getPassengers().get(0);
-//
-//        pje.getLogger().info("Horse jumped!");
-//        Horse h = (Horse)e.getEntity();
-//        ItemStack ha = h.getInventory().getArmor();
-//        if(pje.hasEnchantment(ha,Enchant.HURDLE)){
-//            double power = pje.getEnchantLevel(ha,Enchant.HURDLE) * (1+e.getPower());
-//            pje.getLogger().info("Hurdle power: " + power);
-//            pje.getLogger().info("Horse velocity: " + h.getVelocity());
-//            pje.getLogger().info("Player velocity: " + p.getVelocity());
-//            h.setVelocity(p.getLocation().getDirection().add(new Vector(0,power,0)));
-//        }
-//    }
 
     @EventHandler
     public void onTakeDamage(EntityDamageEvent e){
@@ -581,8 +565,11 @@ public class listener implements Listener {
         if(p.getInventory().getBoots()!=null){
             if(hasEnchantment(p.getInventory().getBoots(),Enchant.WAVERIDER)){
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.WAVERIDER);
-                if((p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.WATER) ||
-                        p.getLocation().getBlock().getType() == Material.AIR || p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR) &&p.isSprinting())
+                if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.WATER &&
+                        p.getLocation().getBlock().getType() == Material.AIR) ||
+                        (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                                && p.getLocation().getBlock().getType() == Material.WATER))
+                        &&p.isSprinting())
                     if(p.getLocation().getBlock().getType().equals(Material.AIR)) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5*level).multiply(new Vector(1,0.75,1)));
                         particleRing(Particle.FISHING,p.getLocation(),1.5,5);
@@ -591,9 +578,13 @@ public class listener implements Listener {
             }
             if(hasEnchantment(p.getInventory().getBoots(),Enchant.FIREWALKER)){
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.FIREWALKER);
-                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)&&p.isSprinting()) {
+                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 0));
-                    if (p.getLocation().getBlock().getType() == Material.AIR || p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR) {
+                    if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.LAVA &&
+                            p.getLocation().getBlock().getType() == Material.AIR) ||
+                            (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                                    && p.getLocation().getBlock().getType() == Material.LAVA))
+                            &&p.isSprinting()) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5 * level).multiply(new Vector(1, 0.75, 1)));
                         particleRing(Particle.LAVA, p.getLocation(), 1.5, 30);
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.2F, 1);
@@ -1833,6 +1824,23 @@ public class listener implements Listener {
             }
         }
 
+        if(hasEnchantment(weapon,Enchant.NEEDLES)){
+            int level = getEnchantLevel(weapon,Enchant.NEEDLES);
+            try {
+                ent.setArrowsInBody(ent.getArrowsInBody() + level);
+            }
+            catch(Exception ex){
+                //
+            }
+            needles.put(ent.getUniqueId(),System.currentTimeMillis());
+        }
+
+        if(hasEnchantment(weapon,Enchant.CRITICALITY)){
+            if(p.getAttackCooldown() >= 0.9F && percentChance(5)) {
+                e.setDamage(e.getDamage() * 2);
+            }
+        }
+
         if(ghosts.containsKey(id)){
             List<UUID> g = ghosts.get(id);
             for(UUID mid:g) {
@@ -2434,7 +2442,7 @@ public class listener implements Listener {
                 if(percentChance(5)&&!spikes.containsKey(id)){
                     p.setArrowsInBody(300);
                     spikes.put(id,true);
-                    //needles.remove(id);
+                    needles.remove(id);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                         p.setArrowsInBody(0);
@@ -2528,7 +2536,7 @@ public class listener implements Listener {
             }
 
             if(hasEnchantment(chest,Enchant.ABSORB)){
-                if(percentChance(5)){
+                if(percentChance(10)){
                     int level = getEnchantLevel(chest,Enchant.ABSORB);
                     double absorb = Math.min(level / 3.0 * e.getDamage(),10.0);
                     p.setAbsorptionAmount(absorb);
@@ -2625,8 +2633,9 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.TALENT) && !isSword(weapon)) {
-            e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT)+1)));
-            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_CHIME,0.2F,1);
+            if (exp > 0) {
+                e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT) + 1)));
+            }
         }
     }
 
