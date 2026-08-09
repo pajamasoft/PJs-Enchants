@@ -13,7 +13,7 @@ public enum Enchant {
     ABSORB(new EnchantData()
             .max_level(3)
             .tier(1)
-            .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+            .types(ItemType.CHESTPLATE)
     ),
     ADRENALINE(new EnchantData()
             .max_level(3)
