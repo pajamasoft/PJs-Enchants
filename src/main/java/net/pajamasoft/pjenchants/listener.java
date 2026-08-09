@@ -2487,7 +2487,7 @@ public class listener implements Listener {
             }
 
             if(hasEnchantment(chest,Enchant.ABSORB)){
-                if(percentChance(5)){
+                if(percentChance(10)){
                     int level = getEnchantLevel(chest,Enchant.ABSORB);
                     double absorb = Math.min(level / 3.0 * e.getDamage(),10.0);
                     p.setAbsorptionAmount(absorb);
