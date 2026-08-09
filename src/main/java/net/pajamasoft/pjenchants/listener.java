@@ -1479,7 +1479,7 @@ public class listener implements Listener {
 
         ItemStack weapon = p.getInventory().getItemInMainHand();
 
-        if(hasEnchantment(weapon,Enchant.SKULLS)&& a == Action.RIGHT_CLICK_AIR){
+        if(hasEnchantment(weapon,Enchant.SKULLS)&& a == Action.RIGHT_CLICK_AIR && p.isSneaking()){
             if(isCooldownOver(id,Enchant.SKULLS, hasEnchantment(weapon,Enchant.ARTFUL))) {
                 int level = getEnchantLevel(weapon,Enchant.SKULLS) - 1;
                 WitherSkull skull = p.launchProjectile(WitherSkull.class,p.getLocation().getDirection());
