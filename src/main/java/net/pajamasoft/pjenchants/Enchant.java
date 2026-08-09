@@ -434,6 +434,7 @@ public enum Enchant {
             .max_level(2)
             .tier(3)
             .types(Set.of(ItemType.BOOTS,ItemType.HORSE_ARMOR))
+            .restricted(true)
     ),
     WEREWOLF(new EnchantData()
             .max_level(3)
