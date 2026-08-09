@@ -98,7 +98,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![][chestplate] | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
 | $\color{#ffff77}{\text{Sponge}}$ | 1 | ![][chestplate] | Gain Resistance I when in water. | |
 | $\color{#ffff77}{\text{Stealth}}$ | 3 | ![][leggings] | Gain invisibility while sneaking. | 5s cooldown between toggles. Different effects depending on level. Level 2: Temporarily removes your armor as well while giving you Resistance II while invisible. Level 3: Upgrades to Resistance III with the addition of Speed III. |
-| $\color{#ffff77}{\text{Talent}}$ | 5 |  ![][pickaxe]![][axe]![][sword]![][spear] | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
+| $\color{#ffff77}{\text{Talent}}$ | 5 |  ![][pickaxe]![][axe]![][sword]![][spear] | Increases XP drops. | Random amount of XP dropped from blocks or mobs increases by between 0 and (level). |
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![][elytra]![][chestplate] | Fireworks will give you a greater boost when gliding. | |
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![][sword]![][axe]![][spear] | Chance to strike target with lightning | (5 + 5 * level)% chance to activate. Deals 10 raw damage. |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
