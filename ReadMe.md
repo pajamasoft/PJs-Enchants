@@ -75,7 +75,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![][elytra]![][chestplate] | Double-jumping from the ground will launch you upwards before flight. | Upwards velocity is (1.2 * level) blocks/second. |
 | $\color{#ffff77}{\text{Lunar}}$ | 1 | ![][elytra]![][chestplate] | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![][helmet]![][chestplate]![][leggings]![][boots] | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron items in their inventories. |
-| $\color{#ffaa55}{\text{Meteor}}$ | 2 | ![][sword] | Shift + right-clicking launches a large fireball. | (6-level) second cooldown. |
+| $\color{#ffaa55}{\text{Meteor}}$ | 2 | ![][sword] | Shift + right-clicking launches a large fireball. | Level 2 creates a larger explosion. 6 second cooldown. |
 | $\color{#77ff77}{\text{Molten}}$ | 3 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. Decreases freezing time from Frostbite. Full set bonus: freeze immunity. |
 | $\color{#ffff77}{\text{Needles}}$ | 2 | ![][spear] | Adds needles into the opponent, slowly weakening their damage output. | Adds (level) needles per hit. Damage is reduced as damage*(1-(needles/40)), up to 30 needles. |
 | $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![][helmet] | Gain permanent night vision while worn. |  |
@@ -92,7 +92,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Rock Candy}}$ | 1 | ![][pickaxe] | Regain hunger from mining ores. | Each ore type gives a different additional potion effect. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![][horse] | Gives the horse permanent Speed while worn. | Horse gains Speed (level). |
 | $\color{#ffff77}{\text{Sealegs}}$ | 1 | ![][leggings] | Gain permanent Dolphin's Grace when in water. | |
-| $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![][sword] | Right-clicking launches a wither skull. | 5s cooldown. Wither skull is charged at level 2. |
+| $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![][sword] | Shift + right-clicking launches a wither skull. | 5s cooldown. Wither skull is charged at level 2. |
 | $\color{#ffff77}{\text{Snatch}}$ | 1 | ![][wolf] | The wolf will disarm opponents on contact. | Monsters will drop their weapons on contact. On player opponents, there is a 15% chance that the item in their main hand will switch places in their inventory. |
 | $\color{#ffff77}{\text{Solar}}$ | 1 | ![][elytra]![][chestplate] | Sneaking while gliding gives you a small boost during the day. | |
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![][chestplate] | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
