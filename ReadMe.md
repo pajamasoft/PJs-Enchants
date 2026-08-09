@@ -29,6 +29,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 # All Custom Enchantments
 | Enchantment | Max Level | Item Type | Description | Calculations |
 | --- | --- | --- | --- | --- |
+| $\color{#77ff77}{\text{Absorb}}$ | 3 | ![][chestplate] | Chance to absorb incoming damage as extra hearts. | 5% chance to activate. Damage absorbed is (level / 3)*(damage) with a maximum of 5 hearts per event. |
 | $\color{#77ff77}{\text{Adrenaline}}$ | 3 | ![][leggings] | Gain a speed boost when low on health. | Gain Speed 2 effect for (4 + level) seconds when health falls below 5HP. Is additive to any Speed effect already active. |
 | $\color{#77ff77}{\text{Antidote}}$ | 4 | ![][chestplate] | Chance to negate infliction of Poison or Wither. | (30 + 10 * level)% chance upon receiving Poison/Wither to negate it. |
 | $\color{#ffff77}{\text{Antigravity}}$ | 3 | ![][sword]![][axe]![][spear]![][bow]![][boots] | (Melee) Chance to give target levitation. (Bow) Arrows are not affected by gravity. (Boots) Double-jump to gain temporary levitation. | (Melee) 20% chance for Levitation I for (2 + level) seconds. (Boots) Double-jumping triggers Levitation (3 * level) for 2 seconds. Sneaking will cancel levitation from any source while boots are on. |
@@ -38,6 +39,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Breeze}}$ | 3 | ![][sword] | Swinging launches a breeze ball. | Cooldown of (5 - level) seconds. |
 | $\color{#ffff77}{\text{Cluster}}$ | 3 | ![][pickaxe]![][axe] | Instantly breaks clusters of blocks. | Breaks clusters of certain blocks depending on tool type in groups of up to (6 + level). |
 | $\color{#77ff77}{\text{Constitution}}$ | 5 | ![][helmet] | Gain resistance when low on health. | Gain Resistance II for (3 + level) seconds when health falls below 7HP. |
+| $\color{#ffff77}{\text{Criticality}}$ | 2 | ![][spear] | Chance to deal damage ignoring armor. | 5% chance to activate. |
 | $\color{#77ff77}{\text{Darkness}}$ | 4 | ![][sword]![][axe]![][spear] | Chance to blind target. | 20% chance for Blindness I for (2 + level) seconds. |
 | $\color{#ffff77}{\text{Dash}}$ | 2 | ![][boots] | Gain permanent Speed effect while worn. | Speed level matches the enchantment's level. |
 | $\color{#ffff77}{\text{Defuse}}$ | 1 | ![][sword]![][spear] | Prevents creepers from exploding. | |
@@ -47,6 +49,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![][elytra]![][chestplate] | Arrows fired while gliding will turn into dragon fireballs. | Requires fire charges as ammunition. Costs 3 fire charges per shot. |
 | $\color{#ffff77}{\text{Drag}}$ | 1 | ![][elytra]![][chestplate] | Eliminates fall damage while gliding. | |
 | $\color{#ffaa55}{\text{Endereyes}}$ | 1 | ![][helmet] | Allows the wearer to look Endermen in the eyes. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
+| $\color{#ffff77}{\text{Eruption}}$ | 3 | ![][helmet] | Chance to launch fireballs out in all directions when hit. | (3 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
 | $\color{#ffff77}{\text{Escape}}$ | 1 | ![][boots] | Teleport to a safe location if hit while sneaking with low health. | Triggers when sneaking below 10HP. Teleported to a random safe location within 10 blocks. |
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![][wolf] | Increases wolf attack damage. | Damage is an additional (2HP * level). |
 | $\color{#ffaa55}{\text{Firewalker}}$ | 2 | ![][horse]![][boots] | Gain the ability to run on lava. | Speed increases with level. |
@@ -93,7 +96,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Spikes}}$ | 1 | ![][chestplate] | Chance to extrude spikes when hit, damaging enemies that get too close. | 5% chance to extrude spikes for 8 seconds. Colliding with enemies will damage them 1HP every 1/2 second. |
 | $\color{#ffff77}{\text{Sponge}}$ | 1 | ![][chestplate] | Gain Resistance I when in water. | |
 | $\color{#ffff77}{\text{Stealth}}$ | 3 | ![][leggings] | Gain invisibility while sneaking. | 5s cooldown between toggles. Different effects depending on level. Level 2: Temporarily removes your armor as well while giving you Resistance II while invisible. Level 3: Upgrades to Resistance III with the addition of Speed III. |
-| $\color{#77ff77}{\text{Talent}}$ | 5 |  ![][pickaxe]![][axe]![][sword]![][spear] | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
+| $\color{#ffff77}{\text{Talent}}$ | 5 |  ![][pickaxe]![][axe]![][sword]![][spear] | Increases XP drops. | Random amount of XP dropped from blocks or mobs between 0 and (level). |
 | $\color{#ffff77}{\text{Thrust}}$ | 1 | ![][elytra]![][chestplate] | Fireworks will give you a greater boost when gliding. | |
 | $\color{#ffaa55}{\text{Thunder}}$ | 4 | ![][sword]![][axe]![][spear] | Chance to strike target with lightning | (5 + 5 * level)% chance to activate. Deals 10 raw damage. |
 | $\color{#77ff77}{\text{Toxic}}$ | 1 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Poisons attackers. | Gives attackers poison 2 for 2 + (armor score) seconds. |
@@ -135,6 +138,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Cluster | ❌ | ❌ |
 | Talent | ❌ | |
 | Forging | ❌ | - |
+| Rock Candy | ❌ | |
 
 ### Elytra
 | | Solar | Lunar |
@@ -143,11 +147,14 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Solar | - | ❌  |
 
 ### Armor
-| | Plague | Stealth | Waverider |
-| --- | --- | --- | --- |
-| Toxic | ❌ | | | |
-| Magnetic | | ❌ | | |
-| Frost Walker | | | ❌ |
+| | Plague | Stealth | Waverider | Molten | Permafrost |
+| --- | --- | --- | --- | --- | --- |
+| Toxic | ❌ | | | | | |
+| Magnetic | | ❌ | | | | |
+| Frost Walker | | | ❌ | | |
+| Fire Walker | | | ❌ | | ❌ |
+| Permafrost | | | | ❌ | |
+| Eruption | | | | | ❌ |
 
 ## Vanilla Enchantments With Wider Applications
 The following vanilla enchantments can now be applied to new items:
@@ -165,7 +172,8 @@ Some of PJ's Enchantments interact with each other:
 * Discharge on your chestplate and Grounded on your boots will deal great defensive damage and give you a speed boost at the same time.
 * Stealth on your leggings will activate the effects of Phantom on your sword.
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
-* Artful combined with Blaze, Breeze, or Skulls reduces their cooldown by 25%.
+* Artful combined with Blaze, Breeze, Meteor, or Skulls reduces their cooldown by 25%.
+* Frostbite reduces the chance of Eruption activating
 
 ## Pet Safety
 All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
