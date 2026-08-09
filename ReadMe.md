@@ -89,7 +89,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Rage}}$ | 5 | ![][chestplate] | Gain extra strength when low on health. | Gain Strength II for (4 + level) seconds when health falls below 5HP. |
 | $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![][leggings] | Chance to launch back attackers when hit. | 33% chance to activate. Repulsion force increases with level. |
 | $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![][bow] | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
-| $\color{#ffaa55}{\text{Rock Candy}}$ | 1 | ![][pickaxe] | Regain hunger from mining ores. | Each ore type gives a different additional potion effect. |
+| $\color{#ffff77}{\text{Rock Candy}}$ | 1 | ![][pickaxe] | Regain hunger from mining ores. | Each ore type gives a different additional potion effect. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![][horse] | Gives the horse permanent Speed while worn. | Horse gains Speed (level). |
 | $\color{#ffff77}{\text{Sealegs}}$ | 1 | ![][leggings] | Gain permanent Dolphin's Grace when in water. | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![][sword] | Right-clicking launches a wither skull. | 5s cooldown. Wither skull is charged at level 2. |
