@@ -376,7 +376,7 @@ public enum Enchant {
     ),
     TALENT(new EnchantData()
             .max_level(5)
-            .tier(1)
+            .tier(2)
             .types(Set.of(ItemType.PICKAXE,ItemType.AXE,ItemType.SWORD,ItemType.SPEAR))
     ),
     THRUST(new EnchantData()
