@@ -32,8 +32,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import net.pajamasoft.pjcomputers.PJPlayer;
-import net.pajamasoft.pjcomputers.PJComputers;
 
 import java.io.File;
 import java.util.*;
@@ -44,7 +42,6 @@ import static net.pajamasoft.pjenchants.PJEnchants.*;
 public class listener implements Listener {
 
     PJEnchants pje;
-    private PJComputers pjc;
     File playerdata;
     FileConfiguration data;
     HashMap<UUID,Boolean> doublejump = new HashMap<>();
@@ -63,7 +60,6 @@ public class listener implements Listener {
         this.pje = pjEnchants;
         playerdata = pjEnchants.playerdata;
         data = pjEnchants.data;
-        this.pjc = pjEnchants.pjc;
     }
 
     @EventHandler
@@ -91,6 +87,10 @@ public class listener implements Listener {
                     //
                 }
             }
+        }
+        if(maglev.containsKey(p.getUniqueId())) {
+            maglev.get(p.getUniqueId()).cancel();
+            maglev.remove(p.getUniqueId());
         }
     }
 
@@ -138,10 +138,14 @@ public class listener implements Listener {
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
                 p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
+              
+                if(maglev.containsKey(id))
+                    maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
                     public void run(){
                         p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 0, false, false));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.5F, 0.5F);
+                        p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
                     }
                 }.runTaskTimer(pje,0,5L));
                 doublejump.put(id, false);
@@ -323,11 +327,12 @@ public class listener implements Listener {
                     p.getInventory().addItem(new ItemStack(Material.ARROW,1));
                     arrow.remove();
                 }
-                if(ent instanceof Player p2){
+                if(ent instanceof Player p2 && score > 2){
+
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
                     if(arrows > 0) {
-                        //needles.remove(p2.getUniqueId());
+                        needles.remove(p2.getUniqueId());
                         p2.setArrowsInBody(0);
                         p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 0.3F, 1);
                         p2.damage(arrows, DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(p).build());
@@ -514,14 +519,6 @@ public class listener implements Listener {
     @EventHandler
     public void onJump(PlayerJumpEvent e){
         Player p = e.getPlayer();
-
-        if(pjc != null){
-            PJPlayer pjp = pjc.findPlayer(p.getUniqueId());
-            if(pjp.isInParkour()) {
-                p.setAllowFlight(false);
-                return;
-            }
-        }
         if(isAllowedToFly(p))
             p.setAllowFlight(true);
         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.getGameMode().equals(GameMode.SURVIVAL))
@@ -581,8 +578,11 @@ public class listener implements Listener {
         if(p.getInventory().getBoots()!=null){
             if(hasEnchantment(p.getInventory().getBoots(),Enchant.WAVERIDER)){
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.WAVERIDER);
-                if((p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.WATER) ||
-                        p.getLocation().getBlock().getType() == Material.AIR || p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR) &&p.isSprinting())
+                if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.WATER &&
+                        p.getLocation().getBlock().getType() == Material.AIR) ||
+                        (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                                && p.getLocation().getBlock().getType() == Material.WATER))
+                        &&p.isSprinting())
                     if(p.getLocation().getBlock().getType().equals(Material.AIR)) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5*level).multiply(new Vector(1,0.75,1)));
                         particleRing(Particle.FISHING,p.getLocation(),1.5,5);
@@ -591,9 +591,13 @@ public class listener implements Listener {
             }
             if(hasEnchantment(p.getInventory().getBoots(),Enchant.FIREWALKER)){
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.FIREWALKER);
-                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)&&p.isSprinting()) {
+                if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 0));
-                    if (p.getLocation().getBlock().getType() == Material.AIR || p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR) {
+                    if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.LAVA &&
+                            p.getLocation().getBlock().getType() == Material.AIR) ||
+                            (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                                    && p.getLocation().getBlock().getType() == Material.LAVA))
+                            &&p.isSprinting()) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5 * level).multiply(new Vector(1, 0.75, 1)));
                         particleRing(Particle.LAVA, p.getLocation(), 1.5, 30);
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.2F, 1);
@@ -766,15 +770,7 @@ public class listener implements Listener {
                         if(nearest!=null) {
                             boolean rightType = false;
                             if(nearest instanceof Player){
-                                if (pjc != null && finalP != null) {
-                                    PJPlayer p1 = pjc.findPlayer(finalP.getUniqueId());
-                                    PJPlayer p2 = pjc.findPlayer(((Player) nearest).getUniqueId());
-                                    if(hasHealing) {
-                                        if (p1.isFriendsWith(p2))
-                                            rightType = true;
-                                    }
-                                }
-                                else if (pje.combat != null){
+                                if (pje.combat != null){
                                     CombatPlayer cp = pje.combat.findPlayer(((Player) nearest).getUniqueId());
                                     if(cp.getDifficulty() == 4)
                                         rightType = true;
@@ -949,8 +945,6 @@ public class listener implements Listener {
                     LivingEntity ent = (LivingEntity)e.getHitEntity();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                         boolean canbreak = true;
-                        if(pjc != null)
-                            canbreak = pjc.canModifyChunk(ent.getChunk());
                         if (!ent.isDead() && canbreak)
                             ent.getWorld().createExplosion(ent.getLocation(), 0.5F, false, true);
                         arrow.remove();
@@ -965,8 +959,6 @@ public class listener implements Listener {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                     if(arrow.isInBlock()) {
                         boolean canbreak = true;
-                        if(pjc != null)
-                            canbreak = pjc.canModifyChunk(arrow.getChunk());
                         if(canbreak)
                             b.getWorld().createExplosion(b.getLocation(), 1, false, true);
                         arrow.remove();
@@ -1412,12 +1404,6 @@ public class listener implements Listener {
             return;
 
         ItemStack item = p.getInventory().getItemInMainHand();
-        if(pjc != null) {
-            if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
-                return;
-            if(pjc.findPlayer(id).isInParkour())
-                return;
-        }
         if(pje.combat != null)
             if(pje.combat.findPlayer(id).getDifficulty() == 1)
                 return;
@@ -1483,9 +1469,6 @@ public class listener implements Listener {
 
         if(p.getInventory().getItemInMainHand().getItemMeta() == null)
             return;
-        if(pjc != null)
-            if(!pjc.canModifyChunk(p,p.getLocation().getChunk()))
-                return;
 
         ItemStack weapon = p.getInventory().getItemInMainHand();
 
@@ -1581,10 +1564,6 @@ public class listener implements Listener {
             return;
         LivingEntity ent = (LivingEntity)e.getEntity();
 
-        if(pjc != null) {
-            if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
-                return;
-        }
         if(pje.combat != null){
             if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1) // If player is in peaceful mode, stop secondary effects of enchants
                 return;
@@ -1830,6 +1809,23 @@ public class listener implements Listener {
                                 puncture.remove(id2);
                     },900L);
                 }
+            }
+        }
+
+        if(hasEnchantment(weapon,Enchant.NEEDLES)){
+            int level = getEnchantLevel(weapon,Enchant.NEEDLES);
+            try {
+                ent.setArrowsInBody(ent.getArrowsInBody() + level);
+            }
+            catch(Exception ex){
+                //
+            }
+            needles.put(ent.getUniqueId(),System.currentTimeMillis());
+        }
+
+        if(hasEnchantment(weapon,Enchant.CRITICALITY)){
+            if(p.getAttackCooldown() >= 0.9F && percentChance(5)) {
+                e.setDamage(e.getDamage() * 2);
             }
         }
 
@@ -2434,7 +2430,7 @@ public class listener implements Listener {
                 if(percentChance(5)&&!spikes.containsKey(id)){
                     p.setArrowsInBody(300);
                     spikes.put(id,true);
-                    //needles.remove(id);
+                    needles.remove(id);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                         p.setArrowsInBody(0);
@@ -2528,7 +2524,7 @@ public class listener implements Listener {
             }
 
             if(hasEnchantment(chest,Enchant.ABSORB)){
-                if(percentChance(5)){
+                if(percentChance(10)){
                     int level = getEnchantLevel(chest,Enchant.ABSORB);
                     double absorb = Math.min(level / 3.0 * e.getDamage(),10.0);
                     p.setAbsorptionAmount(absorb);
@@ -2625,8 +2621,9 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.TALENT) && !isSword(weapon)) {
-            e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT)+1)));
-            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_CHIME,0.2F,1);
+            if(exp > 0) {
+                e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT) + 1)));
+            }
         }
     }
 
@@ -2639,6 +2636,29 @@ public class listener implements Listener {
         int slot = e.getRawSlot();
         Inventory inv = e.getInventory();
         ItemStack item = e.getCurrentItem();
+
+//        // Anvil functionality
+//        if (item != null && type.equals(InventoryType.ANVIL)) {
+//            if(slot==2){
+//                if(inv.getItem(2)!=null) {
+//                    if (!inv.getItem(2).getType().equals(Material.AIR)) {
+//                        ItemStack prod = inv.getItem(2);
+//
+//                        if(prod.equals(inv.getItem(0))){
+//                            e.setCancelled(true);
+//                            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_BASS,1,1);
+//                            return;
+//                        }
+//
+//                        inv.setItem(0, null);
+//                        inv.setItem(1, null);
+//                        e.getView().setCursor(prod);
+//                        inv.setItem(2, null);
+//                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
+//                    }
+//                }
+//            }
+//        }
 
         if(inv instanceof HorseInventory){
 
