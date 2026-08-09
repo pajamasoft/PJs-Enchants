@@ -197,8 +197,6 @@ public final class PJEnchants extends JavaPlugin {
         }
         if(e1 == Enchant.WAVERIDER && e2 == Enchantment.FROST_WALKER)
             return false;
-        if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
-            return false;
         return true;
     }
     public static boolean isCompatible(Enchant e1, Enchant e2){

@@ -137,7 +137,6 @@ public class listener implements Listener {
 
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
-                p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
               
                 if(maglev.containsKey(id))
                     maglev.get(id).cancel();
@@ -379,28 +378,6 @@ public class listener implements Listener {
         else if(getArmorScore(p,Enchant.MAGNETIC)>0&&p.isSneaking()) pje.magnet.put(id,false);
     }
 
-//    @EventHandler
-//    public void onHorseJump(HorseJumpEvent e){
-//        if(!(e.getEntity() instanceof Horse))
-//            return;
-//        if(e.getEntity().getPassengers().isEmpty())
-//            return;
-//        if(!(e.getEntity().getPassengers().get(0) instanceof Player))
-//            return;
-//
-//        Player p = (Player)e.getEntity().getPassengers().get(0);
-//
-//        pje.getLogger().info("Horse jumped!");
-//        Horse h = (Horse)e.getEntity();
-//        ItemStack ha = h.getInventory().getArmor();
-//        if(pje.hasEnchantment(ha,Enchant.HURDLE)){
-//            double power = pje.getEnchantLevel(ha,Enchant.HURDLE) * (1+e.getPower());
-//            pje.getLogger().info("Hurdle power: " + power);
-//            pje.getLogger().info("Horse velocity: " + h.getVelocity());
-//            pje.getLogger().info("Player velocity: " + p.getVelocity());
-//            h.setVelocity(p.getLocation().getDirection().add(new Vector(0,power,0)));
-//        }
-//    }
 
     @EventHandler
     public void onTakeDamage(EntityDamageEvent e){
@@ -2636,29 +2613,6 @@ public class listener implements Listener {
         int slot = e.getRawSlot();
         Inventory inv = e.getInventory();
         ItemStack item = e.getCurrentItem();
-
-//        // Anvil functionality
-//        if (item != null && type.equals(InventoryType.ANVIL)) {
-//            if(slot==2){
-//                if(inv.getItem(2)!=null) {
-//                    if (!inv.getItem(2).getType().equals(Material.AIR)) {
-//                        ItemStack prod = inv.getItem(2);
-//
-//                        if(prod.equals(inv.getItem(0))){
-//                            e.setCancelled(true);
-//                            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_BASS,1,1);
-//                            return;
-//                        }
-//
-//                        inv.setItem(0, null);
-//                        inv.setItem(1, null);
-//                        e.getView().setCursor(prod);
-//                        inv.setItem(2, null);
-//                        p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
-//                    }
-//                }
-//            }
-//        }
 
         if(inv instanceof HorseInventory){
 
