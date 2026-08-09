@@ -335,7 +335,7 @@ public class listener implements Listener {
                         needles.remove(p2.getUniqueId());
                         p2.setArrowsInBody(0);
                         p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 0.3F, 1);
-                        p2.damage(arrows, DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(p).build());
+                        p2.damage(arrows, DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(p).withDirectEntity(p).build());
                         p.getInventory().addItem(new ItemStack(Material.ARROW, arrows));
                     }
                 }
@@ -1603,9 +1603,11 @@ public class listener implements Listener {
 
         DamageSource magicSource = DamageSource.builder(DamageType.MAGIC)
                 .withCausingEntity(p)
+                .withDirectEntity(p)
                 .build();
         DamageSource meleeSource = DamageSource.builder(DamageType.PLAYER_ATTACK)
                 .withCausingEntity(p)
+                .withDirectEntity(p)
                 .build();
 
         ItemStack weapon;
@@ -2310,12 +2312,15 @@ public class listener implements Listener {
         EntityDamageEvent.DamageCause cause = e.getCause();
         DamageSource explosionSource = DamageSource.builder(DamageType.EXPLOSION)
                 .withCausingEntity(p)
+                .withDirectEntity(p)
                 .build();
         DamageSource magicSource = DamageSource.builder(DamageType.MAGIC)
                 .withCausingEntity(p)
+                .withDirectEntity(p)
                 .build();
         DamageSource meleeSource = DamageSource.builder(DamageType.PLAYER_ATTACK)
                 .withCausingEntity(p)
+                .withDirectEntity(p)
                 .build();
 
         if(puncture.containsKey(id))
