@@ -52,7 +52,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Eruption}}$ | 3 | ![][helmet] | Chance to launch fireballs out in all directions when hit. | (3 * level((21 - health/10) + 1))% chance to trigger (the lower your health, the higher the chance of triggering). |
 | $\color{#ffff77}{\text{Escape}}$ | 1 | ![][boots] | Teleport to a safe location if hit while sneaking with low health. | Triggers when sneaking below 10HP. Teleported to a random safe location within 10 blocks. |
 | $\color{#77ff77}{\text{Fangs}}$ | 3 | ![][wolf] | Increases wolf attack damage. | Damage is an additional (2HP * level). |
-| $\color{#ffaa55}{\text{Firewalker}}$ | 2 | ![][horse]![][boots] | Gain the ability to run on lava. | Speed increases with level. |
+| $\color{#ffaa55}{\text{Firewalker}}$ | 2 | ![][boots] | Gain the ability to run on lava. | Speed increases with level. |
 | $\color{#ffff77}{\text{Fling}}$ | 1 | ![][wolf] | Chance for wolf to toss enemy into the air. | 30% chance to activate. |
 | $\color{#ffaa55}{\text{Forging}}$ | 1 | ![][pickaxe]![][axe]![][shovel]![][hoe] | Automatically smelts block drops. |  |
 | $\color{#77ff77}{\text{Fracture}}$ | 4 | ![][axe] | Chance to deal additional damage to armor durability. | 33% chance to deal an additional (2 + level) durability to all target player's armor. (10 + 10 * level)% chance to instantly break a piece of target mob's armor. |
@@ -75,8 +75,9 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Lift}}$ | 2 | ![][elytra]![][chestplate] | Double-jumping from the ground will launch you upwards before flight. | Upwards velocity is (1.2 * level) blocks/second. |
 | $\color{#ffff77}{\text{Lunar}}$ | 1 | ![][elytra]![][chestplate] | Sneaking while gliding gives you a small boost at night. | Also works in The End. |
 | $\color{#77ff77}{\text{Magnetic}}$ | 1 | ![][helmet]![][chestplate]![][leggings]![][boots] | Sneaking will pull in nearby items and metal. | Has range of (3 + #pieces) blocks. Pulls in items, arrows, and entities wearing iron armor or holding iron items in their inventories. |
-| $\color{#ffaa55}{\text{Meteor}}$ | 2 | ![][sword] | Shift + right-clicking launches a large fireball. | 6s cooldown. |
+| $\color{#ffaa55}{\text{Meteor}}$ | 2 | ![][sword] | Shift + right-clicking launches a large fireball. | (6-level) second cooldown. |
 | $\color{#77ff77}{\text{Molten}}$ | 3 | ![][helmet]![][chestplate]![][leggings]![][boots]![][wolf] | Chance to set the attacker ablaze. | (25 * #pieces)% chance to trigger, 2 + (armor score) seconds on fire. Decreases freezing time from Frostbite. Full set bonus: freeze immunity. |
+| $\color{#ffff77}{\text{Needles}}$ | 2 | ![][spear] | Adds needles into the opponent, slowly weakening their damage output. | Adds (level) needles per hit. Damage is reduced as damage*(1-(needles/40)), up to 30 needles. |
 | $\color{#ffff77}{\text{Nighteye}}$ | 1 | ![][helmet] | Gain permanent night vision while worn. |  |
 | $\color{#ffff77}{\text{Nightrider}}$ | 1 | ![][horse] | Rider will gain permanent night vision and increased melee damage at night. | Increases damage by 1.25x. |
 | $\color{#ffff77}{\text{Nitro}}$ | 5 | ![][bow] | Arrows explode shortly after impact. | Arrows will explode (5 - level) seconds after impact. |
@@ -88,6 +89,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Rage}}$ | 5 | ![][chestplate] | Gain extra strength when low on health. | Gain Strength II for (4 + level) seconds when health falls below 5HP. |
 | $\color{#77ff77}{\text{Repulsion}}$ | 3 | ![][leggings] | Chance to launch back attackers when hit. | 33% chance to activate. Repulsion force increases with level. |
 | $\color{#ffaa55}{\text{Ricochet}}$ | 3 | ![][bow] | Arrows will ricochet from enemy to enemy. | Arrows will bounce up to (3 + level) times. |
+| $\color{#ffaa55}{\text{Rock Candy}}$ | 1 | ![][pickaxe] | Regain hunger from mining ores. | Each ore type gives a different additional potion effect. |
 | $\color{#ffff77}{\text{Rush}}$ | 3 | ![][horse] | Gives the horse permanent Speed while worn. | Horse gains Speed (level). |
 | $\color{#ffff77}{\text{Sealegs}}$ | 1 | ![][leggings] | Gain permanent Dolphin's Grace when in water. | |
 | $\color{#ffaa55}{\text{Skulls}}$ | 2 | ![][sword] | Right-clicking launches a wither skull. | 5s cooldown. Wither skull is charged at level 2. |
@@ -174,6 +176,18 @@ Some of PJ's Enchantments interact with each other:
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
 * Artful combined with Blaze, Breeze, Meteor, or Skulls reduces their cooldown by 25%.
 * Frostbite reduces the chance of Eruption activating
+
+## Full-Set Bonuses
+Some armor enchants have an additional effect if worn on all 4 armor pieces:
+
+### Magnetic
+* Double-jump for magnetic levitation
+### Molten
+* Frozen damage immunity
+* Permanent fire particles
+### Permafrost
+* Fire immunity
+* Permanent snow particles
 
 ## Pet Safety
 All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
