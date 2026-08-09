@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerElytraBoostEvent;
 import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import it.unimi.dsi.fastutil.Pair;
+import net.pajamasoft.pjCombat.CombatPlayer;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.*;
@@ -87,7 +88,7 @@ public class listener implements Listener {
                 }
             }
         }
-        if(maglev.containsKey(p.getUniqueId())){
+        if(maglev.containsKey(p.getUniqueId())) {
             maglev.get(p.getUniqueId()).cancel();
             maglev.remove(p.getUniqueId());
         }
@@ -137,12 +138,14 @@ public class listener implements Listener {
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
                 p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
+              
                 if(maglev.containsKey(id))
                     maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
                     public void run(){
                         p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 0, false, false));
                         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.5F, 0.5F);
+                        p.setVelocity(p.getVelocity().multiply(new Vector(1,0,1)));
                     }
                 }.runTaskTimer(pje,0,5L));
                 doublejump.put(id, false);
@@ -767,7 +770,12 @@ public class listener implements Listener {
                         if(nearest!=null) {
                             boolean rightType = false;
                             if(nearest instanceof Player){
-                                if(hasHealing && nearest instanceof Animals)
+                                if (pje.combat != null){
+                                    CombatPlayer cp = pje.combat.findPlayer(((Player) nearest).getUniqueId());
+                                    if(cp.getDifficulty() == 4)
+                                        rightType = true;
+                                }
+                                else if(hasHealing && nearest instanceof Animals)
                                     rightType = true;
                             }
                             else if(nearest instanceof Monster)
@@ -791,6 +799,22 @@ public class listener implements Listener {
 
         if(e.isCancelled())
             return;
+
+        if(pje.combat != null){
+            if(e.getHitEntity() != null) {
+                if (e.getHitEntity() instanceof Player && proj.getShooter() instanceof Player) {
+                    Player p1 = (Player) proj.getShooter();
+                    Player p2 = (Player) e.getHitEntity();
+                    if (!pje.combat.canPVP(p1, p2))
+                        return;
+                }
+                else if(proj.getShooter() instanceof Player){
+                    Player p = (Player)proj.getShooter();
+                    if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1)
+                        return;
+                }
+            }
+        }
 
         if(!(e.getEntity() instanceof Arrow))
             return;
@@ -1380,6 +1404,9 @@ public class listener implements Listener {
             return;
 
         ItemStack item = p.getInventory().getItemInMainHand();
+        if(pje.combat != null)
+            if(pje.combat.findPlayer(id).getDifficulty() == 1)
+                return;
 
         if(a.equals(Action.LEFT_CLICK_AIR)||a.equals(Action.LEFT_CLICK_BLOCK)|| a == Action.PHYSICAL){
             if(isSword(item)){
@@ -1536,6 +1563,16 @@ public class listener implements Listener {
         if(!(e.getEntity() instanceof LivingEntity))
             return;
         LivingEntity ent = (LivingEntity)e.getEntity();
+
+        if(pje.combat != null){
+            if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1) // If player is in peaceful mode, stop secondary effects of enchants
+                return;
+            if(ent instanceof Player){
+                Player v = (Player)ent;
+                if(!pje.combat.canPVP(v,p)) // If victim does not have PVP enabled, cancel
+                    return;
+            }
+        }
 
         if(pje.nightrider.contains(p)&& isNight(p.getWorld()))
             e.setDamage(e.getDamage() * 1.25);

@@ -1,5 +1,6 @@
 package net.pajamasoft.pjenchants;
 
+import net.pajamasoft.pjCombat.PJCombat;
 /*
  * ---------------------------------------------------
  *  PJ's Enchants
@@ -32,6 +33,7 @@ public final class PJEnchants extends JavaPlugin {
     FileConfiguration data;
     File playerdata;
     public PJEnchants pjEnchants;
+    public PJCombat combat;
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
@@ -78,6 +80,12 @@ public final class PJEnchants extends JavaPlugin {
     @Override
     public void onEnable() {
         pjEnchants = (PJEnchants)Bukkit.getPluginManager().getPlugin("PJEnchants");
+
+        try {
+            combat = (PJCombat) Bukkit.getPluginManager().getPlugin("PJsCombat");
+        }catch(Exception ex){
+            //
+        }
 
         getLogger().info("[PJEnchants] Plugin is active");
         getServer().getPluginManager().registerEvents(new listener(this), this);
