@@ -15,7 +15,7 @@
 
 ![](https://github.com/pajamasoft/pjs-media/blob/main/images/title-small.png?raw=true)
 Enchantment Guide
-
+##
 ## Enchantment Tiers
 All custom enchantments are assigned a tier 1-3. This impacts the enchantment's rarity, with Tier 3 being the most rare. 
 | Tier Color Key |
@@ -109,7 +109,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffaa55}{\text{Werewolf}}$ | 3 | ![][wolf] | Increases the wolf's strength and size at night when aggravated. | Wolf gains (Level < 3: Strength I, Level 3: Strength II and Speed that matches the level. |
 | $\color{#ffaa55}{\text{Wilting}}$ | 3 | ![][sword]![][axe]![][spear] | Chance to give target Wither effect. | 15% chance to give Wither II for (2 + level) seconds. |
 | $\color{#ffaa55}{\text{Wings}}$ | 1 | ![][chestplate] | Double-jumping temporarily replaces your chestplate with an Elytra. | |
-
+##
 ## Enchantment Cross-Compatibility Charts
 
 ### Melee Enchants
@@ -157,7 +157,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Fire Walker | | | ❌ | | ❌ |
 | Permafrost | | | | ❌ | |
 | Eruption | | | | | ❌ |
-
+##
 ## Vanilla Enchantments With Wider Applications
 The following vanilla enchantments can now be applied to new items:
 | Enchantment | Item Type | Description | 
@@ -165,7 +165,7 @@ The following vanilla enchantments can now be applied to new items:
 | Mending | ![][wolf] | Will slowly repair wolf armor over time. |
 | Protection | ![][horse] | Reduces all damage taken by (100 / (level + 1))%. |
 
-
+##
 ## Enchantment Cross-Mechanics and Recommended Combinations
 Some of PJ's Enchantments interact with each other:
 * Defuse hits will never trigger Unstable.
@@ -176,7 +176,7 @@ Some of PJ's Enchantments interact with each other:
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
 * Artful combined with Blaze, Breeze, Meteor, or Skulls reduces their cooldown by 25%.
 * Frostbite reduces the chance of Eruption activating
-
+##
 ## Full-Set Bonuses
 Some armor enchants have an additional effect if worn on all 4 armor pieces:
 
@@ -188,16 +188,16 @@ Some armor enchants have an additional effect if worn on all 4 armor pieces:
 ### Permafrost
 * Fire immunity
 * Permanent snow particles
-
+##
 ## Pet Safety
 All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
 * Ricochet will not bounce to friendlies
 * Homing will not lock on to friendlies
 * Spikes will not prick friendlies
-
+##
 ## Other Features
 * Enchantments that poison undead enemies will give them the wither effect instead as to not heal them.
-
+##
 ## Forging Block Conversions
 Below are all of the blocks whose drops are impacted by the Forging enchant, depending on the tool used.
 
@@ -238,7 +238,7 @@ Below are all of the blocks whose drops are impacted by the Forging enchant, dep
 | Hay Block | Bread* |
 | Potatoes | Baked Potatoes* |
 | Wheat | Bread |
-
+##
 ## Tool-Specific Blocks
 Certain enchants only work on specific groups of blocks depending on tool type. These groups are referred to in the enchantments descriptions as "pickaxe blocks" or "axe blocks", etc.
 | Pickaxe Blocks |
@@ -250,19 +250,19 @@ Certain enchants only work on specific groups of blocks depending on tool type. 
 | All Default Logs |
 | Melons |
 | Pumpkins |
-
+##
 ## Commands
 | Command | Description |
 | --- | --- |
 | /pje enchant {enchantment} {level} | Enchantt the held item |
 | /pje remove {enchantment} | Removes specified enchant from held item |
-
+##
 ## Plugin Compatibility
 PJ's Enchants works with all of my other plugins.
 ### PJ's Mechanics
 * Right-clicking on fully-grown potato crops will automatically harvest baked potatoes.
 * When Darkness activates on a mob, they will be unable to see you.
-
+##
 ## Showcase
 ### Anvil Compatibility
 ![Anvil](https://github.com/pajamasoft/pjs-media/blob/main/images/anvil-test.gif)
