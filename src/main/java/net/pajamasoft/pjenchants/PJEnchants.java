@@ -1,6 +1,6 @@
 package net.pajamasoft.pjenchants;
-
 import net.pajamasoft.pjCombat.PJCombat;
+import net.pajamasoft.pjcomputers.*;
 /*
  * ---------------------------------------------------
  *  PJ's Enchants
@@ -9,7 +9,6 @@ import net.pajamasoft.pjCombat.PJCombat;
  * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
  * ---------------------------------------------------
  */
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,6 +32,7 @@ public final class PJEnchants extends JavaPlugin {
     FileConfiguration data;
     File playerdata;
     public PJEnchants pjEnchants;
+    public PJComputers pjc;
     public PJCombat combat;
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
@@ -80,6 +80,11 @@ public final class PJEnchants extends JavaPlugin {
     @Override
     public void onEnable() {
         pjEnchants = (PJEnchants)Bukkit.getPluginManager().getPlugin("PJEnchants");
+        try {
+            pjc = (PJComputers) Bukkit.getPluginManager().getPlugin("PJComputers");
+        }catch(Exception ex){
+            //
+        }
 
         try {
             combat = (PJCombat) Bukkit.getPluginManager().getPlugin("PJsCombat");
@@ -185,8 +190,6 @@ public final class PJEnchants extends JavaPlugin {
             if(e2 == Enchantment.INFINITY || e2 == Enchantment.FLAME)
                 return false;
         }
-        if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
-            return false;
         if(e2 == Enchantment.INFINITY) {
             if(e1 == Enchant.HOMING || e1 == Enchant.GRAPPLING || e1 == Enchant.GRAVITY || e1 == Enchant.NITRO)
                 return false;
@@ -207,19 +210,13 @@ public final class PJEnchants extends JavaPlugin {
         Set<Enchant> combo = Set.of(e1,e2);
 
         if(combo.contains(Enchant.PERMAFROST))
-            if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER)
-                    || combo.contains(Enchant.ERUPTION))
+            if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER))
                 return false;
         if(combo.contains(Enchant.GRAVITY)&&combo.contains(Enchant.ANTIGRAVITY))
             return false;
         if(combo.contains(Enchant.THRUST)){
             if(combo.contains(Enchant.SOLAR)||combo.contains(Enchant.LUNAR))
                 return false;
-        }
-        if(combo.contains(Enchant.ROCK_CANDY) && combo.contains(Enchant.PULVERIZING))
-            return false;
-        if(combo.contains(Enchant.FIREWALKER) && combo.contains(Enchant.WAVERIDER)){
-            return false;
         }
         if(combo.contains(Enchant.BLAZE)&&combo.contains(Enchant.FROSTBITE))
             return false;
@@ -810,6 +807,9 @@ public final class PJEnchants extends JavaPlugin {
         new BukkitRunnable(){
             public void run(){
                 for(Player p:online){
+                    if(pjc != null)
+                        if(pjc.findPlayer(p.getUniqueId()).isInParkour())
+                            continue;
                     if(p.getInventory().getItemInMainHand().getType() != Material.AIR) {
                         ItemStack hand = p.getInventory().getItemInMainHand();
                         if (hasCurse(hand)) {
@@ -899,8 +899,8 @@ public final class PJEnchants extends JavaPlugin {
                     }
 
                     if(fullset_molten){
-                        particleRing(Particle.LAVA,p.getLocation(),0.75,120);
-                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,120);
+                        particleRing(Particle.LAVA,p.getLocation(),0.75,90);
+                        particleRing(Particle.LAVA,p.getLocation().add(0,1,0),0.75,90);
                     }
                     if(fullset_permafrost){
                         particleRing(Particle.SNOWFLAKE,p.getLocation(),0.75,90);

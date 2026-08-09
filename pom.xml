@@ -6,7 +6,7 @@
 
     <groupId>net.pajamasoft</groupId>
     <artifactId>pjenchants</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.0-pjsmp</version>
     <packaging>jar</packaging>
 
     <name>PJEnchants</name>
@@ -98,6 +98,18 @@
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.26.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.pajamasoft</groupId>
+            <artifactId>pj-computers</artifactId>
+            <version>1.0-PJSMP</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.pajamasoft</groupId>
+                    <artifactId>pj-lib</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.pajamasoft</groupId>
