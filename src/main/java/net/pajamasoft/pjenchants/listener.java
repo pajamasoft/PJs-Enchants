@@ -324,7 +324,7 @@ public class listener implements Listener {
                     p.getInventory().addItem(new ItemStack(Material.ARROW,1));
                     arrow.remove();
                 }
-                if(ent instanceof Player p2){
+                if(ent instanceof Player p2 && score > 2){
 
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
@@ -2584,8 +2584,9 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.TALENT) && !isSword(weapon)) {
-            e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT)+1)));
-            p.playSound(p.getLocation(),Sound.BLOCK_NOTE_BLOCK_CHIME,0.2F,1);
+            if(exp > 0) {
+                e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT) + 1)));
+            }
         }
     }
 
