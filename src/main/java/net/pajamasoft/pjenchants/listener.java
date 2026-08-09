@@ -329,7 +329,7 @@ public class listener implements Listener {
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
                     if(arrows > 0) {
-                        //needles.remove(p2.getUniqueId());
+                        needles.remove(p2.getUniqueId());
                         p2.setArrowsInBody(0);
                         p2.getWorld().playSound(p2.getLocation(), Sound.ENTITY_WITHER_BREAK_BLOCK, 0.3F, 1);
                         p2.damage(arrows, DamageSource.builder(DamageType.PLAYER_ATTACK).withCausingEntity(p).build());
@@ -1775,6 +1775,23 @@ public class listener implements Listener {
             }
         }
 
+        if(hasEnchantment(weapon,Enchant.NEEDLES)){
+            int level = getEnchantLevel(weapon,Enchant.NEEDLES);
+            try {
+                ent.setArrowsInBody(ent.getArrowsInBody() + level);
+            }
+            catch(Exception ex){
+                //
+            }
+            needles.put(ent.getUniqueId(),System.currentTimeMillis());
+        }
+
+        if(hasEnchantment(weapon,Enchant.CRITICALITY)){
+            if(p.getAttackCooldown() >= 0.9F && percentChance(5)) {
+                e.setDamage(e.getDamage() * 2);
+            }
+        }
+
         if(ghosts.containsKey(id)){
             List<UUID> g = ghosts.get(id);
             for(UUID mid:g) {
@@ -2376,7 +2393,7 @@ public class listener implements Listener {
                 if(percentChance(5)&&!spikes.containsKey(id)){
                     p.setArrowsInBody(300);
                     spikes.put(id,true);
-                    //needles.remove(id);
+                    needles.remove(id);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_WITHER_BREAK_BLOCK,1,1);
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                         p.setArrowsInBody(0);
