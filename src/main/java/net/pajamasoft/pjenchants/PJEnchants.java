@@ -725,7 +725,7 @@ public final class PJEnchants extends JavaPlugin {
             block.getWorld().dropItemNaturally(block.getLocation().clone().add(0.5,0.5,0.5),drop);
     }
 
-    public int breakWithRockCandy(Player p, ItemStack tool, Block b){
+    public void breakWithRockCandy(Player p, ItemStack tool, Block b){
         int items_dropped = 0;
         for(ItemStack drop:b.getDrops(tool))
             items_dropped += drop.getAmount();
@@ -794,7 +794,18 @@ public final class PJEnchants extends JavaPlugin {
                 }
             }
         }
-        return feed;
+        if(feed > 0) {
+            Material mat = b.getDrops().stream().toList().getFirst().getType();
+            p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GENERIC_EAT, 1, 1);
+            b.getWorld().spawnParticle(Particle.ITEM,b.getLocation().add(0.5,0.5,0.5),1, 0,0,0,new ItemStack(mat));
+        }
+        int saturation = 0;
+        if(feed + p.getFoodLevel() > 20){
+            saturation = feed + p.getFoodLevel() - 20;
+            feed = 20 - p.getFoodLevel();
+        }
+        p.setFoodLevel(feed + p.getFoodLevel());
+        p.setSaturation(saturation + p.getSaturation());
     }
 
     public boolean isArmorable(Entity e){

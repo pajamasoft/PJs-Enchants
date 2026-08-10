@@ -1327,6 +1327,7 @@ public class listener implements Listener {
             else if (hasEnchantment(tool, Enchant.CLUSTER)) {
                 List<Block> cluster = new ArrayList<>();
                 List<Material> clusterable = new ArrayList<>();
+                boolean rockCandy = hasEnchantment(tool, Enchant.ROCK_CANDY);
                 int level = getEnchantLevel(tool, Enchant.CLUSTER);
                 if (isAxe(tool))
                     clusterable = List.copyOf(pje.axe_blocks);
@@ -1345,9 +1346,15 @@ public class listener implements Listener {
                             a.setType(Material.AIR);
                             if (!drop.getType().equals(Material.AIR))
                                 a.getWorld().dropItemNaturally(a.getLocation(), drop);
+                            if(rockCandy){
+                                pje.breakWithRockCandy(p, tool, block);
+                            }
                         }
                     }
                 }
+            }
+            else if(hasEnchantment(tool, Enchant.ROCK_CANDY)){
+                pje.breakWithRockCandy(p, tool, block);
             }
             else if(hasEnchantment(tool,Enchant.PULVERIZING)){
                 if(block.getState() instanceof InventoryHolder)
