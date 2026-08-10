@@ -323,3 +323,7 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Wings, Solar, Glide, Antigravity
 ![Wings, Glide, Antigravity](https://github.com/pajamasoft/pjs-media/blob/main/images/wings-glide-antigrav-test.gif)
+
+##
+### Special Thanks to Community Bug Testers
+* erftik
