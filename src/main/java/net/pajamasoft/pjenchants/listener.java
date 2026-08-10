@@ -1265,10 +1265,10 @@ public class listener implements Listener {
                 exp = exp + (int) (Math.random() * (getEnchantLevel(tool, Enchant.TALENT) + 1));
                 if(isAxe(tool))
                     if(pje.axe_blocks.contains(b))
-                        exp = (int)(Math.random()*3);
+                        exp += (int)(Math.random()*3);
                 if(isPickaxe(tool))
                     if(pickaxe_blocks.contains(b))
-                        exp = (int)(Math.random()*3);
+                        exp += (int)(Math.random()*3);
             }
 
             if(hasEnchantment(tool, Enchant.ROCK_CANDY)){
