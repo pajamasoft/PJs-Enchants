@@ -2029,8 +2029,8 @@ public class listener implements Listener {
             ItemStack item = new ItemStack(mat, 64);
             int saturation = 0;
             if(feed + p.getFoodLevel() > 20){
-                saturation = feed - p.getFoodLevel();
-                feed = 20;
+                saturation = feed + p.getFoodLevel() - 20;
+                feed = 20 - p.getFoodLevel();
             }
             p.setFoodLevel(feed+p.getFoodLevel());
             p.setSaturation(saturation+p.getSaturation());
