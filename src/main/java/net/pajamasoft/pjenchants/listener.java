@@ -1261,7 +1261,7 @@ public class listener implements Listener {
         }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
 
-            if(hasEnchantment(tool,Enchant.TALENT)) {
+            if(hasEnchantment(tool,Enchant.TALENT) && exp > 0) {
                 exp = exp + (int) (Math.random() * (getEnchantLevel(tool, Enchant.TALENT) + 1));
                 if(isAxe(tool))
                     if(pje.axe_blocks.contains(b))
@@ -1994,11 +1994,11 @@ public class listener implements Listener {
             ItemStack item = new ItemStack(mat, 64);
             int saturation = 0;
             if(feed + p.getFoodLevel() > 20){
-                saturation = feed - p.getFoodLevel();
-                feed = 20;
+                saturation = feed + p.getFoodLevel() - 20;
+                feed = 20 - p.getFoodLevel();
             }
-            p.setFoodLevel(feed);
-            p.setSaturation(saturation);
+            p.setFoodLevel(feed+p.getFoodLevel());
+            p.setSaturation(saturation+p.getSaturation());
             p.getWorld().spawnParticle(Particle.ITEM, p.getEyeLocation(), 0, 0, 0, 0, item);
             p.getWorld().playSound(ent.getLocation(), Sound.ENTITY_GENERIC_EAT, 1F, 1);
         }
@@ -2603,9 +2603,7 @@ public class listener implements Listener {
         }
 
         if(hasEnchantment(weapon,Enchant.TALENT) && !isSword(weapon)) {
-            if(exp > 0) {
-                e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT) + 1)));
-            }
+            e.setDroppedExp(exp + (int) (Math.random() * (getEnchantLevel(weapon, Enchant.TALENT) + 1)));
         }
     }
 
