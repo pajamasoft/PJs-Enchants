@@ -1261,22 +1261,6 @@ public class listener implements Listener {
         }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
 
-            if(hasEnchantment(tool, Enchant.ROCK_CANDY)){
-                int feed = pje.breakWithRockCandy(p, tool, block);
-                if(feed > 0) {
-                    Material mat = block.getDrops().stream().toList().getFirst().getType();
-                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GENERIC_EAT, 1, 1);
-                    block.getWorld().spawnParticle(Particle.ITEM,block.getLocation().add(0.5,0.5,0.5),1, 0,0,0,new ItemStack(mat));
-                }
-                int saturation = 0;
-                if(feed + p.getFoodLevel() > 20){
-                    saturation = feed - p.getFoodLevel();
-                    feed = 20;
-                }
-                p.setFoodLevel(feed + p.getFoodLevel());
-                p.setSaturation(saturation);
-            }
-
             if (hasEnchantment(tool, Enchant.FORGING)) {
                 e.setDropItems(false);
                 if (hasEnchantment(tool, Enchant.CLUSTER) && !p.isSneaking()) {
