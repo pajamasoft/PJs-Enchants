@@ -1294,7 +1294,6 @@ public class listener implements Listener {
                                     if (tool.getItemMeta().hasEnchant(Enchantment.FORTUNE)) {
                                         fortune = tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE) + 1;
                                         drop.setAmount(drop.getAmount() * (int) (Math.random() * fortune + 2));
-                                        //drop.setAmount(1);
                                     }
                                     if (!drop.isEmpty()) {
                                         a.getWorld().dropItemNaturally(a.getLocation(), drop);
@@ -1328,6 +1327,7 @@ public class listener implements Listener {
                                     drop = new ItemStack(Material.MELON_SLICE, 1 + (int) (Math.random() * fortune + 6));
                                 }
                             a.setType(Material.AIR);
+                            p.setStatistic(Statistic.MINE_BLOCK,p.getStatistic(Statistic.MINE_BLOCK) + 1);
                             if (!drop.getType().equals(Material.AIR))
                                 a.getWorld().dropItemNaturally(a.getLocation(), drop);
                             if(rockCandy){
