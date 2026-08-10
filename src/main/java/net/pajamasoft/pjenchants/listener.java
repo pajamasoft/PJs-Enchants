@@ -1283,16 +1283,6 @@ public class listener implements Listener {
         }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
 
-            if(hasEnchantment(tool,Enchant.TALENT) && exp > 0) {
-                exp = exp + (int) (Math.random() * (getEnchantLevel(tool, Enchant.TALENT) + 1));
-                if(isAxe(tool))
-                    if(pje.axe_blocks.contains(b))
-                        exp += (int)(Math.random()*3);
-                if(isPickaxe(tool))
-                    if(pickaxe_blocks.contains(b))
-                        exp += (int)(Math.random()*3);
-            }
-
             if(hasEnchantment(tool, Enchant.ROCK_CANDY)){
                 int feed = pje.breakWithRockCandy(p, tool, block);
                 if(feed > 0) {
@@ -1385,6 +1375,16 @@ public class listener implements Listener {
                 if(block.getState() instanceof InventoryHolder)
                     e.setCancelled(true);
                 else e.setDropItems(false);
+            }
+
+            if(hasEnchantment(tool,Enchant.TALENT) && exp > 0) {
+                exp = exp + (int) (Math.random() * (getEnchantLevel(tool, Enchant.TALENT) + 1));
+                if(isAxe(tool))
+                    if(pje.axe_blocks.contains(b))
+                        exp += (int)(Math.random()*3);
+                if(isPickaxe(tool))
+                    if(pickaxe_blocks.contains(b))
+                        exp += (int)(Math.random()*3);
             }
         }
         e.setExpToDrop(exp);
