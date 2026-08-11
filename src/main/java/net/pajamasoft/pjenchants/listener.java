@@ -569,6 +569,7 @@ public class listener implements Listener {
                 int level = getEnchantLevel(p.getInventory().getBoots(),Enchant.FIREWALKER);
                 if(p.getLocation().subtract(0,1,0).getBlock().getType().equals(Material.LAVA)) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 0));
+                    p.setFireTicks(0);
                     if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.LAVA &&
                             p.getLocation().getBlock().getType() == Material.AIR) ||
                             (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
@@ -1092,7 +1093,7 @@ public class listener implements Listener {
         max_enchants = Math.max(max_enchants, 1);
         max_enchants = Math.min(max_enchants,level);
 
-        custom_enchants.removeIf(Enchant::isRestricted);
+        //custom_enchants.removeIf(Enchant::isRestricted);
 
         addEnchants:
         for(int i=0;i<max_enchants;i++){ // Enchants with numce random enchantments assuming meets all criteria
@@ -1211,10 +1212,19 @@ public class listener implements Listener {
             return;
 
         ItemStack input = e.getInventory().getUpperItem().clone();
-        if(hasCustomEnchants(input)){
+        int numce = getCustomEnchants(input).size();
+        Location loc = e.getView().getPlayer().getLocation();
+        if(e.getResult() != null && numce > 0){ // Item has vanilla enchants
+            removeCustomEnchantments(e.getResult());
+            ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
+            orb.setExperience(numce);
+        }
+        else if(numce > 0){ // Item has only custom enchants
             input.removeEnchantments();
-            pje.removeCustomEnchantments(input);
+            removeCustomEnchantments(input);
             e.setResult(input);
+            ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
+            orb.setExperience(numce);
         }
     }
 
@@ -2497,9 +2507,13 @@ public class listener implements Listener {
             }
 
             if(hasEnchantment(chest,Enchant.ABSORB)){
-                if(percentChance(10)){
-                    int level = getEnchantLevel(chest,Enchant.ABSORB);
-                    double absorb = Math.min(level / 3.0 * e.getDamage(),10.0);
+                int level = getEnchantLevel(chest,Enchant.ABSORB);
+                if(percentChance(5*level)){
+                    if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 360, 8));
+                        p.setAbsorptionAmount(2);
+                    }
+                    double absorb = e.getDamage() + p.getAbsorptionAmount();
                     p.setAbsorptionAmount(absorb);
                     e.setDamage(0);
                     particleRing(Particle.BUBBLE,p.getLocation().add(0,1,0),1,40);
@@ -2538,10 +2552,9 @@ public class listener implements Listener {
                     particleRing(Particle.LAVA,p.getLocation().add(0,2,0),1,90);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_DRAGON_FIREBALL_EXPLODE,1,1);
                     p.getWorld().playSound(p.getLocation(),Sound.BLOCK_LAVA_POP,1,1);
-                    p.launchProjectile(SmallFireball.class, new Vector(1,0,0));
-                    p.launchProjectile(SmallFireball.class, new Vector(0,0,1));
-                    p.launchProjectile(SmallFireball.class, new Vector(-1,0,0));
-                    p.launchProjectile(SmallFireball.class, new Vector(0,0,-1));
+                    for(int x=-1;x<=1;x++)
+                        for(int z=-1;z<=1;z++)
+                            p.launchProjectile(SmallFireball.class, new Vector(x,0,z));
                     p.launchProjectile(SmallFireball.class, p.getLocation().getDirection());
                 }
             }

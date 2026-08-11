@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static net.pajamasoft.pjLib.PJLib.format;
+import static net.pajamasoft.pjenchants.PJEnchants.removeCustomEnchantments;
 
 public class commands implements CommandExecutor {
     PJEnchants pjEnchants;
@@ -36,7 +37,7 @@ public class commands implements CommandExecutor {
                 return false;
 
             if(args[0].equalsIgnoreCase("enchant")){
-                pjEnchants.enchant(p.getInventory().getItemInMainHand(),Enchant.valueOf(args[1].toUpperCase()),Integer.parseInt(args[2]));
+                pjEnchants.enchant(p.getInventory().getItemInMainHand(),Enchant.valueOf(args[1].toUpperCase()),args[2] == null ? 1 : Integer.parseInt(args[2]));
             }
 
             if(args[0].equalsIgnoreCase("iscompatible")){
@@ -62,6 +63,11 @@ public class commands implements CommandExecutor {
                 meta.setLore(newlore);
                 hand.setItemMeta(meta);
                 p.getInventory().setItemInMainHand(hand);
+            }
+
+            if(args[0].equalsIgnoreCase("removeall")){
+                ItemStack hand = p.getInventory().getItemInMainHand();
+                removeCustomEnchantments(hand);
             }
 
             if(args[0].equalsIgnoreCase("getsharedenchants")){

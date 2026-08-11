@@ -344,9 +344,9 @@ public final class PJEnchants extends JavaPlugin {
                     List<String> lore = meta.getLore();
                     assert lore != null;
                     for (String s : lore) {
-                        if (s.contains(" "))
-                            enchants.add(Enchant.valueOf(s.substring(2, s.lastIndexOf(' ')).toUpperCase()));
-                        else enchants.add(Enchant.valueOf(s.substring(2).toUpperCase()));
+                        Enchant en = getEnchantFromLine(s);
+                        if(en != null)
+                            enchants.add(getEnchantFromLine(s));
                     }
                 }
             }catch(Exception ex){
@@ -356,23 +356,40 @@ public final class PJEnchants extends JavaPlugin {
         return enchants;
     }
 
-    public void removeCustomEnchantments(ItemStack item){
+    public static void removeCustomEnchantments(ItemStack item){
         if(item == null)
             return;
         if(!item.hasItemMeta())
             return;
         ItemMeta meta = item.getItemMeta();
         if(meta.hasLore()){
-            meta.getLore().removeIf(l->!isEnchantmentLine(l));
+            List<String> lore = meta.getLore();
+            lore.removeIf(PJEnchants::isEnchantmentLine);
+            meta.setLore(lore);
+            if(!meta.hasEnchants())
+                meta.setEnchantmentGlintOverride(false);
         }
+        item.setItemMeta(meta);
     }
 
-    public boolean isEnchantmentLine(String line){
+    public static boolean isEnchantmentLine(String line){
+        return getEnchantFromLine(line) != null;
+    }
+
+    public static Enchant getEnchantFromLine(String line){
         try{
-            Enchant.valueOf(line.substring(2,line.indexOf(' ')).toUpperCase());
-            return true;
+            String name = line.substring(2,line.lastIndexOf(' ')).toUpperCase();
+            name = name.replace(' ','_');
+            return Enchant.valueOf(name);
         }catch(Exception ex){
-            return false;
+            try{
+                String name = line.substring(2).toUpperCase();
+                name = name.replace(' ','_');
+                return Enchant.valueOf(name);
+            }
+            catch(Exception ex2) {
+                return null;
+            }
         }
     }
 
