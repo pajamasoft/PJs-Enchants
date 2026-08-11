@@ -284,18 +284,18 @@ public class listener implements Listener {
                     p.removePotionEffect(PotionEffectType.SPEED);
                     switch (getEnchantLevel(legs, Enchant.STEALTH)) {
                         case 1:
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000, 0,false,false));
                             break;
                         case 2:
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000, 0,false,false));
                             cutArmor(p);
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 1000, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 1000, 1,false,false));
                             break;
                         case 3:
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000, 0,false,false));
                             cutArmor(p);
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 1000, 2));
-                            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, 2));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 1000, 2,false,false));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, 2,false,false));
                             break;
                         default:
                             break;

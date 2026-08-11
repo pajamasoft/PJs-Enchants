@@ -762,10 +762,18 @@ public final class PJEnchants extends JavaPlugin {
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
-            case GOLD_ORE,DEEPSLATE_GOLD_ORE -> {
-                feed = 2 * items_dropped;
-                if(percentChance(40)) {
+            case GOLD_ORE,DEEPSLATE_GOLD_ORE,NETHER_GOLD_ORE -> {
+                int mul = b.getType() == Material.NETHER_GOLD_ORE ? 1 : 2;
+                feed = mul * items_dropped;
+                if(percentChance(20*mul)) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 80, 1));
+                    p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
+                }
+            }
+            case NETHER_QUARTZ_ORE -> {
+                feed = items_dropped;
+                if(percentChance(20)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100, 1));
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
