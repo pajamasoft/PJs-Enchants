@@ -43,7 +43,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#77ff77}{\text{Darkness}}$ | 4 | ![][sword]![][axe]![][spear] | Chance to blind target. | 20% chance for Blindness I for (2 + level) seconds. |
 | $\color{#ffff77}{\text{Dash}}$ | 2 | ![][boots] | Gain permanent Speed effect while worn. | Speed level matches the enchantment's level. |
 | $\color{#ffff77}{\text{Defuse}}$ | 1 | ![][sword]![][spear] | Prevents creepers from exploding. | |
-| $\color{#77ff77}{\text{Devour}}$ | 4 | ![][sword]![][axe]![][spear] | Regain hunger by attacking. | Feeds player by (1.2 * damage dealt). |
+| $\color{#77ff77}{\text{Devour}}$ | 4 | ![][sword]![][axe]![][spear] | Regain hunger by attacking. | Feeds player by 1 hunger per hit or equivalent raw meat amount for animals. Some mobs may give additional potion effects. |
 | $\color{#ffff77}{\text{Discharge}}$ | 3 | ![][chestplate] | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. Deals 10 raw damage to all nearby enemies. |
 | $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![][sword]v![][axe]![][spear] | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
 | $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![][elytra]![][chestplate] | Arrows fired while gliding will turn into dragon fireballs. | Requires fire charges as ammunition. Costs 3 fire charges per shot. |
