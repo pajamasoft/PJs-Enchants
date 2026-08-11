@@ -1270,7 +1270,8 @@ public class listener implements Listener {
             fortune = tool.getItemMeta().hasEnchant(Enchantment.FORTUNE) ? tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE) : 0;
         }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
-
+            if(e.isCancelled())
+                return;
             if (hasEnchantment(tool, Enchant.FORGING)) {
                 e.setDropItems(false);
                 if (hasEnchantment(tool, Enchant.CLUSTER) && !p.isSneaking()) {
@@ -2330,7 +2331,7 @@ public class listener implements Listener {
         if(percentChance(25* pje.getNumArmorPieces(p,Enchant.MOLTEN)))
             attacker.setFireTicks(40+20* getArmorScore(p,Enchant.MOLTEN));
         if(percentChance(25* pje.getNumArmorPieces(p,Enchant.PERMAFROST)))
-            attacker.setFireTicks(160+20* getArmorScore(p,Enchant.PERMAFROST));
+            attacker.setFreezeTicks(160+20* getArmorScore(p,Enchant.PERMAFROST));
 
         if(p.getInventory().getBoots()!=null){
             ItemStack boots = p.getInventory().getBoots();

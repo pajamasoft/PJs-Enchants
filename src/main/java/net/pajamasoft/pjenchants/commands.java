@@ -33,7 +33,7 @@ public class commands implements CommandExecutor {
         try{
             Player p = (Player) sender;
 
-            if(!p.hasPermission(""))
+            if(!p.isOp())
                 return false;
 
             if(args[0].equalsIgnoreCase("enchant")){
