@@ -1115,7 +1115,8 @@ public class listener implements Listener {
         max_enchants = Math.max(max_enchants, 1);
         max_enchants = Math.min(max_enchants,level);
 
-        //custom_enchants.removeIf(Enchant::isRestricted);
+        if(pjc != null)
+            custom_enchants.removeIf(Enchant::isRestricted);
 
         addEnchants:
         for(int i=0;i<max_enchants;i++){ // Enchants with numce random enchantments assuming meets all criteria
@@ -1238,15 +1239,15 @@ public class listener implements Listener {
         Location loc = e.getView().getPlayer().getLocation();
         if(e.getResult() != null && numce > 0){ // Item has vanilla enchants
             removeCustomEnchantments(e.getResult());
-            ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
-            orb.setExperience(numce);
+            //ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
+            //orb.setExperience(numce);
         }
         else if(numce > 0){ // Item has only custom enchants
             input.removeEnchantments();
             removeCustomEnchantments(input);
             e.setResult(input);
-            ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
-            orb.setExperience(numce);
+            //ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
+            //orb.setExperience(numce);
         }
     }
 
