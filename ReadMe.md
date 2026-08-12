@@ -259,6 +259,29 @@ Certain enchants only work on specific groups of blocks depending on tool type. 
 | Melons |
 | Pumpkins |
 ##
+## Devour Potion Effects
+| Monster | Effect |
+| --- | --- |
+| Spider | Night Vision |
+| Blaze, Magma Cube | Fire Resistance |
+| Witch | Regeneration |
+| Guardian, Elder Guardian | Water Breathing |
+##
+## Rock Candy Potion Effects
+| Ore | Effect |
+| --- | --- |
+| Coal | Fire Resistance |
+| Copper | Strength |
+| Iron | Resistance |
+| Gold | Haste |
+| Lapis | Water Breathing |
+| Redstone | Speed |
+| Diamond | Night Vision |
+| Emerald | Jump Boost |
+| Quartz | Slow Falling |
+| Glowstone | Glowing |
+##
+## 
 ## Commands
 | Command | Description |
 | --- | --- |
