@@ -177,18 +177,25 @@ Some of PJ's Enchantments interact with each other:
 * Riding your horse at night with Nightrider and Joust will increase all of your melee damage by 1.25 x 1.25 = 1.56.
 * Artful combined with Blaze, Breeze, Meteor, or Skulls reduces their cooldown by 25%.
 * Frostbite reduces the chance of Eruption activating
+* Devour combined with Fire Aspect increases the hunger restored from hitting animals to match the cooked meat value of that animal
 ##
 ## Full-Set Bonuses
 Some armor enchants have an additional effect if worn on all 4 armor pieces:
 
 ### Magnetic
 * Double-jump for magnetic levitation
+
+![Maglev](https://github.com/pajamasoft/pjs-media/blob/main/images/maglev.gif)
 ### Molten
 * Frozen damage immunity
 * Permanent fire particles
+
+![MoltenSet](https://github.com/pajamasoft/pjs-media/blob/main/images/molten_set.gif)
 ### Permafrost
 * Fire immunity
 * Permanent snow particles
+
+![Permafrost](https://github.com/pajamasoft/pjs-media/blob/main/images/permafrost.gif)
 ##
 ## Pet Safety
 All enchantments with area effects or unpredictable targeting filters out friendly animals, villagers, and pets.
@@ -324,6 +331,23 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Wings, Solar, Glide, Antigravity
 ![Wings, Glide, Antigravity](https://github.com/pajamasoft/pjs-media/blob/main/images/wings-glide-antigrav-test.gif)
+
+##
+### Absorb
+![Absorb](https://github.com/pajamasoft/pjs-media/blob/main/images/absorb.gif)
+##
+### Eruption
+![Eruption](https://github.com/pajamasoft/pjs-media/blob/main/images/eruption.gif)
+##
+### Firewalker
+![Firewalker](https://github.com/pajamasoft/pjs-media/blob/main/images/firewalker.gif)
+##
+### Meteor
+![Meteor](https://github.com/pajamasoft/pjs-media/blob/main/images/meteor.gif)
+##
+### Rock Candy
+![RockCandy](https://github.com/pajamasoft/pjs-media/blob/main/images/rock_candy.gif)
+
 
 ##
 ### Special Thanks to Community Bug Testers
