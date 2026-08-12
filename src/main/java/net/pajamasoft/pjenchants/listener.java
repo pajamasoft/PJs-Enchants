@@ -32,6 +32,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import net.pajamasoft.pjcomputers.PJPlayer;
+import net.pajamasoft.pjcomputers.PJComputers;
 
 import java.io.File;
 import java.util.*;
@@ -42,6 +44,7 @@ import static net.pajamasoft.pjenchants.PJEnchants.*;
 public class listener implements Listener {
 
     PJEnchants pje;
+    private PJComputers pjc;
     File playerdata;
     FileConfiguration data;
     HashMap<UUID,Boolean> doublejump = new HashMap<>();
@@ -60,6 +63,7 @@ public class listener implements Listener {
         this.pje = pjEnchants;
         playerdata = pjEnchants.playerdata;
         data = pjEnchants.data;
+        this.pjc = pjEnchants.pjc;
     }
 
     @EventHandler
@@ -137,7 +141,6 @@ public class listener implements Listener {
 
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
-              
                 if(maglev.containsKey(id))
                     maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
@@ -326,7 +329,6 @@ public class listener implements Listener {
                     arrow.remove();
                 }
                 if(ent instanceof Player p2 && score > 2){
-
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
                     if(arrows > 0) {
@@ -495,6 +497,14 @@ public class listener implements Listener {
     @EventHandler
     public void onJump(PlayerJumpEvent e){
         Player p = e.getPlayer();
+
+        if(pjc != null){
+            PJPlayer pjp = pjc.findPlayer(p.getUniqueId());
+            if(pjp.isInParkour()) {
+                p.setAllowFlight(false);
+                return;
+            }
+        }
         if(isAllowedToFly(p))
             p.setAllowFlight(true);
         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.getGameMode().equals(GameMode.SURVIVAL))
@@ -747,7 +757,15 @@ public class listener implements Listener {
                         if(nearest!=null) {
                             boolean rightType = false;
                             if(nearest instanceof Player){
-                                if (pje.combat != null){
+                                if (pjc != null && finalP != null) {
+                                    PJPlayer p1 = pjc.findPlayer(finalP.getUniqueId());
+                                    PJPlayer p2 = pjc.findPlayer(((Player) nearest).getUniqueId());
+                                    if(hasHealing) {
+                                        if (p1.isFriendsWith(p2))
+                                            rightType = true;
+                                    }
+                                }
+                                else if (pje.combat != null){
                                     CombatPlayer cp = pje.combat.findPlayer(((Player) nearest).getUniqueId());
                                     if(cp.getDifficulty() == 4)
                                         rightType = true;
@@ -922,6 +940,8 @@ public class listener implements Listener {
                     LivingEntity ent = (LivingEntity)e.getHitEntity();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                         boolean canbreak = true;
+                        if(pjc != null)
+                            canbreak = pjc.canModifyChunk(ent.getChunk());
                         if (!ent.isDead() && canbreak)
                             ent.getWorld().createExplosion(ent.getLocation(), 0.5F, false, true);
                         arrow.remove();
@@ -936,6 +956,8 @@ public class listener implements Listener {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                     if(arrow.isInBlock()) {
                         boolean canbreak = true;
+                        if(pjc != null)
+                            canbreak = pjc.canModifyChunk(arrow.getChunk());
                         if(canbreak)
                             b.getWorld().createExplosion(b.getLocation(), 1, false, true);
                         arrow.remove();
@@ -1382,6 +1404,12 @@ public class listener implements Listener {
             return;
 
         ItemStack item = p.getInventory().getItemInMainHand();
+        if(pjc != null) {
+            if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
+                return;
+            if(pjc.findPlayer(id).isInParkour())
+                return;
+        }
         if(pje.combat != null)
             if(pje.combat.findPlayer(id).getDifficulty() == 1)
                 return;
@@ -1447,6 +1475,9 @@ public class listener implements Listener {
 
         if(p.getInventory().getItemInMainHand().getItemMeta() == null)
             return;
+        if(pjc != null)
+            if(!pjc.canModifyChunk(p,p.getLocation().getChunk()))
+                return;
 
         ItemStack weapon = p.getInventory().getItemInMainHand();
 
@@ -1543,6 +1574,10 @@ public class listener implements Listener {
             return;
         LivingEntity ent = (LivingEntity)e.getEntity();
 
+        if(pjc != null) {
+            if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
+                return;
+        }
         if(pje.combat != null){
             if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1) // If player is in peaceful mode, stop secondary effects of enchants
                 return;
