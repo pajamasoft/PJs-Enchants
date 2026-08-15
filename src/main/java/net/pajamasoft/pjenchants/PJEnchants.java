@@ -1,6 +1,6 @@
 package net.pajamasoft.pjenchants;
-
 import net.pajamasoft.pjCombat.PJCombat;
+import net.pajamasoft.pjcomputers.*;
 /*
  * ---------------------------------------------------
  *  PJ's Enchants
@@ -9,7 +9,6 @@ import net.pajamasoft.pjCombat.PJCombat;
  * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
  * ---------------------------------------------------
  */
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,6 +32,7 @@ public final class PJEnchants extends JavaPlugin {
     FileConfiguration data;
     File playerdata;
     public PJEnchants pjEnchants;
+    public PJComputers pjc;
     public PJCombat combat;
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
@@ -80,6 +80,11 @@ public final class PJEnchants extends JavaPlugin {
     @Override
     public void onEnable() {
         pjEnchants = (PJEnchants)Bukkit.getPluginManager().getPlugin("PJEnchants");
+        try {
+            pjc = (PJComputers) Bukkit.getPluginManager().getPlugin("PJComputers");
+        }catch(Exception ex){
+            //
+        }
 
         try {
             combat = (PJCombat) Bukkit.getPluginManager().getPlugin("PJsCombat");
@@ -367,7 +372,7 @@ public final class PJEnchants extends JavaPlugin {
             lore.removeIf(PJEnchants::isEnchantmentLine);
             meta.setLore(lore);
             if(!meta.hasEnchants())
-                meta.setEnchantmentGlintOverride(false);
+                meta.setEnchantmentGlintOverride(null);
         }
         item.setItemMeta(meta);
     }
@@ -489,9 +494,9 @@ public final class PJEnchants extends JavaPlugin {
         if(level==0)
             return;
 
-        if(pjEnchants.getCustomEnchants(item).size()>5) {
+        if(getCustomEnchants(item).size()>5) {
             if (item.getType().equals(Material.ENCHANTED_BOOK)) {
-                if (pjEnchants.getCustomEnchants(item).size() > 7)
+                if (getCustomEnchants(item).size() > 7)
                     return;
                 else return;
             }
@@ -550,7 +555,7 @@ public final class PJEnchants extends JavaPlugin {
 
         if(enchant.getMaxLevel()==1)
             lore.add(tier+enchantment);
-        else lore.add(tier+enchantment+" "+tier+ pjEnchants.numeralize(level));
+        else lore.add(tier+enchantment+" "+tier+ numeralize(level));
 
         meta.setLore(lore);
         meta.setEnchantmentGlintOverride(true);
@@ -629,13 +634,14 @@ public final class PJEnchants extends JavaPlugin {
         return a;
     }
 
-    public void breakWithForged(Player p, ItemStack tool, Block block){
+    public void breakWithForging(Player p, ItemStack tool, Block block){
         Material b = block.getType();
         List<ItemStack> items = block.getDrops(tool).stream().toList();
         int fortune = 1;
         int multiplier = 1;
         int exp = 1;
         boolean showflame = true;
+        boolean rockCandy = hasEnchantment(tool,Enchant.ROCK_CANDY);
         if(Objects.requireNonNull(tool.getItemMeta()).hasEnchant(Enchantment.FORTUNE))
             fortune = tool.getEnchantmentLevel(Enchantment.FORTUNE);
         if(fortune == 1)
@@ -645,7 +651,9 @@ public final class PJEnchants extends JavaPlugin {
         if(fortune == 3)
             multiplier = percentChance(20) ? 4 : percentChance(20) ? 3 : percentChance(20) ? 2 : 1;
 
-        if (pjEnchants.isPickaxe(tool)) {
+        if (isPickaxe(tool)) {
+            if(rockCandy)
+                breakWithRockCandy(p,tool,block);
             for(ItemStack i:items) {
                 Material m = i.getType();
                 int amount = i.getAmount()*multiplier;
@@ -690,7 +698,7 @@ public final class PJEnchants extends JavaPlugin {
                 exp *= amount;
             }
         }
-        else if (pjEnchants.isShovel(tool)) {
+        else if (isShovel(tool)) {
             for(ItemStack i:items){
                 Material m = i.getType();
                 if(m == Material.RED_SAND || m == Material.SAND)
@@ -700,7 +708,7 @@ public final class PJEnchants extends JavaPlugin {
                 else showflame = false;
             }
         }
-        else if (pjEnchants.isAxe(tool)) {
+        else if (isAxe(tool)) {
             for(ItemStack i:items){
                 Material m = i.getType();
                 int amount = i.getAmount()*multiplier;
@@ -716,7 +724,7 @@ public final class PJEnchants extends JavaPlugin {
                 exp *= amount;
             }
         }
-        else if (pjEnchants.isHoe(tool)) {
+        else if (isHoe(tool)) {
             for(ItemStack i:items){
                 Material m = i.getType();
                 int amount = i.getAmount()*multiplier;
@@ -751,14 +759,14 @@ public final class PJEnchants extends JavaPlugin {
             case COAL_ORE,DEEPSLATE_COAL_ORE -> {
                 feed = (int)(0.5 * items_dropped);
                 if(percentChance(20)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 80, 0));
+                    mergePotionEffect(p,PotionEffectType.FIRE_RESISTANCE,80,0);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case IRON_ORE,DEEPSLATE_IRON_ORE -> {
                 feed = items_dropped;
                 if(percentChance(30)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 80, 0));
+                    mergePotionEffect(p,PotionEffectType.RESISTANCE, 80, 0);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
@@ -766,55 +774,55 @@ public final class PJEnchants extends JavaPlugin {
                 int mul = b.getType() == Material.NETHER_GOLD_ORE ? 1 : 2;
                 feed = mul * items_dropped;
                 if(percentChance(20*mul)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 80, 1));
+                    mergePotionEffect(p,PotionEffectType.HASTE, 80, 1);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case NETHER_QUARTZ_ORE -> {
                 feed = items_dropped;
                 if(percentChance(20)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 100, 1));
+                    mergePotionEffect(p,PotionEffectType.SLOW_FALLING, 100, 1);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case COPPER_ORE,DEEPSLATE_COPPER_ORE -> {
                 feed = (int)(0.5 * items_dropped);
                 if(percentChance(20)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 60, 0));
+                    mergePotionEffect(p,PotionEffectType.STRENGTH, 60, 0);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case DIAMOND_ORE,DEEPSLATE_DIAMOND_ORE -> {
                 feed = 3 * items_dropped;
                 if(percentChance(70)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 120, 0));
+                    mergePotionEffect(p,PotionEffectType.NIGHT_VISION, 120, 0);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case EMERALD_ORE,DEEPSLATE_EMERALD_ORE -> {
                 feed = 3 * items_dropped;
                 if(percentChance(60)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 80, 1));
+                    mergePotionEffect(p,PotionEffectType.JUMP_BOOST, 80, 1);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case REDSTONE_ORE,DEEPSLATE_REDSTONE_ORE -> {
                 feed = (int)(0.5*items_dropped);
                 if(percentChance(30)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 80, 2));
+                    mergePotionEffect(p,PotionEffectType.SPEED, 80, 2);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case LAPIS_ORE, DEEPSLATE_LAPIS_ORE -> {
                 feed = (int)(0.3 * items_dropped);
                 if(percentChance(30)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 120, 0));
+                    mergePotionEffect(p,PotionEffectType.WATER_BREATHING, 120, 0);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
             case GLOWSTONE -> {
                 if(percentChance(30)) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 80, 2));
+                    mergePotionEffect(p,PotionEffectType.GLOWING, 80, 2);
                     p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GENERIC_DRINK,0.5F,1);
                 }
             }
@@ -846,15 +854,18 @@ public final class PJEnchants extends JavaPlugin {
         new BukkitRunnable(){
             public void run(){
                 for(Player p:online){
+                    if(pjc != null)
+                        if(pjc.findPlayer(p.getUniqueId()).isInParkour())
+                            continue;
                     if(p.getInventory().getItemInMainHand().getType() != Material.AIR) {
                         ItemStack hand = p.getInventory().getItemInMainHand();
                         if (hasCurse(hand)) {
                             Location loc = p.getLocation().add(0, 1, 0).add(p.getLocation().getDirection());
                             loc.getWorld().spawnParticle(Particle.WITCH, loc, 0);
                         }
-                        if(pjEnchants.hasEnchantment(hand,Enchant.ARTFUL))
+                        if(hasEnchantment(hand,Enchant.ARTFUL))
                             p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,1,false,false));
-                        if(pjEnchants.hasEnchantment(hand,Enchant.PULVERIZING))
+                        if(hasEnchantment(hand,Enchant.PULVERIZING))
                             p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE,30,3,false,false));
                     }
 

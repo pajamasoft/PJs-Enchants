@@ -5,6 +5,7 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import io.papermc.paper.event.entity.EntityMoveEvent;
 import it.unimi.dsi.fastutil.Pair;
 import net.pajamasoft.pjCombat.CombatPlayer;
+import net.pajamasoft.pjCombat.PJCombat;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.*;
@@ -32,16 +33,20 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import net.pajamasoft.pjcomputers.PJPlayer;
+import net.pajamasoft.pjcomputers.PJComputers;
 
 import java.io.File;
 import java.util.*;
 
+import static net.pajamasoft.pjCombat.PJCombat.findPlayer;
 import static net.pajamasoft.pjLib.PJLib.*;
 import static net.pajamasoft.pjenchants.PJEnchants.*;
 
 public class listener implements Listener {
 
     PJEnchants pje;
+    private PJComputers pjc;
     File playerdata;
     FileConfiguration data;
     HashMap<UUID,Boolean> doublejump = new HashMap<>();
@@ -60,6 +65,7 @@ public class listener implements Listener {
         this.pje = pjEnchants;
         playerdata = pjEnchants.playerdata;
         data = pjEnchants.data;
+        this.pjc = pjEnchants.pjc;
     }
 
     @EventHandler
@@ -137,7 +143,6 @@ public class listener implements Listener {
 
             if(doublejump.get(p.getUniqueId()) && hasFullSet(p, Enchant.MAGNETIC)){ // MAGLEV
                 e.setCancelled(true);
-              
                 if(maglev.containsKey(id))
                     maglev.get(id).cancel();
                 maglev.put(id,new BukkitRunnable(){
@@ -326,7 +331,6 @@ public class listener implements Listener {
                     arrow.remove();
                 }
                 if(ent instanceof Player p2 && score > 2){
-
                     // Ripping arrows out of opponents
                     int arrows = p2.getArrowsInBody();
                     if(arrows > 0) {
@@ -365,7 +369,13 @@ public class listener implements Listener {
                     if(!magnetic.isEmpty())
                         p.getWorld().playSound(p.getLocation(),Sound.BLOCK_BEACON_POWER_SELECT,0.2F,1);
                     for(Entity ent:magnetic){
-                        ent.setVelocity(p.getLocation().subtract(ent.getLocation()).toVector().normalize());
+                        Vector v = p.getLocation().subtract(ent.getLocation()).toVector().normalize();
+                        try {
+                            ent.setVelocity(v);
+                        }
+                        catch(Exception ex){
+                            //
+                        }
                     }
                     if(!pje.magnet.containsKey(id))
                         cancel();
@@ -495,6 +505,14 @@ public class listener implements Listener {
     @EventHandler
     public void onJump(PlayerJumpEvent e){
         Player p = e.getPlayer();
+
+        if(pjc != null){
+            PJPlayer pjp = pjc.findPlayer(p.getUniqueId());
+            if(pjp.isInParkour()) {
+                p.setAllowFlight(false);
+                return;
+            }
+        }
         if(isAllowedToFly(p))
             p.setAllowFlight(true);
         if(p.hasPotionEffect(PotionEffectType.SLOW_FALLING) && p.getGameMode().equals(GameMode.SURVIVAL))
@@ -571,8 +589,8 @@ public class listener implements Listener {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60, 0));
                     p.setFireTicks(0);
                     if(((p.getLocation().subtract(0,1,0).getBlock().getType() == Material.LAVA &&
-                            p.getLocation().getBlock().getType() == Material.AIR) ||
-                            (p.getLocation().add(0,1,0).getBlock().getType() == Material.AIR
+                            p.getLocation().getBlock().getType().isAir()) ||
+                            (p.getLocation().add(0,1,0).getBlock().getType().isAir()
                                     && p.getLocation().getBlock().getType() == Material.LAVA))
                             &&p.isSprinting()) {
                         p.setVelocity(p.getLocation().getDirection().multiply(0.5 * level).multiply(new Vector(1, 0.75, 1)));
@@ -747,8 +765,16 @@ public class listener implements Listener {
                         if(nearest!=null) {
                             boolean rightType = false;
                             if(nearest instanceof Player){
-                                if (pje.combat != null){
-                                    CombatPlayer cp = pje.combat.findPlayer(((Player) nearest).getUniqueId());
+                                if (pjc != null && finalP != null) {
+                                    PJPlayer p1 = pjc.findPlayer(finalP.getUniqueId());
+                                    PJPlayer p2 = pjc.findPlayer(((Player) nearest).getUniqueId());
+                                    if(hasHealing) {
+                                        if (p1.isFriendsWith(p2))
+                                            rightType = true;
+                                    }
+                                }
+                                else if (pje.combat != null){
+                                    CombatPlayer cp = PJCombat.findPlayer(((Player) nearest).getUniqueId());
                                     if(cp.getDifficulty() == 4)
                                         rightType = true;
                                 }
@@ -787,7 +813,7 @@ public class listener implements Listener {
                 }
                 else if(proj.getShooter() instanceof Player){
                     Player p = (Player)proj.getShooter();
-                    if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1)
+                    if(findPlayer(p.getUniqueId()).getDifficulty() == 1)
                         return;
                 }
             }
@@ -922,6 +948,8 @@ public class listener implements Listener {
                     LivingEntity ent = (LivingEntity)e.getHitEntity();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                         boolean canbreak = true;
+                        if(pjc != null)
+                            canbreak = pjc.canModifyChunk(ent.getChunk());
                         if (!ent.isDead() && canbreak)
                             ent.getWorld().createExplosion(ent.getLocation(), 0.5F, false, true);
                         arrow.remove();
@@ -936,6 +964,8 @@ public class listener implements Listener {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
                     if(arrow.isInBlock()) {
                         boolean canbreak = true;
+                        if(pjc != null)
+                            canbreak = pjc.canModifyChunk(arrow.getChunk());
                         if(canbreak)
                             b.getWorld().createExplosion(b.getLocation(), 1, false, true);
                         arrow.remove();
@@ -1093,7 +1123,9 @@ public class listener implements Listener {
         max_enchants = Math.max(max_enchants, 1);
         max_enchants = Math.min(max_enchants,level);
 
-        //custom_enchants.removeIf(Enchant::isRestricted);
+        if(pjc != null) {
+            custom_enchants.removeIf(Enchant::isRestricted);
+        }
 
         addEnchants:
         for(int i=0;i<max_enchants;i++){ // Enchants with numce random enchantments assuming meets all criteria
@@ -1216,15 +1248,15 @@ public class listener implements Listener {
         Location loc = e.getView().getPlayer().getLocation();
         if(e.getResult() != null && numce > 0){ // Item has vanilla enchants
             removeCustomEnchantments(e.getResult());
-            ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
-            orb.setExperience(numce);
+            //ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
+            //orb.setExperience(numce);
         }
-        else if(numce > 0){ // Item has only custom enchants
+        else if(numce > 0){ // Item has only custom enchants, needs to be manually set in results
             input.removeEnchantments();
             removeCustomEnchantments(input);
             e.setResult(input);
-            ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
-            orb.setExperience(numce);
+            //ExperienceOrb orb = (ExperienceOrb)loc.getWorld().spawnEntity(loc, EntityType.EXPERIENCE_ORB);
+            //orb.setExperience(numce);
         }
     }
 
@@ -1288,15 +1320,15 @@ public class listener implements Listener {
                         cluster.addAll(pje.getCluster(new ArrayList<>(), block, b, level));
                         for (Block a : cluster) {
                             if (isPickaxe(tool) && pje.pickaxe_forged_blocks.contains(a.getType())) {
-                                pje.breakWithForged(p, tool, a);
+                                pje.breakWithForging(p, tool, a);
                                 exp+=(int)(Math.random()*5);
                             }
                             else if (isAxe(tool) && pje.axe_blocks.contains(a.getType())) {
-                                pje.breakWithForged(p, tool, a);
+                                pje.breakWithForging(p, tool, a);
                                 exp+=(int)(Math.random()*4);
                             }
                             else if(isShovel(tool) && pje.shovel_forged_blocks.contains(a.getType())){
-                                pje.breakWithForged(p, tool, a);
+                                pje.breakWithForging(p, tool, a);
                                 exp+=(int)(Math.random()*3);
                             }
                             else {
@@ -1314,9 +1346,9 @@ public class listener implements Listener {
                             a.setType(Material.AIR);
                         }
                     }
-                    else pje.breakWithForged(p, tool, block);
+                    else pje.breakWithForging(p, tool, block);
                 }
-                else pje.breakWithForged(p, tool, block);
+                else pje.breakWithForging(p, tool, block);
             }
             else if (hasEnchantment(tool, Enchant.CLUSTER)) {
                 List<Block> cluster = new ArrayList<>();
@@ -1337,13 +1369,13 @@ public class listener implements Listener {
                                     fortune = tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE);
                                     drop = new ItemStack(Material.MELON_SLICE, 1 + (int) (Math.random() * fortune + 6));
                                 }
+                            p.setStatistic(Statistic.MINE_BLOCK,a.getType(),p.getStatistic(Statistic.MINE_BLOCK,a.getType()) + 1);
+                            if(rockCandy){
+                                pje.breakWithRockCandy(p, tool, a);
+                            }
                             a.setType(Material.AIR);
-                            p.setStatistic(Statistic.MINE_BLOCK,p.getStatistic(Statistic.MINE_BLOCK) + 1);
                             if (!drop.getType().equals(Material.AIR))
                                 a.getWorld().dropItemNaturally(a.getLocation(), drop);
-                            if(rockCandy){
-                                pje.breakWithRockCandy(p, tool, block);
-                            }
                         }
                     }
                 }
@@ -1382,8 +1414,14 @@ public class listener implements Listener {
             return;
 
         ItemStack item = p.getInventory().getItemInMainHand();
+        if(pjc != null) {
+            if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
+                return;
+            if(pjc.findPlayer(id).isInParkour())
+                return;
+        }
         if(pje.combat != null)
-            if(pje.combat.findPlayer(id).getDifficulty() == 1)
+            if(PJCombat.findPlayer(id).getDifficulty() == 1)
                 return;
 
         if(a.equals(Action.LEFT_CLICK_AIR)||a.equals(Action.LEFT_CLICK_BLOCK)|| a == Action.PHYSICAL){
@@ -1402,8 +1440,8 @@ public class listener implements Listener {
                 }
                 if(hasEnchantment(item,Enchant.ANTIGRAVITY)){
                     int level = getEnchantLevel(item,Enchant.ANTIGRAVITY);
-                    if(isCooldownOver(id,Enchant.GRAVITY)) {
-                        updateCooldown(id,Enchant.GRAVITY);
+                    if(isCooldownOver(id,Enchant.ANTIGRAVITY)) {
+                        updateCooldown(id,Enchant.ANTIGRAVITY);
                         List<Entity> near = p.getNearbyEntities(level+1, level+1, level+1);
                         for (Entity n : near)
                             if (n instanceof Monster || n instanceof Player) {
@@ -1447,6 +1485,9 @@ public class listener implements Listener {
 
         if(p.getInventory().getItemInMainHand().getItemMeta() == null)
             return;
+        if(pjc != null)
+            if(!pjc.canModifyChunk(p,p.getLocation().getChunk()))
+                return;
 
         ItemStack weapon = p.getInventory().getItemInMainHand();
 
@@ -1481,12 +1522,12 @@ public class listener implements Listener {
 
     @EventHandler
     public void onTarget(EntityTargetLivingEntityEvent e){
-        if(e.getTarget() instanceof Player) {       // Prevents a ghost from targeting its owner
-            Player p = (Player)e.getTarget();
-            if (ghosts.containsKey(p.getUniqueId()))
-                if (ghosts.get(p.getUniqueId()).contains(e.getEntity()))
-                    if (p.equals(e.getTarget()) || ghosts.get(p.getUniqueId()).contains(e.getTarget()))
-                        e.setCancelled(true);
+
+        if(e.getTarget() instanceof Player p) {  // Prevents a ghost from targeting its owner
+            if (ghosts.containsKey(p.getUniqueId())) {
+                if (ghosts.get(p.getUniqueId()).contains(e.getEntity().getUniqueId()))
+                    e.setCancelled(true);
+            }
         }
 
         if(e.getEntity() instanceof Wolf){
@@ -1543,8 +1584,12 @@ public class listener implements Listener {
             return;
         LivingEntity ent = (LivingEntity)e.getEntity();
 
+        if(pjc != null) {
+            if (!pjc.canModifyChunk(p, p.getLocation().getChunk()))
+                return;
+        }
         if(pje.combat != null){
-            if(pje.combat.findPlayer(p.getUniqueId()).getDifficulty() == 1) // If player is in peaceful mode, stop secondary effects of enchants
+            if(findPlayer(p.getUniqueId()).getDifficulty() == 1) // If player is in peaceful mode, stop secondary effects of enchants
                 return;
             if(ent instanceof Player){
                 Player v = (Player)ent;
@@ -1758,7 +1803,8 @@ public class listener implements Listener {
         if(weapon.getItemMeta().hasEnchant(Enchantment.FIRE_ASPECT)){
             if(e.getEntity() instanceof Player p2){
                 int permafrost_score = getArmorScore(p2,Enchant.PERMAFROST);
-                p2.setFireTicks(p2.getFireTicks() / permafrost_score);
+                if(permafrost_score >= 1)
+                    p2.setFireTicks(p2.getFireTicks() / permafrost_score);
             }
         }
 
@@ -1775,6 +1821,11 @@ public class listener implements Listener {
                 particleDisc(Particle.SNOWFLAKE, ent.getLocation().add(-0.5, 1.5, 0.5), 1, 5);
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_ZOMBIE_VILLAGER_CURE,0.5F,1);
             }
+        }
+
+        if(hasEnchantment(weapon,Enchant.PULVERIZING)){
+            if(isAxe(weapon))
+                e.setDamage(e.getDamage()*0.5);
         }
 
         if(hasEnchantment(weapon,Enchant.PUNCTURE)){
@@ -2206,7 +2257,7 @@ public class listener implements Listener {
                         e.getDamager().setFireTicks(40+20* getEnchantLevel(armor,Enchant.MOLTEN));
                     }
                     else if(hasEnchantment(armor,Enchant.PERMAFROST)){
-                        e.getDamager().setFreezeTicks(140+20* getEnchantLevel(armor,Enchant.PERMAFROST));
+                        e.getDamager().setFreezeTicks(240+20* getEnchantLevel(armor,Enchant.PERMAFROST));
                     }
                     if(hasEnchantment(armor,Enchant.TOXIC)){
                         if(e.getEntity() instanceof Monster)
@@ -2331,7 +2382,7 @@ public class listener implements Listener {
         if(percentChance(25* pje.getNumArmorPieces(p,Enchant.MOLTEN)))
             attacker.setFireTicks(40+20* getArmorScore(p,Enchant.MOLTEN));
         if(percentChance(25* pje.getNumArmorPieces(p,Enchant.PERMAFROST)))
-            attacker.setFreezeTicks(160+20* getArmorScore(p,Enchant.PERMAFROST));
+            attacker.setFreezeTicks(260+20* getArmorScore(p,Enchant.PERMAFROST));
 
         if(p.getInventory().getBoots()!=null){
             ItemStack boots = p.getInventory().getBoots();
