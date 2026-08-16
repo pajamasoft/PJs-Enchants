@@ -45,7 +45,7 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | $\color{#ffff77}{\text{Defuse}}$ | 1 | ![][sword]![][spear] | Prevents creepers from exploding. | |
 | $\color{#77ff77}{\text{Devour}}$ | 4 | ![][sword]![][axe]![][spear] | Regain hunger by attacking. | Feeds player by 1 hunger per hit or equivalent raw meat amount for animals. Some mobs may give additional potion effects. |
 | $\color{#ffff77}{\text{Discharge}}$ | 3 | ![][chestplate] | Chance to strike yourself with lightning on hit, damaging only nearby enemies. | (5 * level)% chance to activate. Deals 10 raw damage to all nearby enemies. |
-| $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![][sword]v![][axe]![][spear] | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
+| $\color{#77ff77}{\text{Dizzy}}$ | 3 | ![][sword]![][axe]![][spear] | Chance to randomize target's orientation. | (5 + 5 * level)% chance to activate. Temporarily de-aggros mobs. |
 | $\color{#ffaa55}{\text{Draconic}}$ | 1 | ![][elytra]![][chestplate] | Arrows fired while gliding will turn into dragon fireballs. | Requires fire charges as ammunition. Costs 3 fire charges per shot. |
 | $\color{#ffff77}{\text{Drag}}$ | 1 | ![][elytra]![][chestplate] | Eliminates fall damage while gliding. | |
 | $\color{#ffaa55}{\text{Endereyes}}$ | 1 | ![][helmet] | Allows the wearer to look Endermen in the eyes. Sneaking while making eye contact with an Enderman will cause you to swap places. | |
