@@ -1,10 +1,11 @@
 package net.pajamasoft.pjenchants;
 import net.pajamasoft.pjCombat.PJCombat;
+import net.pajamasoft.pjLib.ItemType;
 import net.pajamasoft.pjcomputers.*;
 /*
  * ---------------------------------------------------
  *  PJ's Enchants
- *      71 Custom Enchantments for survival Minecraft
+ *      80 Custom Enchantments for survival Minecraft
  * ---------------------------------------------------
  * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
  * ---------------------------------------------------
@@ -598,23 +599,6 @@ public final class PJEnchants extends JavaPlugin {
         return end;
     }
 
-    public ItemStack newItem(Material mat, String name, List<String> lore, int amount){
-        ItemStack item = new ItemStack(mat,amount);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    public ItemStack newItem(Material mat, String name, List<String> lore){
-        return newItem(mat,name,lore,1);
-    }
-
-    public ItemStack newItem(Material mat, String name){
-        return newItem(mat,name,new ArrayList<>());
-    }
-
     public List<Block> getCluster(List<Block> a, Block b,Material mat, int level){
         if(!mat.equals(Material.AIR)) {
             a.add(b);
@@ -848,6 +832,102 @@ public final class PJEnchants extends JavaPlugin {
         armorable.addAll(Arrays.asList(EntityType.ZOMBIE,EntityType.ZOMBIE_VILLAGER,EntityType.SKELETON,EntityType.PIGLIN,EntityType.HUSK,EntityType.BOGGED,EntityType.DROWNED,
                 EntityType.PIGLIN_BRUTE,EntityType.ZOMBIFIED_PIGLIN,EntityType.PARCHED));
         return armorable.contains(e.getType());
+    }
+
+    public static ItemStack genEnchantingScroll(Enchant enchant, int level){
+        List<Enchant> restricted = Arrays.asList(Enchant.DRACONIC,Enchant.BLAZE,Enchant.BREEZE,Enchant.WILTING,Enchant.SKULLS);
+        List<Enchant> tier3 = new ArrayList<>(t3_enchants);
+        List<Enchant> tier2 = new ArrayList<>(t2_enchants);
+        List<Enchant> tier1 = new ArrayList<>(t1_enchants);
+
+        tier3.removeAll(restricted);
+        tier2.removeAll(restricted);
+        tier1.removeAll(restricted);
+
+        String line1 = "§aTier I";
+        if(enchant == null) {
+            if (percentChance(5))
+                enchant = tier3.get((int) (Math.random() * tier3.size()));
+            else if (percentChance(30))
+                enchant = tier2.get((int) (Math.random() * tier2.size()));
+            else enchant = tier1.get((int) (Math.random() * tier1.size()));
+        }
+        if(tier2.contains(enchant)){
+            line1 = "§eTier II";
+        }
+        else if(tier3.contains(enchant) || restricted.contains(enchant)){
+            line1 = "§6Tier III";
+        }
+        List<String> compatible = new ArrayList<>();
+
+
+        if(armor_enchants.contains(enchant))
+            compatible.add("All Armor");
+        else if(helmet_enchants.contains(enchant))
+            compatible.add("Helmet");
+        else if(chestplate_enchants.contains(enchant))
+            compatible.add("Chestplate");
+        else if(leggings_enchants.contains(enchant))
+            compatible.add("Leggings");
+        else if(boots_enchants.contains(enchant))
+            compatible.add("Boots");
+        if(melee_enchants.contains(enchant))
+            compatible.add("All Melee");
+        else if(sword_enchants.contains(enchant))
+            compatible.add("Sword");
+        else if(spear_enchants.contains(enchant))
+            compatible.add("Spear");
+        if(tool_enchants.contains(enchant))
+            compatible.add("All Tools");
+        else if(pick_enchants.contains(enchant))
+            compatible.add("Pickaxe");
+        else if(axe_enchants.contains(enchant))
+            compatible.add("Axe");
+        if(bow_enchants.contains(enchant))
+            compatible.add("Bow");
+        if(elytra_enchants.contains(enchant)) {
+            compatible.add("Elytra");
+            if(isTypeCompatible(new ItemStack(Material.DIAMOND_CHESTPLATE),enchant))
+                compatible.add("Chestplate");
+        }
+        if(horse_enchants.contains(enchant))
+            compatible.add("Horse Armor");
+        if(wolf_enchants.contains(enchant))
+            compatible.add("Wolf Armor");
+
+        String line2 = compatible.get(0);
+        for(int i = 1;i<compatible.size();i++)
+            line2 += ", "+compatible.get(i);
+
+        if(level == 0)
+            level = 1+(int)(Math.random()*enchant.getMaxLevel());
+
+        ItemStack scroll = newItem(Material.FLOWER_BANNER_PATTERN,"§a§lScroll of Enchantment",Arrays.asList(
+                line1,"§bCompatible with: §e"+line2,
+                "§7"+format(enchant.name()) + " §7" + (enchant.getMaxLevel() > 1 ? ""+ numeralize(level) : "")
+        ),1);
+        scroll.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        return scroll;
+    }
+
+    public static ItemStack genEnchantingScroll(){
+        return genEnchantingScroll(null,0);
+    }
+    public static ItemStack genEnchantingScroll(Enchant enchant){
+        return genEnchantingScroll(enchant,0);
+    }
+
+    public static int getScrollTier(ItemStack scroll){
+        if(scroll.hasItemMeta())
+            if(scroll.getItemMeta().hasLore()) {
+                if (scroll.getItemMeta().getLore().contains("§6Tier III"))
+                    return 3;
+                if (scroll.getItemMeta().getLore().contains("§eTier II"))
+                    return 2;
+                if (scroll.getItemMeta().getLore().contains("§aTier I"))
+                    return 1;
+            }
+        return 0;
     }
 
     public void runHoldingCheck(){

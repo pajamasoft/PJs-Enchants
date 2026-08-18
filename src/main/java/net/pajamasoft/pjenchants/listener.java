@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.pajamasoft.pjCombat.CombatPlayer;
 import net.pajamasoft.pjCombat.PJCombat;
 import org.bukkit.*;
+import net.pajamasoft.pjLib.ItemType;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
@@ -175,10 +176,16 @@ public class listener implements Listener {
                     Damageable meta = (Damageable) elytra.getItemMeta();
                     meta.setDamage(elytra.getType().getMaxDurability()-20);
                     elytra.setItemMeta(meta);
+
                     List<Enchant> chestenchants = getCustomEnchants(chest);
                     for(Enchant ench:chestenchants)     // Loops through chestplate enchants to apply any elytra enchants to the temp elytra
                         if(ench.isTypeCompatible(new ItemStack(Material.ELYTRA)))
                             pje.enchant(elytra,ench, getEnchantLevel(chest,ench));
+                    if(meta.hasEnchant(Enchantment.UNBREAKING))
+                        elytra.addEnchantment(Enchantment.UNBREAKING,meta.getEnchantLevel(Enchantment.UNBREAKING));
+                    if(meta.hasEnchant(Enchantment.MENDING))
+                        elytra.addEnchantment(Enchantment.MENDING,1);
+
                     p.getInventory().setChestplate(elytra);
                     p.setGliding(true);
                 }
@@ -238,12 +245,18 @@ public class listener implements Listener {
 
         if(p.isGliding()&&!p.isSneaking()){
             assert p.getInventory().getChestplate() != null;
-            cooldowns.get(p.getUniqueId()).putIfAbsent(Enchant.SOLAR,0L);
-            cooldowns.get(p.getUniqueId()).putIfAbsent(Enchant.LUNAR,0L);
+            ItemStack elytra = p.getInventory().getChestplate();
 
-            if(isCooldownOver(id,Enchant.SOLAR)&&!p.isInWater()&& hasEnchantment(p.getInventory().getChestplate(),Enchant.SOLAR)&&p.getWorld().getTime()>=0
-                    &&p.getWorld().getTime()<12500&&!p.getWorld().hasStorm()&&!p.getWorld().isThundering()&&p.getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
-                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75));
+            if(isCooldownOver(id,Enchant.SOLAR)&&
+                    !p.isInWater() &&
+                    hasEnchantment(elytra,Enchant.SOLAR) &&
+                    p.getWorld().getTime()>=0 &&
+                    p.getWorld().getTime()<12500 &&
+                    !p.getWorld().hasStorm() &&
+                    !p.getWorld().isThundering() &&
+                    p.getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
+                int thrust = Math.max(1,getEnchantLevel(elytra,Enchant.THRUST));
+                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75 + 1*(thrust/3.0)));
                 updateCooldown(id,Enchant.SOLAR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_SHULKER_SHOOT,0.6F,1);
                 for(int i=0;i<5;i++){
@@ -259,9 +272,10 @@ public class listener implements Listener {
                     &&((isNight(p.getWorld())
                     &&!p.getWorld().hasStorm()
                     &&!p.getWorld().isThundering())
-                    ||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)
-            )))){
-                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.5));
+                    ||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)))
+            )){
+                int thrust = Math.max(1,getEnchantLevel(elytra,Enchant.THRUST));
+                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75 + 1*(thrust/3.0)));
                 updateCooldown(id,Enchant.LUNAR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ENDER_DRAGON_FLAP,0.6F,1);
                 for(int i=0;i<15;i++){
@@ -1309,6 +1323,7 @@ public class listener implements Listener {
                 if (hasEnchantment(tool, Enchant.CLUSTER) && !p.isSneaking()) {
                     List<Block> cluster = new ArrayList<>();
                     List<Material> clusterable = new ArrayList<>();
+                    boolean rockCandy = hasEnchantment(tool, Enchant.ROCK_CANDY);
                     int level = getEnchantLevel(tool, Enchant.CLUSTER);
                     if (isPickaxe(tool))
                         clusterable = List.copyOf(pickaxe_blocks);
@@ -1343,6 +1358,8 @@ public class listener implements Listener {
                                     }
                                 }
                             }
+                            if(rockCandy)
+                                pje.breakWithRockCandy(p,tool,a);
                             a.setType(Material.AIR);
                         }
                     }
@@ -1901,7 +1918,7 @@ public class listener implements Listener {
                             armor[i].setItemMeta(item);
                         }
                     p2.getInventory().setArmorContents(armor);
-                    p.getWorld().playSound(p2.getLocation(),Sound.ENTITY_ITEM_BREAK,0.3F,1);
+                    p.getWorld().playSound(p2.getLocation(),Sound.ENTITY_PARCHED_HURT,0.3F,1);
                 }
             }
             if(ent instanceof Monster){
@@ -2565,7 +2582,7 @@ public class listener implements Listener {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 360, 8));
                         p.setAbsorptionAmount(2);
                     }
-                    double absorb = e.getDamage() + p.getAbsorptionAmount();
+                    double absorb = e.getDamage()*0.5 + p.getAbsorptionAmount();
                     p.setAbsorptionAmount(absorb);
                     e.setDamage(0);
                     particleRing(Particle.BUBBLE,p.getLocation().add(0,1,0),1,40);

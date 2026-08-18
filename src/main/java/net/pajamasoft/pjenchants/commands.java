@@ -1,5 +1,6 @@
 package net.pajamasoft.pjenchants;
 
+import net.pajamasoft.pjLib.ItemType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

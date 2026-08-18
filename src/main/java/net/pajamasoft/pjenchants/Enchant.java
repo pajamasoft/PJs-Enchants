@@ -1,5 +1,6 @@
 package net.pajamasoft.pjenchants;
 
+import net.pajamasoft.pjLib.ItemType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
