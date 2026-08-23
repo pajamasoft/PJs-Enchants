@@ -115,13 +115,14 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 ## Enchantment Cross-Compatibility Charts
 
 ### Melee Enchants
-| | Antigravity | Frostbite | Leeching | Wilting | Skulls |
-| --- | --- | --- | --- | --- | --- |
-| Gravity | ❌ | | | | |
-| Venom | | | ❌ | ❌ | |
-| Fire Aspect | | ❌ | | | |
-| Blaze | | ❌ | | | |
-| Meteor | | | | | ❌ |
+| | Antigravity | Frostbite | Leeching | Wilting | Skulls | Breeze | Blizzard |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Gravity | ❌ | | | | | | |
+| Venom | | | ❌ | ❌ | | | |
+| Fire Aspect | | ❌ | | | | | ❌ |
+| Blaze | | ❌ | | | | ❌ | ❌ |
+| Meteor | | | | | ❌ | | ❌ |
+| Breeze | | | | | | - | ❌ |
 
 ### Bow Enchants
 | | Antigravity | Freezing | Healing | Ricochet | Infinity | Gravity | Grappling |
