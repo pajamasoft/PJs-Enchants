@@ -2,6 +2,7 @@ package net.pajamasoft.pjenchants;
 
 import net.pajamasoft.pjLib.ItemType;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -41,7 +42,14 @@ public enum Enchant {
     BLAZE(new EnchantData()
             .max_level(3)
             .tier(3)
-            .types(Set.of(ItemType.SWORD,ItemType.AXE))
+            .types(ItemType.SWORD)
+            .cooldown(5000L)
+            .restricted(true)
+    ),
+    BLIZZARD(new EnchantData()
+            .max_level(3)
+            .tier(3)
+            .types(ItemType.SWORD)
             .cooldown(5000L)
             .restricted(true)
     ),
@@ -233,6 +241,12 @@ public enum Enchant {
             .tier(2)
             .types(ItemType.HORSE_ARMOR)
     ),
+    LASER(new EnchantData()
+            .max_level(1)
+            .tier(3)
+            .types(ItemType.PICKAXE)
+            .cooldown(5000L)
+    ),
     LEAPING(new EnchantData()
             .max_level(3)
             .tier(1)
@@ -415,6 +429,11 @@ public enum Enchant {
             .tier(1)
             .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR))
     ),
+    TREASURE(new EnchantData()
+            .max_level(7)
+            .tier(2)
+            .types(Set.of(ItemType.PICKAXE,ItemType.SHOVEL))
+    ),
     UNHOLY(new EnchantData()
             .max_level(1)
             .tier(2)
@@ -496,6 +515,8 @@ public enum Enchant {
         private int max_level;
         private int tier;
         private Set<ItemType> types;
+        private Set<Enchantment> incompatibleRE;
+        private Set<Enchant> incompatibleCE;
         private boolean restricted;
         private boolean isCurse;
         private long cooldown;
@@ -525,6 +546,14 @@ public enum Enchant {
         }
         EnchantData cooldown(long x){
             this.cooldown = x;
+            return this;
+        }
+        EnchantData incompatibleRE(Set<Enchantment> x){
+            this.incompatibleRE = x;
+            return this;
+        }
+        EnchantData incompatibleCE(Set<Enchant> x){
+            this.incompatibleCE = x;
             return this;
         }
     }

@@ -191,6 +191,8 @@ public final class PJEnchants extends JavaPlugin {
             if(e2 == Enchantment.INFINITY || e2 == Enchantment.FLAME)
                 return false;
         }
+        if(e1 == Enchant.BLIZZARD && e2 == Enchantment.FIRE_ASPECT)
+            return false;
         if(e1 == Enchant.FIREWALKER && e2 == Enchantment.FROST_WALKER)
             return false;
         if(e2 == Enchantment.INFINITY) {
@@ -835,14 +837,13 @@ public final class PJEnchants extends JavaPlugin {
     }
 
     public static ItemStack genEnchantingScroll(Enchant enchant, int level){
-        List<Enchant> restricted = Arrays.asList(Enchant.DRACONIC,Enchant.BLAZE,Enchant.BREEZE,Enchant.WILTING,Enchant.SKULLS);
         List<Enchant> tier3 = new ArrayList<>(t3_enchants);
         List<Enchant> tier2 = new ArrayList<>(t2_enchants);
         List<Enchant> tier1 = new ArrayList<>(t1_enchants);
 
-        tier3.removeAll(restricted);
-        tier2.removeAll(restricted);
-        tier1.removeAll(restricted);
+        tier3.removeIf(Enchant::isRestricted);
+        tier2.removeIf(Enchant::isRestricted);
+        tier1.removeIf(Enchant::isRestricted);
 
         String line1 = "§aTier I";
         if(enchant == null) {
@@ -855,7 +856,7 @@ public final class PJEnchants extends JavaPlugin {
         if(tier2.contains(enchant)){
             line1 = "§eTier II";
         }
-        else if(tier3.contains(enchant) || restricted.contains(enchant)){
+        else if(tier3.contains(enchant)){
             line1 = "§6Tier III";
         }
         List<String> compatible = new ArrayList<>();

@@ -731,24 +731,32 @@ public class listener implements Listener {
             },40L + 40L*level);
         }
         if(hasCustomEnchants(bow)){
+            ItemStack finalBow = bow;
+            boolean hasAntiGrav = hasEnchantment(finalBow, Enchant.ANTIGRAVITY);
+            boolean hasHealing = hasEnchantment(finalBow,Enchant.HEALING);
+            boolean hasGrav = hasEnchantment(finalBow,Enchant.GRAVITY);
+            boolean hasFreeze = hasEnchantment(finalBow, Enchant.FREEZING);
+            boolean hasVenom = hasEnchantment(finalBow, Enchant.VENOM);
+            boolean hasNitro = hasEnchantment(finalBow, Enchant.NITRO);
             for(int i=0;i<24;i++) {
-                ItemStack finalBow = bow;
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                     if(!proj.isDead()) {
-                        if (hasEnchantment(finalBow, Enchant.ANTIGRAVITY))
+                        if (hasAntiGrav)
                             proj.getWorld().spawnParticle(Particle.GLOW, proj.getLocation(), 0);
-                        if(hasEnchantment(finalBow,Enchant.HEALING))
+                        if(hasHealing)
                             proj.getWorld().spawnParticle(Particle.HEART,proj.getLocation(),0);
-                        if(hasEnchantment(finalBow,Enchant.GRAVITY))
+                        if(hasGrav)
                             proj.getWorld().spawnParticle(Particle.WITCH,proj.getLocation(),0);
-                        if (hasEnchantment(finalBow, Enchant.FREEZING)&&!proj.isVisualFire())
-                            proj.getWorld().spawnParticle(Particle.SNOWFLAKE, proj.getLocation(), 0);
-                        if (hasEnchantment(finalBow, Enchant.VENOM))
+                        if (hasFreeze){
+                            if(proj.getFireTicks() == 0)
+                                proj.getWorld().spawnParticle(Particle.SNOWFLAKE, proj.getLocation(), 0);
+                            if(proj.isInWater())
+                                proj.getLocation().getBlock().setType(Material.FROSTED_ICE);
+                        }
+                        if (hasVenom)
                             proj.getWorld().spawnParticle(Particle.FALLING_SPORE_BLOSSOM, proj.getLocation(), 0);
-                        if (hasEnchantment(finalBow, Enchant.NITRO))
+                        if (hasNitro)
                             proj.getWorld().spawnParticle(Particle.LAVA, proj.getLocation(), 0);
-                        if(proj.isInWater()&& hasEnchantment(finalBow,Enchant.FREEZING))
-                            proj.getLocation().getBlock().setType(Material.FROSTED_ICE);
                     }
                 },2*i);
             }
@@ -765,7 +773,6 @@ public class listener implements Listener {
                 }
             }
             if(hasEnchantment(bow,Enchant.HOMING)){
-                final boolean hasHealing = hasEnchantment(bow,Enchant.HEALING);
                 for(int i=0;i<150;i++){
                     Player finalP = p;
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(pje,()->{
@@ -841,6 +848,8 @@ public class listener implements Listener {
         String name = arrow.getCustomName();        // format: enchant(#)%enchant(#)%....
         final String fname = name;
         HashMap<String,Integer> enchants = new HashMap<>();
+
+
         if(!name.contains("%"))
             return;
         Player p = Bukkit.getPlayer(name.substring(0,name.indexOf('%')));
@@ -1304,20 +1313,44 @@ public class listener implements Listener {
         Player p = e.getPlayer();
         Block block = e.getBlock();
         Material b = e.getBlock().getType();
+
+        if(pjc != null)
+            if(!pjc.canModifyChunk(p,block.getChunk()))
+                return;
+
         ItemStack tool = p.getInventory().getItemInMainHand();
         if(tool.getType().equals(Material.AIR))
             return;
         boolean silk = false;
         int fortune = 1;
         int exp = e.getExpToDrop();
+        World world = block.getWorld();
         if(tool.hasItemMeta()) {
             if (tool.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH))
                 silk = true;
-            fortune = tool.getItemMeta().hasEnchant(Enchantment.FORTUNE) ? tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE) : 0;
+            if(tool.getItemMeta().hasEnchant(Enchantment.FORTUNE)) {
+                fortune = tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE);
+            }
         }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
             if(e.isCancelled())
                 return;
+            int treasure = getEnchantLevel(tool,Enchant.TREASURE);
+            if(treasure > 0){
+                Set<Material> diggable = Set.of(Material.STONE,Material.DEEPSLATE,
+                        Material.ANDESITE,Material.DIORITE,Material.GRANITE);
+                if(percentChance(0.5*(fortune + 1))){
+                    if(diggable.contains(b)){
+                        e.setCancelled(true);
+                        block.setType(Material.CHEST);
+                        Chest chest = (Chest)block;
+                        chest.getBlockInventory();
+                        world.spawnParticle(Particle.ELECTRIC_SPARK,block.getLocation(),5);
+                        world.playSound(block.getLocation(),Sound.BLOCK_ENDER_CHEST_OPEN,1,1);
+                        return;
+                    }
+                }
+            }
             if (hasEnchantment(tool, Enchant.FORGING)) {
                 e.setDropItems(false);
                 if (hasEnchantment(tool, Enchant.CLUSTER) && !p.isSneaking()) {
@@ -1372,6 +1405,7 @@ public class listener implements Listener {
                 List<Material> clusterable = new ArrayList<>();
                 boolean rockCandy = hasEnchantment(tool, Enchant.ROCK_CANDY);
                 int level = getEnchantLevel(tool, Enchant.CLUSTER);
+                exp = e.getExpToDrop();
                 if (isAxe(tool))
                     clusterable = List.copyOf(pje.axe_blocks);
                 if (isPickaxe(tool))
@@ -1391,8 +1425,10 @@ public class listener implements Listener {
                                 pje.breakWithRockCandy(p, tool, a);
                             }
                             a.setType(Material.AIR);
-                            if (!drop.getType().equals(Material.AIR))
+                            if (!drop.getType().equals(Material.AIR)) {
                                 a.getWorld().dropItemNaturally(a.getLocation(), drop);
+                                exp += e.getExpToDrop();
+                            }
                         }
                     }
                 }
@@ -1416,9 +1452,12 @@ public class listener implements Listener {
                         exp += (int)(Math.random()*3);
             }
         }
-        e.setExpToDrop(exp);
-        if(!e.isDropItems()&&exp>0)
+        if(e.isCancelled() && exp > e.getExpToDrop())
             (p.getWorld().spawn(p.getLocation(), ExperienceOrb.class)).setExperience(exp);
+        e.setExpToDrop(exp);
+        if(!e.isDropItems()&&exp>0) {
+            (p.getWorld().spawn(p.getLocation(), ExperienceOrb.class)).setExperience(exp);
+        }
     }
 
     @EventHandler
@@ -1488,6 +1527,23 @@ public class listener implements Listener {
                         p.getWorld().playSound(p.getLocation(),Sound.ENTITY_BREEZE_SHOOT,1,1);
                     }
                 }
+                if(hasEnchantment(item, Enchant.BLIZZARD) && (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK)){
+                    int level = getEnchantLevel(item,Enchant.BLIZZARD);
+                    if(isCooldownOver(id,Enchant.BLIZZARD,level, hasEnchantment(item, Enchant.ARTFUL))){
+                        updateCooldown(id,Enchant.BLIZZARD);
+                        for(int i=0;i<3*level;i++) {
+                            int finalI = i;
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                                Snowball snowball = p.getWorld().spawn(p.getEyeLocation().add(p.getLocation().getDirection()), Snowball.class);
+                                snowball.setVelocity(p.getLocation().getDirection());
+                                snowball.setShooter(p);
+                                if(finalI %3==0)
+                                    snowball.setItem(new ItemStack(Material.PACKED_ICE,1));
+                                p.getWorld().playSound(p.getLocation(),Sound.ENTITY_BREEZE_SHOOT,0.6F,1);
+                            },3*i);
+                        }
+                    }
+                }
             }
         }
     }
@@ -1507,6 +1563,52 @@ public class listener implements Listener {
                 return;
 
         ItemStack weapon = p.getInventory().getItemInMainHand();
+
+        if(hasEnchantment(weapon,Enchant.LASER) && p.isSneaking()){
+            if(isCooldownOver(id,Enchant.LASER, hasEnchantment(weapon,Enchant.ARTFUL))) {
+                updateCooldown(id,Enchant.LASER);
+
+                Arrow arrow = p.launchProjectile(Arrow.class,p.getLocation().getDirection());
+                arrow.setGravity(false);
+                arrow.setInvisible(true);
+                String name = "laser";
+                boolean hasForging = hasEnchantment(weapon,Enchant.FORGING);
+                boolean hasFortune = weapon.getItemMeta().hasEnchant(Enchantment.FORTUNE);
+                if(hasForging)
+                    name += "%forging";
+                if(hasFortune)
+                    name += "%fortune"+weapon.getItemMeta().getEnchantLevel(Enchantment.FORTUNE);
+                name += '%';
+                arrow.setCustomName(name);
+
+                for(int i=0;i<8;i++) {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                        if (!arrow.isDead() && !arrow.isInBlock()) {
+                            Location loc = arrow.getLocation().clone();
+                            arrow.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, arrow.getLocation(), 0);
+                            if (hasForging)
+                                arrow.getWorld().spawnParticle(Particle.SMALL_FLAME, arrow.getLocation(), 0);
+                            if (hasFortune)
+                                arrow.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, arrow.getLocation(), 0);
+                            for (int x = -1; x <= 1; x++)
+                                for (int y = -1; y <= 1; y++)
+                                    for (int z = -1; z <= 1; z++) {
+                                        Block b = loc.clone().add(x,y,z).getBlock();
+                                        if (b.getType().getHardness() > -1 && b.getType().getHardness() < 30) {
+                                            if(hasForging)
+                                                pje.breakWithForging(p,weapon,b);
+                                            else {
+                                                b.breakNaturally(weapon);
+                                            }
+                                        }
+                                    }
+                        }
+                    },5*i);
+                }
+                p.getWorld().playSound(p.getLocation(),Sound.ENTITY_GUARDIAN_ATTACK,1,1);
+                arrow.setShooter(p);
+            }
+        }
 
         if(hasEnchantment(weapon,Enchant.SKULLS)&& a == Action.RIGHT_CLICK_AIR && p.isSneaking()){
             if(isCooldownOver(id,Enchant.SKULLS, hasEnchantment(weapon,Enchant.ARTFUL))) {
@@ -2173,18 +2275,18 @@ public class listener implements Listener {
                 }
                 for(int i=0;i<loops;i++) {
                     int finalI = i;
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
-                            Location loc = ent.getLocation();
-                            if (ent instanceof Monster mon)
-                                mon.setTarget(null);
-                            double x = loc.getX();
-                            double y = loc.getY();
-                            double z = loc.getZ();
-                            loc.setYaw((float) Math.random() * 360);
-                            loc.setPitch((float) Math.random() * 360);
-                            ent.teleport(loc);
-                            loc.getWorld().spawnParticle(Particle.FIREWORK, new Location(loc.getWorld(), x + Math.cos(finalI) * 0.8, y, z + Math.sin(finalI) * 0.8 + (0.15 + .1 * 0.8)), 0);
-                        }, 10 * i);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                        Location loc = ent.getLocation();
+                        if (ent instanceof Monster mon)
+                            mon.setTarget(null);
+                        double x = loc.getX();
+                        double y = loc.getY();
+                        double z = loc.getZ();
+                        loc.setYaw((float) Math.random() * 360);
+                        loc.setPitch((float) Math.random() * 360);
+                        ent.teleport(loc);
+                        loc.getWorld().spawnParticle(Particle.FIREWORK, new Location(loc.getWorld(), x + Math.cos(finalI) * 0.8, y, z + Math.sin(finalI) * 0.8 + (0.15 + .1 * 0.8)), 0);
+                    }, 10 * i);
                 }
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT,1,1);
             }
@@ -2823,7 +2925,7 @@ public class listener implements Listener {
                 cooldown *=0.75;
             return System.currentTimeMillis() - cooldowns.get(id).get(en) >= cooldown;
         }
-        cooldowns.put(id,new HashMap<Enchant,Long>());
+        cooldowns.get(id).put(en,0L);
         return true;
     }
 
