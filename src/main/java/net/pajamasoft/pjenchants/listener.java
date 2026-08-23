@@ -850,11 +850,6 @@ public class listener implements Listener {
                     }
                 }
             }
-            else if(e.getHitBlock() != null){
-                ItemStack item = snowball.getItem();
-                if(hasEnchantment(item,Enchant.LASER))
-                    e.getHitBlock().breakNaturally(item);
-            }
         }
 
         if (e.getEntity() instanceof Arrow arrow) {
@@ -1565,49 +1560,6 @@ public class listener implements Listener {
                 return;
 
         ItemStack weapon = p.getInventory().getItemInMainHand();
-
-        if(hasEnchantment(weapon,Enchant.LASER) && p.isSneaking()){
-            if(isCooldownOver(id,Enchant.LASER, hasEnchantment(weapon,Enchant.ARTFUL))) {
-                updateCooldown(id,Enchant.LASER);
-
-                boolean hasForging = hasEnchantment(weapon,Enchant.FORGING);
-                boolean hasFortune = weapon.getItemMeta().hasEnchant(Enchantment.FORTUNE);
-                Location activate_loc = p.getEyeLocation().clone();
-
-                for(int i=0;i<20;i++) {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
-                        Snowball snowball = activate_loc.getWorld().spawn(activate_loc,Snowball.class);
-                        snowball.setItem(weapon);
-                        snowball.setGravity(false);
-                        snowball.setVelocity(activate_loc.getDirection().multiply(3));
-                        snowball.setShooter(p);
-                        snowball.getWorld().playSound(activate_loc,Sound.ENTITY_GUARDIAN_ATTACK,1,1);
-                        snowball.setInvisible(true);
-//                        String name = "laser";
-//                        if(hasForging)
-//                            name += "%forging";
-//                        if(hasFortune)
-//                            name += "%fortune"+weapon.getItemMeta().getEnchantLevel(Enchantment.FORTUNE);
-//                        name += '%';
-//                        snowball.setCustomName(name);
-                        new BukkitRunnable(){
-                            public void run(){
-                                if(snowball.isDead())
-                                    cancel();
-                                else{
-                                    Location loc = snowball.getLocation().clone();
-                                    snowball.getWorld().spawnParticle(Particle.ENCHANTED_HIT, loc, 0);
-                                    if (hasForging)
-                                        snowball.getWorld().spawnParticle(Particle.SMALL_FLAME, loc, 0);
-                                    if (hasFortune)
-                                        snowball.getWorld().spawnParticle(Particle.HAPPY_VILLAGER, loc, 0);
-                                }
-                            }
-                        }.runTaskTimer(pje, 0L, 8L);
-                    },2*i);
-                }
-            }
-        }
 
         if(hasEnchantment(weapon,Enchant.SKULLS)&& a == Action.RIGHT_CLICK_AIR && p.isSneaking()){
             if(isCooldownOver(id,Enchant.SKULLS, hasEnchantment(weapon,Enchant.ARTFUL))) {

@@ -241,12 +241,6 @@ public enum Enchant {
             .tier(2)
             .types(ItemType.HORSE_ARMOR)
     ),
-    LASER(new EnchantData()
-            .max_level(1)
-            .tier(3)
-            .types(ItemType.PICKAXE)
-            .cooldown(5000L)
-    ),
     LEAPING(new EnchantData()
             .max_level(3)
             .tier(1)
@@ -428,11 +422,6 @@ public enum Enchant {
             .max_level(1)
             .tier(1)
             .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS,ItemType.WOLF_ARMOR))
-    ),
-    TREASURE(new EnchantData()
-            .max_level(7)
-            .tier(2)
-            .types(Set.of(ItemType.PICKAXE,ItemType.SHOVEL))
     ),
     UNHOLY(new EnchantData()
             .max_level(1)
