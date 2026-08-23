@@ -216,6 +216,10 @@ public final class PJEnchants extends JavaPlugin {
             if(combo.contains(Enchant.MOLTEN) || combo.contains(Enchant.FIREWALKER)
                     || combo.contains(Enchant.ERUPTION))
                 return false;
+        if(combo.contains(Enchant.BLIZZARD))
+            if(combo.contains(Enchant.BLAZE) || combo.contains(Enchant.METEOR)
+                    || combo.contains(Enchant.BREEZE))
+                return false;
         if(combo.contains(Enchant.SKULLS) && combo.contains(Enchant.METEOR))
             return false;
         if(combo.contains(Enchant.GRAVITY)&&combo.contains(Enchant.ANTIGRAVITY))

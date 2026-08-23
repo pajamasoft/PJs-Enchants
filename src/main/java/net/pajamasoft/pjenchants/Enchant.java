@@ -515,8 +515,6 @@ public enum Enchant {
         private int max_level;
         private int tier;
         private Set<ItemType> types;
-        private Set<Enchantment> incompatibleRE;
-        private Set<Enchant> incompatibleCE;
         private boolean restricted;
         private boolean isCurse;
         private long cooldown;
@@ -546,14 +544,6 @@ public enum Enchant {
         }
         EnchantData cooldown(long x){
             this.cooldown = x;
-            return this;
-        }
-        EnchantData incompatibleRE(Set<Enchantment> x){
-            this.incompatibleRE = x;
-            return this;
-        }
-        EnchantData incompatibleCE(Set<Enchant> x){
-            this.incompatibleCE = x;
             return this;
         }
     }
