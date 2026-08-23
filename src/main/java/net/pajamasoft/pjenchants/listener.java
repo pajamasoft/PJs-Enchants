@@ -1335,22 +1335,6 @@ public class listener implements Listener {
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
             if(e.isCancelled())
                 return;
-            int treasure = getEnchantLevel(tool,Enchant.TREASURE);
-            if(treasure > 0){
-                Set<Material> diggable = Set.of(Material.STONE,Material.DEEPSLATE,
-                        Material.ANDESITE,Material.DIORITE,Material.GRANITE);
-                if(percentChance(0.5*(fortune + 1))){
-                    if(diggable.contains(b)){
-                        e.setCancelled(true);
-                        block.setType(Material.CHEST);
-                        Chest chest = (Chest)block;
-                        chest.getBlockInventory();
-                        world.spawnParticle(Particle.ELECTRIC_SPARK,block.getLocation(),5);
-                        world.playSound(block.getLocation(),Sound.BLOCK_ENDER_CHEST_OPEN,1,1);
-                        return;
-                    }
-                }
-            }
             if (hasEnchantment(tool, Enchant.FORGING)) {
                 e.setDropItems(false);
                 if (hasEnchantment(tool, Enchant.CLUSTER) && !p.isSneaking()) {
