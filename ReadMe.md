@@ -373,6 +373,9 @@ PJ's Enchants works with all of my other plugins.
 ##
 ### Rock Candy
 ![RockCandy](https://github.com/pajamasoft/pjs-media/blob/main/images/rock_candy.gif)
+##
+### Blizzard
+![Blizzard](https://github.com/pajamasoft/pjs-media/blob/main/images/blizzard.gif)
 
 
 ##
