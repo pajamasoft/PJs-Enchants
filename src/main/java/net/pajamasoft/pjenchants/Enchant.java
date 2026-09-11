@@ -50,7 +50,7 @@ public enum Enchant {
             .max_level(3)
             .tier(3)
             .types(ItemType.SWORD)
-            .cooldown(5000L)
+            .cooldown(7000L)
             .restricted(true)
     ),
     BOLT(new EnchantData()
@@ -90,6 +90,7 @@ public enum Enchant {
             .max_level(2)
             .tier(2)
             .types(ItemType.BOOTS)
+            .restricted(true)
     ),
     DEFUSE(new EnchantData()
             .max_level(1)
@@ -106,6 +107,7 @@ public enum Enchant {
             .max_level(3)
             .tier(2)
             .types(ItemType.CHESTPLATE)
+            .restricted(true)
     ),
     DIZZY(new EnchantData()
             .max_level(3)
@@ -172,7 +174,6 @@ public enum Enchant {
             .max_level(3)
             .tier(1)
             .types(ItemType.BOW)
-            .restricted(true)
     ),
     FROSTBITE(new EnchantData()
             .max_level(5)
@@ -309,6 +310,7 @@ public enum Enchant {
             .max_level(1)
             .tier(2)
             .types(Set.of(ItemType.HELMET,ItemType.CHESTPLATE,ItemType.LEGGINGS,ItemType.BOOTS))
+            .restricted(true)
     ),
     PHANTOM(new EnchantData()
             .max_level(1)
@@ -391,6 +393,7 @@ public enum Enchant {
             .max_level(1)
             .tier(2)
             .types(ItemType.CHESTPLATE)
+            .restricted(true)
     ),
     SPONGE(new EnchantData()
             .max_level(1)

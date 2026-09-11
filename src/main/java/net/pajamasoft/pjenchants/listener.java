@@ -168,7 +168,7 @@ public class listener implements Listener {
             }
 
             if(p.getInventory().getChestplate() != null){
-                ItemStack chest = p.getInventory().getChestplate();
+                ItemStack chest = p.getInventory().getChestplate().clone();
                 if(hasEnchantment(chest,Enchant.WINGS)){
                     pje.wings.put(id,chest);
                     doublejump.put(id, false);
@@ -181,9 +181,11 @@ public class listener implements Listener {
                     for(Enchant ench:chestenchants)     // Loops through chestplate enchants to apply any elytra enchants to the temp elytra
                         if(ench.isTypeCompatible(new ItemStack(Material.ELYTRA)))
                             pje.enchant(elytra,ench, getEnchantLevel(chest,ench));
-                    if(meta.hasEnchant(Enchantment.UNBREAKING))
-                        elytra.addEnchantment(Enchantment.UNBREAKING,meta.getEnchantLevel(Enchantment.UNBREAKING));
-                    if(meta.hasEnchant(Enchantment.MENDING))
+
+                    ItemMeta chestmeta = chest.getItemMeta();
+                    if(chestmeta.hasEnchant(Enchantment.UNBREAKING))
+                        elytra.addEnchantment(Enchantment.UNBREAKING,chestmeta.getEnchantLevel(Enchantment.UNBREAKING));
+                    if(chestmeta.hasEnchant(Enchantment.MENDING))
                         elytra.addEnchantment(Enchantment.MENDING,1);
 
                     p.getInventory().setChestplate(elytra);
@@ -266,7 +268,7 @@ public class listener implements Listener {
                 }
             }
 
-            if(isCooldownOver(p.getUniqueId(),Enchant.LUNAR)
+            if(isCooldownOver(id,Enchant.LUNAR)
                     &&!p.isInWater()
                     && hasEnchantment(p.getInventory().getChestplate(),Enchant.LUNAR)
                     &&((isNight(p.getWorld())
@@ -1159,7 +1161,7 @@ public class listener implements Listener {
         max_enchants = Math.max(max_enchants, 1);
         max_enchants = Math.min(max_enchants,level);
 
-        if(pjc != null) {
+        if(loot != null) {
             custom_enchants.removeIf(Enchant::isRestricted);
         }
 
@@ -1363,6 +1365,7 @@ public class listener implements Listener {
                         e.setDropItems(false);
                     if (clusterable.contains(b)) {
                         cluster.addAll(pje.getCluster(new ArrayList<>(), block, b, level));
+                        p.sendMessage("Cluster: "+cluster);
                         for (Block a : cluster) {
                             if (isPickaxe(tool) && pje.pickaxe_forged_blocks.contains(a.getType())) {
                                 pje.breakWithForging(p, tool, a);
@@ -2102,7 +2105,7 @@ public class listener implements Listener {
                     feed = fire_aspect ? 5 : 3;
                 }
                 case PIG -> {
-                    mat = Material.valueOf(cooked + "PORK");
+                    mat = Material.valueOf(cooked + "PORKCHOP");
                     feed = fire_aspect ? 8 : 3;
                 }
                 case COW -> {

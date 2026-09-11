@@ -123,5 +123,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>net.pajamasoft</groupId>
+            <artifactId>pj-loot</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.pajamasoft</groupId>
+                    <artifactId>pj-lib</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 </project>

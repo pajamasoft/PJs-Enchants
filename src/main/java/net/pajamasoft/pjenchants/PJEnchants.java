@@ -1,15 +1,16 @@
-package net.pajamasoft.pjenchants;
-import net.pajamasoft.pjCombat.PJCombat;
-import net.pajamasoft.pjLib.ItemType;
-import net.pajamasoft.pjcomputers.*;
 /*
  * ---------------------------------------------------
  *  PJ's Enchants
- *      80 Custom Enchantments for survival Minecraft
+ *      81 Custom Enchantments for survival Minecraft
  * ---------------------------------------------------
  * by Nathan Cook @pajamasoft, nathan@pajamasoft.net
  * ---------------------------------------------------
  */
+package net.pajamasoft.pjenchants;
+import net.pajamasoft.pJsLoot.PJsLoot;
+import net.pajamasoft.pjCombat.PJCombat;
+import net.pajamasoft.pjLib.ItemType;
+import net.pajamasoft.pjcomputers.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,9 +33,12 @@ public final class PJEnchants extends JavaPlugin {
 
     FileConfiguration data;
     File playerdata;
+
     public PJEnchants pjEnchants;
     public PJComputers pjc;
     public PJCombat combat;
+    public static PJsLoot loot;
+
     List<Player> online = new ArrayList<>();
     HashMap<UUID, Boolean> magnet = new HashMap<>();
     HashMap<UUID, ItemStack> wings = new HashMap<>();
@@ -89,6 +93,11 @@ public final class PJEnchants extends JavaPlugin {
 
         try {
             combat = (PJCombat) Bukkit.getPluginManager().getPlugin("PJsCombat");
+        }catch(Exception ex){
+            //
+        }
+        try {
+            loot = (PJsLoot) Bukkit.getPluginManager().getPlugin("PJsLoot");
         }catch(Exception ex){
             //
         }
@@ -283,15 +292,15 @@ public final class PJEnchants extends JavaPlugin {
                 List<String> lore = meta.getLore();
                 assert lore != null;
                 for(String s:lore){
-                    if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
-                        return true;
-                    else if(s.lastIndexOf(' ') > -1 && s.lastIndexOf(' ') == s.indexOf(' ')) {
-                        if (s.substring(2, s.lastIndexOf(' ')).equals(format(enchant.name())))
+                    if(s.length() > 2) {
+                        if (s.substring(2).equalsIgnoreCase(format(enchant.name())))
+                            return true;
+                        else if (s.lastIndexOf(' ') > -1 && s.lastIndexOf(' ') == s.indexOf(' ')) {
+                            if (s.substring(2, s.lastIndexOf(' ')).equals(format(enchant.name())))
+                                return true;
+                        } if (s.substring(2).equalsIgnoreCase(format(enchant.name())))
                             return true;
                     }
-                    else if(s.length() > 2)
-                        if(s.substring(2).equalsIgnoreCase(format(enchant.name())))
-                            return true;
 
                 }
             }
