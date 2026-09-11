@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.Pair;
 import net.pajamasoft.pjCombat.CombatPlayer;
 import net.pajamasoft.pjCombat.PJCombat;
 import org.bukkit.*;
+import net.pajamasoft.pjLib.ItemType;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
@@ -167,7 +168,7 @@ public class listener implements Listener {
             }
 
             if(p.getInventory().getChestplate() != null){
-                ItemStack chest = p.getInventory().getChestplate();
+                ItemStack chest = p.getInventory().getChestplate().clone();
                 if(hasEnchantment(chest,Enchant.WINGS)){
                     pje.wings.put(id,chest);
                     doublejump.put(id, false);
@@ -175,10 +176,18 @@ public class listener implements Listener {
                     Damageable meta = (Damageable) elytra.getItemMeta();
                     meta.setDamage(elytra.getType().getMaxDurability()-20);
                     elytra.setItemMeta(meta);
+
                     List<Enchant> chestenchants = getCustomEnchants(chest);
                     for(Enchant ench:chestenchants)     // Loops through chestplate enchants to apply any elytra enchants to the temp elytra
                         if(ench.isTypeCompatible(new ItemStack(Material.ELYTRA)))
                             pje.enchant(elytra,ench, getEnchantLevel(chest,ench));
+
+                    ItemMeta chestmeta = chest.getItemMeta();
+                    if(chestmeta.hasEnchant(Enchantment.UNBREAKING))
+                        elytra.addEnchantment(Enchantment.UNBREAKING,chestmeta.getEnchantLevel(Enchantment.UNBREAKING));
+                    if(chestmeta.hasEnchant(Enchantment.MENDING))
+                        elytra.addEnchantment(Enchantment.MENDING,1);
+
                     p.getInventory().setChestplate(elytra);
                     p.setGliding(true);
                 }
@@ -238,12 +247,18 @@ public class listener implements Listener {
 
         if(p.isGliding()&&!p.isSneaking()){
             assert p.getInventory().getChestplate() != null;
-            cooldowns.get(p.getUniqueId()).putIfAbsent(Enchant.SOLAR,0L);
-            cooldowns.get(p.getUniqueId()).putIfAbsent(Enchant.LUNAR,0L);
+            ItemStack elytra = p.getInventory().getChestplate();
 
-            if(isCooldownOver(id,Enchant.SOLAR)&&!p.isInWater()&& hasEnchantment(p.getInventory().getChestplate(),Enchant.SOLAR)&&p.getWorld().getTime()>=0
-                    &&p.getWorld().getTime()<12500&&!p.getWorld().hasStorm()&&!p.getWorld().isThundering()&&p.getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
-                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75));
+            if(isCooldownOver(id,Enchant.SOLAR)&&
+                    !p.isInWater() &&
+                    hasEnchantment(elytra,Enchant.SOLAR) &&
+                    p.getWorld().getTime()>=0 &&
+                    p.getWorld().getTime()<12500 &&
+                    !p.getWorld().hasStorm() &&
+                    !p.getWorld().isThundering() &&
+                    p.getWorld().getEnvironment().equals(World.Environment.NORMAL)) {
+                int thrust = Math.max(1,getEnchantLevel(elytra,Enchant.THRUST));
+                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75 + 1*(thrust/3.0)));
                 updateCooldown(id,Enchant.SOLAR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_SHULKER_SHOOT,0.6F,1);
                 for(int i=0;i<5;i++){
@@ -253,15 +268,16 @@ public class listener implements Listener {
                 }
             }
 
-            if(isCooldownOver(p.getUniqueId(),Enchant.LUNAR)
+            if(isCooldownOver(id,Enchant.LUNAR)
                     &&!p.isInWater()
                     && hasEnchantment(p.getInventory().getChestplate(),Enchant.LUNAR)
                     &&((isNight(p.getWorld())
                     &&!p.getWorld().hasStorm()
                     &&!p.getWorld().isThundering())
-                    ||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)
-            )))){
-                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.5));
+                    ||((p.getWorld().getEnvironment().equals(World.Environment.THE_END)))
+            )){
+                int thrust = Math.max(1,getEnchantLevel(elytra,Enchant.THRUST));
+                p.setVelocity(p.getVelocity().add(p.getLocation().getDirection()).multiply(0.75 + (thrust/3.0)));
                 updateCooldown(id,Enchant.LUNAR);
                 p.getWorld().playSound(p.getLocation(),Sound.ENTITY_ENDER_DRAGON_FLAP,0.6F,1);
                 for(int i=0;i<15;i++){
@@ -717,24 +733,32 @@ public class listener implements Listener {
             },40L + 40L*level);
         }
         if(hasCustomEnchants(bow)){
+            ItemStack finalBow = bow;
+            boolean hasAntiGrav = hasEnchantment(finalBow, Enchant.ANTIGRAVITY);
+            boolean hasHealing = hasEnchantment(finalBow,Enchant.HEALING);
+            boolean hasGrav = hasEnchantment(finalBow,Enchant.GRAVITY);
+            boolean hasFreeze = hasEnchantment(finalBow, Enchant.FREEZING);
+            boolean hasVenom = hasEnchantment(finalBow, Enchant.VENOM);
+            boolean hasNitro = hasEnchantment(finalBow, Enchant.NITRO);
             for(int i=0;i<24;i++) {
-                ItemStack finalBow = bow;
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
                     if(!proj.isDead()) {
-                        if (hasEnchantment(finalBow, Enchant.ANTIGRAVITY))
+                        if (hasAntiGrav)
                             proj.getWorld().spawnParticle(Particle.GLOW, proj.getLocation(), 0);
-                        if(hasEnchantment(finalBow,Enchant.HEALING))
+                        if(hasHealing)
                             proj.getWorld().spawnParticle(Particle.HEART,proj.getLocation(),0);
-                        if(hasEnchantment(finalBow,Enchant.GRAVITY))
+                        if(hasGrav)
                             proj.getWorld().spawnParticle(Particle.WITCH,proj.getLocation(),0);
-                        if (hasEnchantment(finalBow, Enchant.FREEZING)&&!proj.isVisualFire())
-                            proj.getWorld().spawnParticle(Particle.SNOWFLAKE, proj.getLocation(), 0);
-                        if (hasEnchantment(finalBow, Enchant.VENOM))
+                        if (hasFreeze){
+                            if(proj.getFireTicks() == 0)
+                                proj.getWorld().spawnParticle(Particle.SNOWFLAKE, proj.getLocation(), 0);
+                            if(proj.isInWater())
+                                proj.getLocation().getBlock().setType(Material.FROSTED_ICE);
+                        }
+                        if (hasVenom)
                             proj.getWorld().spawnParticle(Particle.FALLING_SPORE_BLOSSOM, proj.getLocation(), 0);
-                        if (hasEnchantment(finalBow, Enchant.NITRO))
+                        if (hasNitro)
                             proj.getWorld().spawnParticle(Particle.LAVA, proj.getLocation(), 0);
-                        if(proj.isInWater()&& hasEnchantment(finalBow,Enchant.FREEZING))
-                            proj.getLocation().getBlock().setType(Material.FROSTED_ICE);
                     }
                 },2*i);
             }
@@ -751,7 +775,6 @@ public class listener implements Listener {
                 }
             }
             if(hasEnchantment(bow,Enchant.HOMING)){
-                final boolean hasHealing = hasEnchantment(bow,Enchant.HEALING);
                 for(int i=0;i<150;i++){
                     Player finalP = p;
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(pje,()->{
@@ -797,257 +820,272 @@ public class listener implements Listener {
 
 
     @EventHandler
-    public void onArrowHit(ProjectileHitEvent e){
+    public void onArrowHit(ProjectileHitEvent e) {
         Projectile proj = e.getEntity();
 
-        if(e.isCancelled())
+        if (e.isCancelled())
             return;
 
-        if(pje.combat != null){
-            if(e.getHitEntity() != null) {
+        // Cancel if player's difficulty is set to peaceful in PJ's Combat
+        if (pje.combat != null) {
+            if (e.getHitEntity() != null) {
                 if (e.getHitEntity() instanceof Player && proj.getShooter() instanceof Player) {
                     Player p1 = (Player) proj.getShooter();
                     Player p2 = (Player) e.getHitEntity();
                     if (!pje.combat.canPVP(p1, p2))
                         return;
-                }
-                else if(proj.getShooter() instanceof Player){
-                    Player p = (Player)proj.getShooter();
-                    if(findPlayer(p.getUniqueId()).getDifficulty() == 1)
+                } else if (proj.getShooter() instanceof Player) {
+                    Player p = (Player) proj.getShooter();
+                    if (findPlayer(p.getUniqueId()).getDifficulty() == 1)
                         return;
                 }
             }
         }
 
-        if(!(e.getEntity() instanceof Arrow))
-            return;
-        Arrow arrow = (Arrow)e.getEntity();
-        if(arrow.getCustomName()==null)
-            return;
-        String name = arrow.getCustomName();        // format: enchant(#)%enchant(#)%....
-        final String fname = name;
-        HashMap<String,Integer> enchants = new HashMap<>();
-        if(!name.contains("%"))
-            return;
-        Player p = Bukkit.getPlayer(name.substring(0,name.indexOf('%')));
+        if(e.getEntity() instanceof Snowball snowball){
 
-        name = name.substring(name.indexOf('%')+1);
-        int numindex = 0;
-        int level = 0;
-
-        while(name.contains("%")){
-            for(int i=0;i<name.length();i++) {
-                try {
-                    level = Integer.parseInt(String.valueOf(name.charAt(i)));
-                    numindex = i;
-                    break;
+            if(e.getHitEntity() instanceof LivingEntity ent) {
+                switch (snowball.getItem().getType()) {
+                    case PACKED_ICE -> {
+                        ent.damage(3);
+                        ent.setFreezeTicks(ent.getFreezeTicks() + 40);
+                    }
                 }
-                catch (NumberFormatException ex) { }
             }
-            enchants.put(name.substring(0,numindex),level);
-            if(name.indexOf('%')==name.lastIndexOf('%'))
-                name = "";
-            else name = name.substring(name.indexOf('%')+1);
         }
 
-        if(p!=null)
-            if(p.equals(e.getHitEntity()))
+        if (e.getEntity() instanceof Arrow arrow) {
+            if (arrow.getCustomName() == null)
                 return;
+            String name = arrow.getCustomName();        // format: enchant(#)%enchant(#)%....
+            final String fname = name;
+            HashMap<String, Integer> enchants = new HashMap<>();
 
-        // Total list of enchants gathered, activate each effect here
-        if(arrow.getFireTicks()>0){
-            if (e.getHitEntity() instanceof Player p2) {
-                int permafrost_score = getArmorScore(p2, Enchant.PERMAFROST);
-                if (permafrost_score > 0) {
-                    p2.setFireTicks(p2.getFireTicks() / permafrost_score);
-                }
-            }
-        }
 
-        if(enchants.containsKey("freezing")){
-            if((e.getHitEntity() instanceof LivingEntity target)&&arrow.getFireTicks() == 0) {
-                int lvl = enchants.get("freezing");
-                int freezeticks = 460 + 20 * lvl;
+            if (!name.contains("%"))
+                return;
+            Player p = Bukkit.getPlayer(name.substring(0, name.indexOf('%')));
 
-                if(Objects.requireNonNull(Objects.requireNonNull(target.getEquipment()).getHelmet()).getType().equals(Material.AIR))
-                    target.getEquipment().setHelmet(new ItemStack(Material.ICE,1));
+            name = name.substring(name.indexOf('%') + 1);
+            int numindex = 0;
+            int level = 0;
 
-                if (target instanceof Player p2) {
-                    if (getArmorScore(p2, Enchant.MOLTEN) > 0) {
-                        int score = getArmorScore(p2, Enchant.MOLTEN);
-                        freezeticks = 460 + 20 * lvl - 20 * score;
+            while (name.contains("%")) {
+                for (int i = 0; i < name.length(); i++) {
+                    try {
+                        level = Integer.parseInt(String.valueOf(name.charAt(i)));
+                        numindex = i;
+                        break;
+                    } catch (NumberFormatException ex) {
                     }
                 }
-                for (int i = 0; i < freezeticks / 20; i++) {
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
-                        if (!target.isDead()) {
-                            if (target.getFreezeTicks() > 200) {
-                                Location loc = target.getLocation();
-                                particleDisc(Particle.SNOWFLAKE, new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() + 0.5), 0.5, 5);
-                                target.setFireTicks(0);
-                            }
+                enchants.put(name.substring(0, numindex), level);
+                if (name.indexOf('%') == name.lastIndexOf('%'))
+                    name = "";
+                else name = name.substring(name.indexOf('%') + 1);
+            }
+
+            if (p != null)
+                if (p.equals(e.getHitEntity()))
+                    return;
+
+            // Total list of enchants gathered, activate each effect here
+            if (arrow.getFireTicks() > 0) {
+                if (e.getHitEntity() instanceof Player p2) {
+                    int permafrost_score = getArmorScore(p2, Enchant.PERMAFROST);
+                    if (permafrost_score > 0) {
+                        p2.setFireTicks(p2.getFireTicks() / permafrost_score);
+                    }
+                }
+            }
+
+            if (enchants.containsKey("freezing")) {
+                if ((e.getHitEntity() instanceof LivingEntity target) && arrow.getFireTicks() == 0) {
+                    int lvl = enchants.get("freezing");
+                    int freezeticks = 460 + 20 * lvl;
+
+                    if (Objects.requireNonNull(Objects.requireNonNull(target.getEquipment()).getHelmet()).getType().equals(Material.AIR))
+                        target.getEquipment().setHelmet(new ItemStack(Material.ICE, 1));
+
+                    if (target instanceof Player p2) {
+                        if (getArmorScore(p2, Enchant.MOLTEN) > 0) {
+                            int score = getArmorScore(p2, Enchant.MOLTEN);
+                            freezeticks = 460 + 20 * lvl - 20 * score;
                         }
-                    }, 20 * i);
-                }
-                target.setFreezeTicks(freezeticks);
-                target.setFireTicks(0);
-                target.getWorld().playSound(target.getLocation(), Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 0.3F, 1);
-            }
-        }
-
-        if(enchants.containsKey("gravity")){
-            if(e.getHitEntity() instanceof LivingEntity) {
-                LivingEntity target = (LivingEntity) e.getHitEntity();
-                if(!(target instanceof EnderDragon)){
-
-                    int lvl = enchants.get("gravity");
-                    if (percentChance(15+5*lvl)) {
-                        target.teleport(target.getLocation().subtract(0, 1, 0));
-                        target.removePotionEffect(PotionEffectType.LEVITATION);
-                        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 50, 2, false, true));
-                        BlockData dat = target.getLocation().subtract(0, 1, 0).getBlock().getBlockData();
-                        target.getWorld().spawnParticle(Particle.BLOCK, target.getLocation(), 5, 0, 0, 0, dat);
-                        target.getWorld().playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_HURT, 1, 0F);
-                        for (int i = 0; i < 10; i++)
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
-                                target.setVelocity(new Vector(0, -10, 0));
-                            }, 5L * i);
                     }
-                }
-            }
-        }
-
-        if(enchants.containsKey("healing")){
-            if(e.getHitEntity() instanceof LivingEntity){
-                LivingEntity target = (LivingEntity) e.getHitEntity();
-                int power = 0;
-                if(enchants.containsKey("power"))
-                    power = enchants.get("power");
-                particleRing(Particle.HEART,target.getLocation().add(0,2,0),1,5);
-                try {
-                    target.setHealth(target.getHealth() +2+power);
-                }catch(Exception ex){}
-                e.setCancelled(true);
-                e.getEntity().remove();
-                for(int i=0;i<3;i++) {
-                    int finalI = i;
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
-                        target.getWorld().playSound(target.getLocation(),Sound.BLOCK_NOTE_BLOCK_HARP,1F,1F* finalI);
-                    },5*i);
-                }
-                for(PotionEffect pot:target.getActivePotionEffects())
-                    if(isNegativeEffect(pot.getType()))
-                        target.removePotionEffect(pot.getType());
-            }
-        }
-
-        if(enchants.containsKey("nitro")){
-            int lvl = enchants.get("nitro");
-            if(e.getHitEntity()!=null){
-                if(e.getHitEntity() instanceof LivingEntity) {
-                    LivingEntity ent = (LivingEntity)e.getHitEntity();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
-                        boolean canbreak = true;
-                        if(pjc != null)
-                            canbreak = pjc.canModifyChunk(ent.getChunk());
-                        if (!ent.isDead() && canbreak)
-                            ent.getWorld().createExplosion(ent.getLocation(), 0.5F, false, true);
-                        arrow.remove();
-                    }, 100L - 20L * lvl);
-                }
-            }
-            if(e.getHitBlock()!=null){
-                Block b = e.getHitBlock();
-                if(arrow.isVisualFire()) // sets block on fire if arrow is on fire
-                    if(b.getRelative(Objects.requireNonNull(e.getHitBlockFace())).getType().isAir())
-                        b.getRelative(Objects.requireNonNull(e.getHitBlockFace())).setType(Material.FIRE);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(pje,()->{
-                    if(arrow.isInBlock()) {
-                        boolean canbreak = true;
-                        if(pjc != null)
-                            canbreak = pjc.canModifyChunk(arrow.getChunk());
-                        if(canbreak)
-                            b.getWorld().createExplosion(b.getLocation(), 1, false, true);
-                        arrow.remove();
+                    for (int i = 0; i < freezeticks / 20; i++) {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                            if (!target.isDead()) {
+                                if (target.getFreezeTicks() > 200) {
+                                    Location loc = target.getLocation();
+                                    particleDisc(Particle.SNOWFLAKE, new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ() + 0.5), 0.5, 5);
+                                    target.setFireTicks(0);
+                                }
+                            }
+                        }, 20 * i);
                     }
-                },110L-20L*lvl);
+                    target.setFreezeTicks(freezeticks);
+                    target.setFireTicks(0);
+                    target.getWorld().playSound(target.getLocation(), Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 0.3F, 1);
+                }
             }
-        }
 
-        if(enchants.containsKey("venom")){
-            int lvl = enchants.get("venom");
-            if(percentChance(30)) {
+            if (enchants.containsKey("gravity")) {
                 if (e.getHitEntity() instanceof LivingEntity) {
-                    LivingEntity ent = (LivingEntity) e.getHitEntity();
-                    if(ent instanceof Zombie || ent instanceof Skeleton)
-                        ent.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20 + 20 * lvl, 1, false, true));
-                    else ent.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 + 20 * lvl, 1, false, true));
-                    ent.getWorld().playSound(ent.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1, 1);
-                }
-            }
-        }
+                    LivingEntity target = (LivingEntity) e.getHitEntity();
+                    if (!(target instanceof EnderDragon)) {
 
-        if(enchants.containsKey("ricochet")){
-            if(e.getHitEntity()!=null&&p!=null){
-                if(e.getHitEntity() instanceof LivingEntity) {
-                    int lvl = enchants.get("ricochet");
-                    List<Entity> hitents = new ArrayList<>();
-                    ricochetlimit.putIfAbsent(p.getUniqueId(),hitents);
-                    if(ricochetlimit.containsKey(p.getUniqueId()))
-                        hitents=ricochetlimit.get(p.getUniqueId());
-                    LivingEntity ent = (LivingEntity)e.getHitEntity();
-                    List<Entity> near = ent.getNearbyEntities(20,20,20);
-                    double dist = 20*20;
-                    LivingEntity nearest = null;
-                    for(Entity a:near) {
-                        if(((a instanceof Player)&&!a.equals(p))||((a instanceof Monster)&&!a.equals(ent))){
-                            if(a.getLocation().distance(ent.getLocation())<dist&&!ricochetlimit.get(p.getUniqueId()).contains(a)) {
-                                dist = a.getLocation().distance(ent.getLocation());
-                                nearest = (LivingEntity)a;
-                            }
+                        int lvl = enchants.get("gravity");
+                        if (percentChance(15 + 5 * lvl)) {
+                            target.teleport(target.getLocation().subtract(0, 1, 0));
+                            target.removePotionEffect(PotionEffectType.LEVITATION);
+                            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 50, 2, false, true));
+                            BlockData dat = target.getLocation().subtract(0, 1, 0).getBlock().getBlockData();
+                            target.getWorld().spawnParticle(Particle.BLOCK, target.getLocation(), 5, 0, 0, 0, dat);
+                            target.getWorld().playSound(target.getLocation(), Sound.ENTITY_ENDERMAN_HURT, 1, 0F);
+                            for (int i = 0; i < 10; i++)
+                                Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                                    target.setVelocity(new Vector(0, -10, 0));
+                                }, 5L * i);
                         }
                     }
-                    if(nearest != null){
-                        hitents.add(nearest);
-                        ricochetlimit.put(p.getUniqueId(),hitents);
-                        if(ricochetlimit.get(p.getUniqueId()).size()<lvl+3 && !ent.isDead()) {
-                            Vector v = (nearest.getEyeLocation().toVector()).subtract(ent.getEyeLocation().toVector()).normalize();
-                            Arrow newarrow = ent.getWorld().spawnArrow(ent.getEyeLocation().add(v), v.multiply(2), 1F, 0);
-                            if (fname.contains("antigravity"))
-                                newarrow.setGravity(false);
-                            newarrow.setCustomName(fname);
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(pje, newarrow::remove,300L);
+                }
+            }
+
+            if (enchants.containsKey("healing")) {
+                if (e.getHitEntity() instanceof LivingEntity) {
+                    LivingEntity target = (LivingEntity) e.getHitEntity();
+                    int power = 0;
+                    if (enchants.containsKey("power"))
+                        power = enchants.get("power");
+                    particleRing(Particle.HEART, target.getLocation().add(0, 2, 0), 1, 5);
+                    try {
+                        target.setHealth(target.getHealth() + 2 + power);
+                    } catch (Exception ex) {
+                    }
+                    e.setCancelled(true);
+                    e.getEntity().remove();
+                    for (int i = 0; i < 3; i++) {
+                        int finalI = i;
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                            target.getWorld().playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1F, 1F * finalI);
+                        }, 5 * i);
+                    }
+                    for (PotionEffect pot : target.getActivePotionEffects())
+                        if (isNegativeEffect(pot.getType()))
+                            target.removePotionEffect(pot.getType());
+                }
+            }
+
+            if (enchants.containsKey("nitro")) {
+                int lvl = enchants.get("nitro");
+                if (e.getHitEntity() != null) {
+                    if (e.getHitEntity() instanceof LivingEntity) {
+                        LivingEntity ent = (LivingEntity) e.getHitEntity();
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                            boolean canbreak = true;
+                            if (pjc != null)
+                                canbreak = pjc.canModifyChunk(ent.getChunk());
+                            if (!ent.isDead() && canbreak)
+                                ent.getWorld().createExplosion(ent.getLocation(), 0.5F, false, true);
+                            arrow.remove();
+                        }, 100L - 20L * lvl);
+                    }
+                }
+                if (e.getHitBlock() != null) {
+                    Block b = e.getHitBlock();
+                    if (arrow.isVisualFire()) // sets block on fire if arrow is on fire
+                        if (b.getRelative(Objects.requireNonNull(e.getHitBlockFace())).getType().isAir())
+                            b.getRelative(Objects.requireNonNull(e.getHitBlockFace())).setType(Material.FIRE);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                        if (arrow.isInBlock()) {
+                            boolean canbreak = true;
+                            if (pjc != null)
+                                canbreak = pjc.canModifyChunk(arrow.getChunk());
+                            if (canbreak)
+                                b.getWorld().createExplosion(b.getLocation(), 1, false, true);
                             arrow.remove();
                         }
-                        else{
-                            if(ricochetlimit.containsKey(p.getUniqueId()))
-                                ricochetlimit.remove(p.getUniqueId());
+                    }, 110L - 20L * lvl);
+                }
+            }
+
+            if (enchants.containsKey("venom")) {
+                int lvl = enchants.get("venom");
+                if (percentChance(30)) {
+                    if (e.getHitEntity() instanceof LivingEntity) {
+                        LivingEntity ent = (LivingEntity) e.getHitEntity();
+                        if (ent instanceof Zombie || ent instanceof Skeleton)
+                            ent.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20 + 20 * lvl, 1, false, true));
+                        else
+                            ent.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 + 20 * lvl, 1, false, true));
+                        ent.getWorld().playSound(ent.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1, 1);
+                    }
+                }
+            }
+
+            if (enchants.containsKey("ricochet")) {
+                if (e.getHitEntity() != null && p != null) {
+                    if (e.getHitEntity() instanceof LivingEntity) {
+                        int lvl = enchants.get("ricochet");
+                        List<Entity> hitents = new ArrayList<>();
+                        ricochetlimit.putIfAbsent(p.getUniqueId(), hitents);
+                        if (ricochetlimit.containsKey(p.getUniqueId()))
+                            hitents = ricochetlimit.get(p.getUniqueId());
+                        LivingEntity ent = (LivingEntity) e.getHitEntity();
+                        List<Entity> near = ent.getNearbyEntities(20, 20, 20);
+                        double dist = 20 * 20;
+                        LivingEntity nearest = null;
+                        for (Entity a : near) {
+                            if (((a instanceof Player) && !a.equals(p)) || ((a instanceof Monster) && !a.equals(ent))) {
+                                if (a.getLocation().distance(ent.getLocation()) < dist && !ricochetlimit.get(p.getUniqueId()).contains(a)) {
+                                    dist = a.getLocation().distance(ent.getLocation());
+                                    nearest = (LivingEntity) a;
+                                }
+                            }
+                        }
+                        if (nearest != null) {
+                            hitents.add(nearest);
+                            ricochetlimit.put(p.getUniqueId(), hitents);
+                            if (ricochetlimit.get(p.getUniqueId()).size() < lvl + 3 && !ent.isDead()) {
+                                Vector v = (nearest.getEyeLocation().toVector()).subtract(ent.getEyeLocation().toVector()).normalize();
+                                Arrow newarrow = ent.getWorld().spawnArrow(ent.getEyeLocation().add(v), v.multiply(2), 1F, 0);
+                                if (fname.contains("antigravity"))
+                                    newarrow.setGravity(false);
+                                newarrow.setCustomName(fname);
+                                Bukkit.getScheduler().scheduleSyncDelayedTask(pje, newarrow::remove, 300L);
+                                arrow.remove();
+                            } else {
+                                if (ricochetlimit.containsKey(p.getUniqueId()))
+                                    ricochetlimit.remove(p.getUniqueId());
+                            }
                         }
                     }
                 }
             }
-        }
 
-        if(enchants.containsKey("grappling")){
-            assert p != null;
-            if(e.getHitEntity() instanceof LivingEntity){
-                LivingEntity ent = (LivingEntity) e.getHitEntity();
-                Vector v = p.getLocation().subtract(ent.getLocation()).toVector().normalize().multiply(4);
-                try {
-                    ent.setVelocity(v);
-                }catch(Exception ex){}
-            }
-            assert p != null;
-            if(e.getHitBlock() != null && e.getHitEntity() == null && !p.isGliding() && !p.isSneaking()) {
-                if (p.getLocation().add(0,-0.2,0).getBlock().getType().equals(Material.AIR)) {
-                    Vector v = e.getHitBlock().getLocation().toVector().subtract(p.getLocation().toVector());
-                    double dist = v.length();
-                    v.normalize();
-                    if(dist<30) {
-                        v.multiply(dist / 10);
-                        v.add(new Vector(0, 1, 0));
+            if (enchants.containsKey("grappling")) {
+                assert p != null;
+                if (e.getHitEntity() instanceof LivingEntity) {
+                    LivingEntity ent = (LivingEntity) e.getHitEntity();
+                    Vector v = p.getLocation().subtract(ent.getLocation()).toVector().normalize().multiply(4);
+                    try {
+                        ent.setVelocity(v);
+                    } catch (Exception ex) {
                     }
-                    p.setVelocity(v);
+                }
+                assert p != null;
+                if (e.getHitBlock() != null && e.getHitEntity() == null && !p.isGliding() && !p.isSneaking()) {
+                    if (p.getLocation().add(0, -0.2, 0).getBlock().getType().equals(Material.AIR)) {
+                        Vector v = e.getHitBlock().getLocation().toVector().subtract(p.getLocation().toVector());
+                        double dist = v.length();
+                        v.normalize();
+                        if (dist < 30) {
+                            v.multiply(dist / 10);
+                            v.add(new Vector(0, 1, 0));
+                        }
+                        p.setVelocity(v);
+                    }
                 }
             }
         }
@@ -1123,7 +1161,7 @@ public class listener implements Listener {
         max_enchants = Math.max(max_enchants, 1);
         max_enchants = Math.min(max_enchants,level);
 
-        if(pjc != null) {
+        if(loot != null) {
             custom_enchants.removeIf(Enchant::isRestricted);
         }
 
@@ -1290,16 +1328,24 @@ public class listener implements Listener {
         Player p = e.getPlayer();
         Block block = e.getBlock();
         Material b = e.getBlock().getType();
+
+        if(pjc != null)
+            if(!pjc.canModifyChunk(p,block.getChunk()))
+                return;
+
         ItemStack tool = p.getInventory().getItemInMainHand();
         if(tool.getType().equals(Material.AIR))
             return;
         boolean silk = false;
         int fortune = 1;
         int exp = e.getExpToDrop();
+        World world = block.getWorld();
         if(tool.hasItemMeta()) {
             if (tool.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH))
                 silk = true;
-            fortune = tool.getItemMeta().hasEnchant(Enchantment.FORTUNE) ? tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE) : 0;
+            if(tool.getItemMeta().hasEnchant(Enchantment.FORTUNE)) {
+                fortune = tool.getItemMeta().getEnchantLevel(Enchantment.FORTUNE);
+            }
         }
         if(p.getGameMode().equals(GameMode.SURVIVAL)) {
             if(e.isCancelled())
@@ -1309,6 +1355,7 @@ public class listener implements Listener {
                 if (hasEnchantment(tool, Enchant.CLUSTER) && !p.isSneaking()) {
                     List<Block> cluster = new ArrayList<>();
                     List<Material> clusterable = new ArrayList<>();
+                    boolean rockCandy = hasEnchantment(tool, Enchant.ROCK_CANDY);
                     int level = getEnchantLevel(tool, Enchant.CLUSTER);
                     if (isPickaxe(tool))
                         clusterable = List.copyOf(pickaxe_blocks);
@@ -1318,6 +1365,7 @@ public class listener implements Listener {
                         e.setDropItems(false);
                     if (clusterable.contains(b)) {
                         cluster.addAll(pje.getCluster(new ArrayList<>(), block, b, level));
+                        p.sendMessage("Cluster: "+cluster);
                         for (Block a : cluster) {
                             if (isPickaxe(tool) && pje.pickaxe_forged_blocks.contains(a.getType())) {
                                 pje.breakWithForging(p, tool, a);
@@ -1343,6 +1391,8 @@ public class listener implements Listener {
                                     }
                                 }
                             }
+                            if(rockCandy)
+                                pje.breakWithRockCandy(p,tool,a);
                             a.setType(Material.AIR);
                         }
                     }
@@ -1355,6 +1405,7 @@ public class listener implements Listener {
                 List<Material> clusterable = new ArrayList<>();
                 boolean rockCandy = hasEnchantment(tool, Enchant.ROCK_CANDY);
                 int level = getEnchantLevel(tool, Enchant.CLUSTER);
+                exp = e.getExpToDrop();
                 if (isAxe(tool))
                     clusterable = List.copyOf(pje.axe_blocks);
                 if (isPickaxe(tool))
@@ -1374,8 +1425,10 @@ public class listener implements Listener {
                                 pje.breakWithRockCandy(p, tool, a);
                             }
                             a.setType(Material.AIR);
-                            if (!drop.getType().equals(Material.AIR))
+                            if (!drop.getType().equals(Material.AIR)) {
                                 a.getWorld().dropItemNaturally(a.getLocation(), drop);
+                                exp += e.getExpToDrop();
+                            }
                         }
                     }
                 }
@@ -1399,9 +1452,12 @@ public class listener implements Listener {
                         exp += (int)(Math.random()*3);
             }
         }
-        e.setExpToDrop(exp);
-        if(!e.isDropItems()&&exp>0)
+        if(e.isCancelled() && exp > e.getExpToDrop())
             (p.getWorld().spawn(p.getLocation(), ExperienceOrb.class)).setExperience(exp);
+        e.setExpToDrop(exp);
+        if(!e.isDropItems()&&exp>0) {
+            (p.getWorld().spawn(p.getLocation(), ExperienceOrb.class)).setExperience(exp);
+        }
     }
 
     @EventHandler
@@ -1469,6 +1525,23 @@ public class listener implements Listener {
                         fireball.setVelocity(p.getLocation().getDirection());
                         fireball.setShooter(p);
                         p.getWorld().playSound(p.getLocation(),Sound.ENTITY_BREEZE_SHOOT,1,1);
+                    }
+                }
+                if(hasEnchantment(item, Enchant.BLIZZARD) && e.getAction() == Action.LEFT_CLICK_AIR){
+                    int level = getEnchantLevel(item,Enchant.BLIZZARD);
+                    if(isCooldownOver(id,Enchant.BLIZZARD,level, hasEnchantment(item, Enchant.ARTFUL))){
+                        updateCooldown(id,Enchant.BLIZZARD);
+                        for(int i=0;i<9;i++) {
+                            int finalI = i;
+                            Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                                Snowball snowball = p.launchProjectile(Snowball.class,p.getLocation().getDirection().multiply(1+0.5*level).add(new Vector(
+                                        Math.random()*.3-.15,Math.random()*.3-.15,Math.random()*.3-.15)));
+                                snowball.setShooter(p);
+                                if(finalI %3==0)
+                                    snowball.setItem(new ItemStack(Material.PACKED_ICE,1));
+                                p.getWorld().playSound(p.getLocation(),Sound.ENTITY_BREEZE_SHOOT,0.3F,1);
+                            },2*i);
+                        }
                     }
                 }
             }
@@ -1901,7 +1974,7 @@ public class listener implements Listener {
                             armor[i].setItemMeta(item);
                         }
                     p2.getInventory().setArmorContents(armor);
-                    p.getWorld().playSound(p2.getLocation(),Sound.ENTITY_ITEM_BREAK,0.3F,1);
+                    p.getWorld().playSound(p2.getLocation(),Sound.ENTITY_PARCHED_HURT,0.3F,1);
                 }
             }
             if(ent instanceof Monster){
@@ -2032,7 +2105,7 @@ public class listener implements Listener {
                     feed = fire_aspect ? 5 : 3;
                 }
                 case PIG -> {
-                    mat = Material.valueOf(cooked + "PORK");
+                    mat = Material.valueOf(cooked + "PORKCHOP");
                     feed = fire_aspect ? 8 : 3;
                 }
                 case COW -> {
@@ -2156,18 +2229,18 @@ public class listener implements Listener {
                 }
                 for(int i=0;i<loops;i++) {
                     int finalI = i;
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
-                            Location loc = ent.getLocation();
-                            if (ent instanceof Monster mon)
-                                mon.setTarget(null);
-                            double x = loc.getX();
-                            double y = loc.getY();
-                            double z = loc.getZ();
-                            loc.setYaw((float) Math.random() * 360);
-                            loc.setPitch((float) Math.random() * 360);
-                            ent.teleport(loc);
-                            loc.getWorld().spawnParticle(Particle.FIREWORK, new Location(loc.getWorld(), x + Math.cos(finalI) * 0.8, y, z + Math.sin(finalI) * 0.8 + (0.15 + .1 * 0.8)), 0);
-                        }, 10 * i);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(pje, () -> {
+                        Location loc = ent.getLocation();
+                        if (ent instanceof Monster mon)
+                            mon.setTarget(null);
+                        double x = loc.getX();
+                        double y = loc.getY();
+                        double z = loc.getZ();
+                        loc.setYaw((float) Math.random() * 360);
+                        loc.setPitch((float) Math.random() * 360);
+                        ent.teleport(loc);
+                        loc.getWorld().spawnParticle(Particle.FIREWORK, new Location(loc.getWorld(), x + Math.cos(finalI) * 0.8, y, z + Math.sin(finalI) * 0.8 + (0.15 + .1 * 0.8)), 0);
+                    }, 10 * i);
                 }
                 p.getWorld().playSound(ent.getLocation(),Sound.ENTITY_ENDERMAN_TELEPORT,1,1);
             }
@@ -2565,7 +2638,7 @@ public class listener implements Listener {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 360, 8));
                         p.setAbsorptionAmount(2);
                     }
-                    double absorb = e.getDamage() + p.getAbsorptionAmount();
+                    double absorb = e.getDamage()*0.5 + p.getAbsorptionAmount();
                     p.setAbsorptionAmount(absorb);
                     e.setDamage(0);
                     particleRing(Particle.BUBBLE,p.getLocation().add(0,1,0),1,40);
@@ -2806,7 +2879,7 @@ public class listener implements Listener {
                 cooldown *=0.75;
             return System.currentTimeMillis() - cooldowns.get(id).get(en) >= cooldown;
         }
-        cooldowns.put(id,new HashMap<Enchant,Long>());
+        cooldowns.get(id).put(en,0L);
         return true;
     }
 

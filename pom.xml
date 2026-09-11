@@ -6,7 +6,7 @@
 
     <groupId>net.pajamasoft</groupId>
     <artifactId>pjenchants</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <packaging>jar</packaging>
 
     <name>PJEnchants</name>
@@ -114,6 +114,18 @@
         <dependency>
             <groupId>net.pajamasoft</groupId>
             <artifactId>pj-combat</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.pajamasoft</groupId>
+                    <artifactId>pj-lib</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.pajamasoft</groupId>
+            <artifactId>pj-loot</artifactId>
             <version>1.0.0</version>
             <scope>provided</scope>
             <exclusions>
