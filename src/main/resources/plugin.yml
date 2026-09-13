@@ -1,7 +1,7 @@
 name: pjenchants
 version: ${project.version}
 main: net.pajamasoft.pjenchants.PJEnchants
-api-version: 26.1
+api-version: 26.2
 authors: [ pajamasoft ]
 description: PJ's Custom Enchantments
 commands:
