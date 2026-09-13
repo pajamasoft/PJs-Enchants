@@ -162,6 +162,9 @@ All custom enchantments are assigned a tier 1-3. This impacts the enchantment's 
 | Permafrost | | | | ❌ | |
 | Eruption | | | | | ❌ |
 ##
+## Custom Enchantment Cap 🔒
+There is a cap of **6 custom enchantments** per-item.
+##
 ## Vanilla Enchantments With Wider Applications
 The following vanilla enchantments can now be applied to new items:
 | Enchantment | Item Type | Description | 
