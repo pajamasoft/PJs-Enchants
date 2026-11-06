@@ -1226,6 +1226,13 @@ public class listener implements Listener {
 
         ItemStack result = i1.clone();
 
+        if(e.getResult().hasItemMeta() && result.hasItemMeta()){
+            if(e.getResult().getItemMeta() instanceof Damageable newDam && result.getItemMeta() instanceof Damageable baseDam){
+                baseDam.setDamage(newDam.getDamage());
+                result.setItemMeta(baseDam);
+            }
+        }
+
         Map<Enchantment, Integer> final_enchants = new HashMap<>();
 
         if(e.getResult().hasItemMeta()) {
@@ -1256,13 +1263,13 @@ public class listener implements Listener {
         int cost = endench*3; // Calculating cost, depends on how many enchants are added in the end
         if(cost == 0)
             cost = ogcost;
-        if(e.getView().getRenameText().length()>0)
+        if(!e.getView().getRenameText().isEmpty())
             cost++;
 
-        if(result.getItemMeta() instanceof Repairable rep){
-            rep.setRepairCost(cost);
-            result.setItemMeta(rep);
-        }
+//        if(result.getItemMeta() instanceof Repairable rep){
+//            rep.setRepairCost(cost);
+//            result.setItemMeta(rep);
+//        }
 
         if(e.getResult().isEmpty()){
             for(Pair<Enchant, Integer> en:bookCEs){
